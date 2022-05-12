@@ -1,5 +1,5 @@
 
-#include "appmain.h"
+#include "app_main.h"
 #include "user_function.h"
 #include <hsf.h>
 #include <hfnet.h>
@@ -25,7 +25,7 @@ void udp_thread( void *arg );
 
 USER_FUNC void user_udp_init( void )
 {
-   	hfthread_create(udp_thread,"udpcontrol",1024,(void*)1,1,NULL,NULL);  //Æô¶¯udpÏß³Ì
+   	hfthread_create(udp_thread,"udpcontrol",1024,(void*)1,1,NULL,NULL);  //ï¿½ï¿½ï¿½ï¿½udpï¿½ß³ï¿½
 }
 
 /*create udp socket*/

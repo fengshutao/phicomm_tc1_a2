@@ -1346,7 +1346,7 @@
       <Size>100</Size>
       <ActiveTab>6</ActiveTab>
       <Doc>
-        <Name>..\src\appmain.h</Name>
+        <Name>..\src\app_main.h</Name>
         <ColumnNumber>27</ColumnNumber>
         <TopLine>27</TopLine>
         <CurrentLine>55</CurrentLine>

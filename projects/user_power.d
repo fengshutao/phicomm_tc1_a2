@@ -64,5 +64,5 @@ user_power.o: ../src/user_power.c ../sdk/4.13/include/mbed_config.h \
  ../sdk/4.13/include/hsf/hfsmtlk.h ../sdk/4.13/include/hsf/hfmsgq.h \
  ../sdk/4.13/include/hsf/hfdns.h ../sdk/4.13/include/hsf/hfspi.h \
  ../sdk/4.13/include/hsf/hfcrypto.h ../sdk/4.13/include/hsf/hfntp.h \
- ../sdk/4.13/include/hsf/hfsmtaplk.h ../src/appmain.h ../src/user_udp.h \
+ ../sdk/4.13/include/hsf/hfsmtaplk.h ../src/app_main.h ../src/user_udp.h \
  ../src/user_function.h ../src/user_gpio.h ../src/user_power.h

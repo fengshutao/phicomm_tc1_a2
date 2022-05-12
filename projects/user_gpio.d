@@ -1,5 +1,5 @@
 user_gpio.o: ../src/user_gpio.c ../sdk/4.13/include/mbed_config.h \
- ../src/appmain.h ../sdk/4.13/include/hsf/hsf.h \
+ ../src/app_main.h ../sdk/4.13/include/hsf/hsf.h \
  c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\5.4\ 2016q3\arm-none-eabi\include\stdio.h \
  c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\5.4\ 2016q3\arm-none-eabi\include\_ansi.h \
  c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\5.4\ 2016q3\arm-none-eabi\include\newlib.h \

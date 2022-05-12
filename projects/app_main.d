@@ -70,5 +70,5 @@ app_main.o: ../src/app_main.c ../sdk/4.13/include/mbed_config.h \
  c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\5.4\ 2016q3\arm-none-eabi\include\sys\string.h \
  c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\5.4\ 2016q3\arm-none-eabi\include\time.h \
  c:\program\ files\ (x86)\gnu\ tools\ arm\ embedded\5.4\ 2016q3\arm-none-eabi\include\machine\time.h \
- ../src/user_gpio.h ../src/appmain.h ../src/user_rtc.h ../src/user_udp.h \
+ ../src/user_gpio.h ../src/app_main.h ../src/user_rtc.h ../src/user_udp.h \
  ../src/user_function.h ../src/httpd.h ../src/user_mdns.h

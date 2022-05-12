@@ -1,5 +1,5 @@
 
-#include "appmain.h"
+#include "app_main.h"
 #include "user_gpio.h"
 #include "cJSON/cJSON.h"
 //#include "user_ota.h"
@@ -21,7 +21,7 @@ bool json_plug_task_analysis(unsigned char x, unsigned char y, cJSON * pJsonRoot
 void user_send( int udp_flag, char *s )
 {
     //if ( udp_flag || !user_mqtt_isconnect( ) )
-        user_udp_send( s ); //·¢ËÍÊý¾Ý
+        user_udp_send( s ); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
    // else
         //user_mqtt_send( s );
 }
@@ -30,8 +30,8 @@ void USER_FUNC user_function_cmd_received( int udp_flag,  char *pusrdata )
 {
 
     unsigned char i;
-    bool update_user_config_flag = false;   //±êÖ¾Î»,¼ÇÂ¼×îºóÊÇ·ñÐèÒª¸üÐÂ´¢´æµÄÊý¾Ý
-    bool return_flag = true;    //ÎªtrueÊ±·µ»Øjson½á¹û,·ñÔò²»·µ»Ø
+    bool update_user_config_flag = false;   //ï¿½ï¿½Ö¾Î»,ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    bool return_flag = true;    //ÎªtrueÊ±ï¿½ï¿½ï¿½ï¿½jsonï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ò²»·ï¿½ï¿½ï¿½
 
     cJSON * pJsonRoot = cJSON_Parse( pusrdata );
     if ( !pJsonRoot )
@@ -42,7 +42,7 @@ void USER_FUNC user_function_cmd_received( int udp_flag,  char *pusrdata )
 			u_printf( "this is a json data:\r\n%s\r\n", pusrdata );
 		}
 
-    //½âÎöUDPÃüÁîdevice report(MQTTÍ¬Ñù»Ø¸´ÃüÁî)
+    //ï¿½ï¿½ï¿½ï¿½UDPï¿½ï¿½ï¿½ï¿½device report(MQTTÍ¬ï¿½ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½ï¿½ï¿½)
     cJSON *p_cmd = cJSON_GetObjectItem( pJsonRoot, "cmd" );
     if ( p_cmd && cJSON_IsString( p_cmd ) && strcmp( p_cmd->valuestring, "device report" ) == 0 )
     {
@@ -57,18 +57,18 @@ void USER_FUNC user_function_cmd_received( int udp_flag,  char *pusrdata )
 
         char *s = cJSON_Print( pRoot );
 				
-        user_send( udp_flag, s ); //·¢ËÍÊý¾Ý
+        user_send( udp_flag, s ); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				u_printf( "udp_flag:%d, send json pRoot: %s\r\n",udp_flag, s );
          hfmem_free( (void *) s );
         cJSON_Delete( pRoot );
         //          cJSON_Delete(p_cmd);
     }
 
-    //ÒÔÏÂÎª½âÎöÃüÁî²¿·Ö
+    //ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½î²¿ï¿½ï¿½
     cJSON *p_name = cJSON_GetObjectItem( pJsonRoot, "name" );
     cJSON *p_mac = cJSON_GetObjectItem( pJsonRoot, "mac" );
 
-    //¿ªÊ¼ÕýÊ½´¦ÀíËùÓÐÃüÁî
+    //ï¿½ï¿½Ê¼ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     if ( (p_name && cJSON_IsString( p_name ) )    //name
          || (p_mac && cJSON_IsString( p_mac ) && strcmp( p_mac->valuestring, strMac ) == 0)   //mac
          )
@@ -76,18 +76,18 @@ void USER_FUNC user_function_cmd_received( int udp_flag,  char *pusrdata )
         cJSON *json_send = cJSON_CreateObject( );
         cJSON_AddStringToObject( json_send, "mac", strMac );
 
-        //½âÎö°æ±¾
+        //ï¿½ï¿½ï¿½ï¿½ï¿½æ±¾
         cJSON *p_version = cJSON_GetObjectItem( pJsonRoot, "version" );
         if ( p_version )
         {
             u_printf("version:%s",VERSION);
             cJSON_AddStringToObject( json_send, "version", VERSION );
         }
-        //½âÎöÖ÷»úsetting-----------------------------------------------------------------
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½setting-----------------------------------------------------------------
         cJSON *p_setting = cJSON_GetObjectItem( pJsonRoot, "setting" );
         if ( p_setting )
         {
-            //½âÎöota
+            //ï¿½ï¿½ï¿½ï¿½ota
             cJSON *p_ota = cJSON_GetObjectItem( p_setting, "ota" );
             if ( p_ota )
             {
@@ -96,7 +96,7 @@ void USER_FUNC user_function_cmd_received( int udp_flag,  char *pusrdata )
             }
 
             cJSON *json_setting_send = cJSON_CreateObject( );
-            //ÉèÖÃÉè±¸Ãû³Æ/deviceid
+            //ï¿½ï¿½ï¿½ï¿½ï¿½è±¸ï¿½ï¿½ï¿½ï¿½/deviceid
             cJSON *p_setting_name = cJSON_GetObjectItem( p_setting, "name" );
             if ( p_setting_name && cJSON_IsString( p_setting_name ) )
             {
@@ -107,7 +107,7 @@ void USER_FUNC user_function_cmd_received( int udp_flag,  char *pusrdata )
                 //
             }
 
-            //ÉèÖÃmqtt ip
+            //ï¿½ï¿½ï¿½ï¿½mqtt ip
             cJSON *p_mqtt_ip = cJSON_GetObjectItem( p_setting, "mqtt_uri" );
             if ( p_mqtt_ip && cJSON_IsString( p_mqtt_ip ) )
             {
@@ -115,7 +115,7 @@ void USER_FUNC user_function_cmd_received( int udp_flag,  char *pusrdata )
                 sprintf( u_config.mqtt_ip, p_mqtt_ip->valuestring );
             }
 
-            //ÉèÖÃmqtt port
+            //ï¿½ï¿½ï¿½ï¿½mqtt port
             cJSON *p_mqtt_port = cJSON_GetObjectItem( p_setting, "mqtt_port" );
             if ( p_mqtt_port && cJSON_IsNumber( p_mqtt_port ) )
             {
@@ -123,7 +123,7 @@ void USER_FUNC user_function_cmd_received( int udp_flag,  char *pusrdata )
                 u_config.mqtt_port = p_mqtt_port->valueint;
             }
 
-            //ÉèÖÃmqtt user
+            //ï¿½ï¿½ï¿½ï¿½mqtt user
             cJSON *p_mqtt_user = cJSON_GetObjectItem( p_setting, "mqtt_user" );
             if ( p_mqtt_user && cJSON_IsString( p_mqtt_user ) )
             {
@@ -131,7 +131,7 @@ void USER_FUNC user_function_cmd_received( int udp_flag,  char *pusrdata )
 								sprintf( u_config.mqtt_user, p_mqtt_user->valuestring );
             }
 
-            //ÉèÖÃmqtt password
+            //ï¿½ï¿½ï¿½ï¿½mqtt password
             cJSON *p_mqtt_password = cJSON_GetObjectItem( p_setting, "mqtt_password" );
             if ( p_mqtt_password && cJSON_IsString( p_mqtt_password ) )
             {
@@ -140,25 +140,25 @@ void USER_FUNC user_function_cmd_received( int udp_flag,  char *pusrdata )
             }
 
 
-            //¿ª·¢·µ»ØÊý¾Ý
-            //·µ»ØÉè±¸ota
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            //ï¿½ï¿½ï¿½ï¿½ï¿½è±¸ota
             if ( p_ota ) cJSON_AddStringToObject( json_setting_send, "ota", p_ota->valuestring );
 
-            //·µ»ØÉè±¸Ãû³Æ/deviceid
+            //ï¿½ï¿½ï¿½ï¿½ï¿½è±¸ï¿½ï¿½ï¿½ï¿½/deviceid
             if ( p_setting_name ) cJSON_AddStringToObject( json_setting_send, "name", deviceid);
-            //·µ»Ømqtt ip
+            //ï¿½ï¿½ï¿½ï¿½mqtt ip
             if ( p_mqtt_ip ) cJSON_AddStringToObject( json_setting_send, "mqtt_uri", u_config.mqtt_ip );
-            //·µ»Ømqtt port
+            //ï¿½ï¿½ï¿½ï¿½mqtt port
             if ( p_mqtt_port ) cJSON_AddNumberToObject( json_setting_send, "mqtt_port", u_config.mqtt_port );
-            //·µ»Ømqtt user
+            //ï¿½ï¿½ï¿½ï¿½mqtt user
             if ( p_mqtt_user ) cJSON_AddStringToObject( json_setting_send, "mqtt_user", u_config.mqtt_user );
-            //·µ»Ømqtt password
+            //ï¿½ï¿½ï¿½ï¿½mqtt password
             if ( p_mqtt_password ) cJSON_AddStringToObject( json_setting_send, "mqtt_password", u_config.mqtt_password );
 
             cJSON_AddItemToObject( json_send, "setting", json_setting_send );
         }
 
-        //½âÎöplug-----------------------------------------------------------------
+        //ï¿½ï¿½ï¿½ï¿½plug-----------------------------------------------------------------
         for ( i = 0; i < PLUG_NUM; i++ )
         {
             if ( json_plug_analysis( udp_flag, i, pJsonRoot, json_send ) )
@@ -172,7 +172,7 @@ void USER_FUNC user_function_cmd_received( int udp_flag,  char *pusrdata )
         {
             char *json_str = cJSON_Print( json_send );
             //u_printf( "[user_function_cmd_received] pRoot: %s\r\n", json_str );
-            user_send( udp_flag, json_str ); //·¢ËÍÊý¾Ý
+            user_send( udp_flag, json_str ); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             hfmem_free( (void *) json_str );
         }
         cJSON_Delete( json_send );
@@ -189,9 +189,9 @@ void USER_FUNC user_function_cmd_received( int udp_flag,  char *pusrdata )
 }
 
 /*
- *½âÎö´¦Àí¶¨Ê±ÈÎÎñjson
- *udp_flag:·¢ËÍudp/mqtt±êÖ¾Î»,´Ë´¦ÐÞ¸Ä²å×ù¿ª¹Ø×´Ì¬Ê±,ÐèÒªÊµÊ±¸üÐÂ¸ødomoticz
- *x:²å×ù±àºÅ
+ *ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½json
+ *udp_flag:ï¿½ï¿½ï¿½ï¿½udp/mqttï¿½ï¿½Ö¾Î»,ï¿½Ë´ï¿½ï¿½Þ¸Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬Ê±,ï¿½ï¿½ÒªÊµÊ±ï¿½ï¿½ï¿½Â¸ï¿½domoticz
+ *x:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */
 bool json_plug_analysis( int udp_flag, unsigned char x, cJSON * pJsonRoot, cJSON * pJsonSend )
 {
@@ -207,7 +207,7 @@ bool json_plug_analysis( int udp_flag, unsigned char x, cJSON * pJsonRoot, cJSON
 
     cJSON *json_plug_send = cJSON_CreateObject( );
     //u_printf("plug_str: %s\n",plug_str);
-    //½âÎöplug on------------------------------------------------------
+    //ï¿½ï¿½ï¿½ï¿½plug on------------------------------------------------------
     if ( p_plug )
     {
         cJSON *p_plug_on = cJSON_GetObjectItem( p_plug, "on" );
@@ -222,26 +222,26 @@ bool json_plug_analysis( int udp_flag, unsigned char x, cJSON * pJsonRoot, cJSON
             //user_mqtt_send_plug_state(x);
         }
 
-        //½âÎöplugÖÐsettingÏîÄ¿----------------------------------------------
+        //ï¿½ï¿½ï¿½ï¿½plugï¿½ï¿½settingï¿½ï¿½Ä¿----------------------------------------------
         cJSON *p_plug_setting = cJSON_GetObjectItem( p_plug, "setting" );
         if ( p_plug_setting )
         {
             cJSON *json_plug_setting_send = cJSON_CreateObject( );
-            //½âÎöplugÖÐsettingÖÐname----------------------------------------
+            //ï¿½ï¿½ï¿½ï¿½plugï¿½ï¿½settingï¿½ï¿½name----------------------------------------
             cJSON *p_plug_setting_name = cJSON_GetObjectItem( p_plug_setting, "name" );
             if ( p_plug_setting_name )
             {
                 if ( cJSON_IsString( p_plug_setting_name ) )
                 {
                     return_flag = true;
-										u_printf("u_config.plug[%s].name£»%s\n",x,u_config.plug[x].name);
+										u_printf("u_config.plug[%s].nameï¿½ï¿½%s\n",x,u_config.plug[x].name);
 										sprintf( u_config.plug[x].name, p_plug_setting_name->valuestring );
                     //user_mqtt_hass_auto(x);
                 }
                 cJSON_AddStringToObject( json_plug_setting_send, "name", u_config.plug[x].name );
             }
 
-            //½âÎöplugÖÐsettingÖÐtask----------------------------------------
+            //ï¿½ï¿½ï¿½ï¿½plugï¿½ï¿½settingï¿½ï¿½task----------------------------------------
             for ( i = 0; i < PLUG_TIME_TASK_NUM; i++ )
             {
                 if ( json_plug_task_analysis( x, i, p_plug_setting, json_plug_setting_send ) )
@@ -260,8 +260,8 @@ bool json_plug_analysis( int udp_flag, unsigned char x, cJSON * pJsonRoot, cJSON
 }
 
 /*
- *½âÎö´¦Àí¶¨Ê±ÈÎÎñjson
- *x:²å×ù±àºÅ y:ÈÎÎñ±àºÅ
+ *ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½json
+ *x:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ y:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  */
 bool json_plug_task_analysis( unsigned char x, unsigned char y, cJSON * pJsonRoot, cJSON * pJsonSend )
 {

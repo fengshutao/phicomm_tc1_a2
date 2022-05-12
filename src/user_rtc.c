@@ -1,5 +1,5 @@
 
-#include "appmain.h"
+#include "app_main.h"
 #include "user_gpio.h"
 #include "user_rtc.h"
 #include <time.h>
@@ -20,13 +20,13 @@ int rtctimes;
 USER_FUNC void rtc_thread_func(void * arg){
 	
 	int i, j;
-	char task_flag[PLUG_NUM] = { -1, -1, -1 ,-1,-1};   //¼ÇÂ¼ÒªÄÄ¸ö²å×ùÒª·µ»ØÊý¾Ý
+	char task_flag[PLUG_NUM] = { -1, -1, -1 ,-1,-1};   //ï¿½ï¿½Â¼Òªï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	bool ntptime_succeed;
 	ntptime_succeed=0;
 	struct tm * t_t;
 	time_t t;  
   t=1546272000;  //2019-01-1 0:0:0
-  t_t=gmtime(&t); //Ê±¼ä½á¹¹Ìå
+  t_t=gmtime(&t); //Ê±ï¿½ï¿½á¹¹ï¿½ï¿½
 	//u_printf("now time:hour:%d,min:%d,sec:%d\n",t_t->tm_hour,t_t->tm_min,t_t->tm_sec);
 	u_printf("rtc_thread started.");
 	while(1){
@@ -120,7 +120,7 @@ USER_FUNC void rtc_thread_func(void * arg){
 
 				char *json_str = cJSON_Print( json_send );
 				u_printf("****rtc thread ********>>>  json_send:\n %d bytes\n",sizeof(json_str));
-				user_send( false, json_str );    //·¢ËÍÊý¾Ý, 
+				user_send( false, json_str );    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, 
 				hfmem_free( json_str );
 				//json_str=NULL;
 				cJSON_Delete( json_send );
@@ -135,12 +135,12 @@ USER_FUNC void rtc_thread_func(void * arg){
 	time_t t;  
   rtctimes=rtctimes+1;
   t=rtctimes+8*3600;  
-  user_time_t=gmtime(&t); //Ê±¼ä½á¹¹Ìå
+  user_time_t=gmtime(&t); //Ê±ï¿½ï¿½á¹¹ï¿½ï¿½
 }
 
 
  void USER_FUNC rtctime_init(void ){
-	if((user_rtc_timer = hftimer_create("TIMER2",1000,1,TIMER2_ID,rtctime_timeout_handler,0))==NULL)//Ã¿Ò»Ãë¼ÓÒ»,Ä£ÄâÊ±ÖÓÔÚÅÜ
+	if((user_rtc_timer = hftimer_create("TIMER2",1000,1,TIMER2_ID,rtctime_timeout_handler,0))==NULL)//Ã¿Ò»ï¿½ï¿½ï¿½Ò»,Ä£ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   {
     u_printf("create timer 2 fail\n");
   }
@@ -167,8 +167,8 @@ int printtime()
 {  
   time_t t;  
 
-  t=rtctimes+8*3600;  //¶«°ËÇø
-  user_time_t=gmtime(&t); //Ê±¼ä½á¹¹Ìå
+  t=rtctimes+8*3600;  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+  user_time_t=gmtime(&t); //Ê±ï¿½ï¿½á¹¹ï¿½ï¿½
 	u_printf("hour:%d,min:%d\n",user_time_t->tm_hour,user_time_t->tm_min);
   char s[30];  
   strftime(s, sizeof(s), "%Y-%m-%d %H:%M:%S", user_time_t);  

@@ -1,6 +1,6 @@
 
 #include "hsf.h"
-#include "appmain.h"
+#include "app_main.h"
 #include "user_udp.h"
 //#include "user_mqtt_client.h"
 #include "user_function.h"
@@ -9,7 +9,7 @@
 //mico_timer_t power_timer;
 static hftimer_handle_t power_timer=NULL;
 
-#define TIMER3_ID		(3)   //¶¨Ê±Æ÷id
+#define TIMER3_ID		(3)   //ï¿½ï¿½Ê±ï¿½ï¿½id
 
 static uint32_t clock_count_last = 0;
 static uint32_t clock_count = 0;

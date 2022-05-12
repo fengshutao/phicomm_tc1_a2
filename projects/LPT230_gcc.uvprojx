@@ -326,9 +326,9 @@
               <FilePath>..\src\app_main.c</FilePath>
             </File>
             <File>
-              <FileName>appmain.h</FileName>
+              <FileName>app_main.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\src\appmain.h</FilePath>
+              <FilePath>..\src\app_main.h</FilePath>
             </File>
             <File>
               <FileName>httpd.c</FileName>
