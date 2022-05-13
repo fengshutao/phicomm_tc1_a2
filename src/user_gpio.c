@@ -9,7 +9,7 @@
 
 
 
-#define TIMER1_ID		(1)   //定时器id
+#define TIMER1_ID        (1)   //定时器id
 
 
 char ntpserver[]="ntp1.aliyun.com";
@@ -34,12 +34,12 @@ u_config_t   u_config;
 void USER_FUNC user_led_set( char x )
 {
     if ( x == -1 )
-		{
+        {
         if(hfgpio_fpin_is_high( LED )){
-					hfgpio_fset_out_low( LED );
-				}else
-					hfgpio_fset_out_high( LED );
-		}
+                    hfgpio_fset_out_low( LED );
+                }else
+                    hfgpio_fset_out_high( LED );
+        }
     else if ( x )
         hfgpio_fset_out_high( LED );
     else
@@ -66,12 +66,12 @@ bool USER_FUNC relay_out( void )
  */
 void USER_FUNC user_relay_set(uint8_t x,uint8_t y )
 {
-	 
+     
     if (x >= PLUG_NUM ) return;
 
     if((y == 1) ? Relay_ON : Relay_OFF) 
-			hfgpio_fset_out_high( relay[x] );
-		else hfgpio_fset_out_low( relay[x] );
+            hfgpio_fset_out_high( relay[x] );
+        else hfgpio_fset_out_low( relay[x] );
 
     user_defaultconfig.plug[x].on = y;
     u_config.plug[x].on = y;
@@ -98,9 +98,9 @@ void USER_FUNC key_long_press( void )
 //    os_log("key_long_press");
 //    user_led_set( 1 );
 //    user_mqtt_send( "mqtt test" );
-	uint8_t i;
-	for ( i = 0; i < PLUG_NUM; i++ )
-	 u_printf("plug=%d---",u_config.plug[i].on );
+    uint8_t i;
+    for ( i = 0; i < PLUG_NUM; i++ )
+        u_printf("plug=%d---",u_config.plug[i].on );
 }
 
 void USER_FUNC key_long_10s_press( void )
@@ -123,7 +123,7 @@ void USER_FUNC key_short_press( void )
 {
     int i;
     if ( relay_out() )
-    {		
+    {        
         user_relay_set_all( 0 );
     }
     else
@@ -144,134 +144,127 @@ void USER_FUNC key_short_press( void )
 
     static uint8_t key_trigger, key_continue;
     static uint8_t key_last;
-	
-		hour = (hfsys_get_time()/1000)/3600;
-		min = (hfsys_get_time()/1000 - hour*3600)/60;
+    
+    hour = (hfsys_get_time()/1000)/3600;
+    min = (hfsys_get_time()/1000 - hour*3600)/60;
     //按键扫描程序
-	 
+     
     uint8_t tmp = (0xfe | hfgpio_fpin_is_high( KEY ));
     //key_trigger = tmp & (tmp ^ key_continue);
     key_continue = tmp;
-	 //HF_Debug(DEBUG_WARN,"key timeout,tmp=%d,,key_continue=%d,,key_time=%d\n",tmp,key_continue,key_time);	
+    //HF_Debug(DEBUG_WARN,"key timeout,tmp=%d,,key_continue=%d,,key_time=%d\n",tmp,key_continue,key_time);    
 
-	  if(!hfgpio_fpin_is_high( KEY )){   
+    if(!hfgpio_fpin_is_high( KEY )){   
         //any button pressed
-				key_time++;
-			  //if(key_time%5==0)u_printf("button long pressed:%d",key_time);
+        key_time++;
+
+        //if(key_time%5==0)u_printf("button long pressed:%d",key_time);
         if ( key_time < 10 ){
-						key_last = key_continue;
-					//u_printf("button short pressed:%d,key_last=%d",key_time,key_last);
-				}
-        else
-        {
+            key_last = key_continue;
+            //u_printf("button short pressed:%d,key_last=%d",key_time,key_last);
+        } else {
             if ( key_time == 50 )
             {
-		key_long_press( );
-		printtime();//打印时间
-		//u_printf("hfuflash_size:%d\n",hfuflash_size());
+                key_long_press( );
+                printtime();//打印时间
+                //u_printf("hfuflash_size:%d\n",hfuflash_size());
             }
             else if ( key_time == 100 )
             {
                 //key_long_10s_press( );
             }
-            else if ( key_time ==180 ){					
-		user_function_cmd_received(1,"{\"cmd\":\"device report\"}");
-		user_led_set( 0 );
+            else if ( key_time ==180 ){                    
+                user_function_cmd_received(1,"{\"cmd\":\"device report\"}");
+                user_led_set( 0 );
             }
-	   else if ( key_time ==190 ){    
-		user_led_set( 1 );
+            else if ( key_time ==190 ){    
+                user_led_set( 1 );
             }
-	    else if ( key_time == 203 )
+            else if ( key_time == 203 )
             {
-		user_led_set( 0 );	
-		//u_printf("SmartLink_start > >>");
-		user_function_cmd_received(1,"{\"cmd\":\"device report\"}");
-		hfsmtlk_start();
+                user_led_set( 0 );    
+                //u_printf("SmartLink_start > >>");
+                user_function_cmd_received(1,"{\"cmd\":\"device report\"}");
+                hfsmtlk_start();
                 //key_time = 201;
             }
         }
-	if(key_time>204){
-		key_time=189;
-	}
-
-	}else{
-	if(!relay_out()){ user_led_set( 0 ); }
-		}
+        if(key_time>204){
+            key_time=189;
+        }
+    } else {
+        if(!relay_out()){
+            user_led_set( 0 );
+        }
+    }
 }
 
 
 
 
 void USER_FUNC key_rising_irq_handler ( uint32_t arg1,uint32_t arg2 ){
-	if(key_time<2){
-	}
-	else if(key_time<20){
-		if(hfgpio_fpin_is_high( KEY )){
-			HF_Debug(DEBUG_WARN,"short press\n");	
-			key_short_press();
-			//hfconfig_file_data_read(2,config_data,100);
-
-		}
-	}	else if(key_time<80){
-			HF_Debug(DEBUG_WARN,"4s press\n");	
-	}
-	else if(key_time<150){
-			HF_Debug(DEBUG_WARN,"5s press\n");	
-	}
-	else if (key_time<204){
-			HF_Debug(DEBUG_WARN,"10s press\n");	
-	}
-
-	key_time=0;
+    if(key_time<2){
+    }
+    else if(key_time<20){
+        if(hfgpio_fpin_is_high( KEY )){
+            HF_Debug(DEBUG_WARN,"short press\n");    
+            key_short_press();
+            //hfconfig_file_data_read(2,config_data,100);
+        }
+    }    else if(key_time<80){
+            HF_Debug(DEBUG_WARN,"4s press\n");    
+    }
+    else if(key_time<150){
+            HF_Debug(DEBUG_WARN,"5s press\n");    
+    }
+    else if (key_time<204){
+            HF_Debug(DEBUG_WARN,"10s press\n");    
+    }
+    key_time=0;
 }
 
 USER_FUNC void keyscan_thread_func(void * arg){
-	while(1){
-		
-		if(hfsys_get_time()%30000==0){
-			time_mm=hfntp_get_time(ntpserver,123,500);
-			u_printf("get ntp time:%d",time_mm);
-			printtime(time_mm);
-		}
-
-	}
-	u_printf("keyscan_thread_func exit..");
+    while(1){
+        if(hfsys_get_time()%30000==0){
+            time_mm=hfntp_get_time(ntpserver,123,500);
+            u_printf("get ntp time:%d",time_mm);
+            printtime(time_mm);
+        }
+    }
+    u_printf("keyscan_thread_func exit..");
 }
  
 void USER_FUNC key_init( )
 {
 
-	if((user_key_timer = hftimer_create("TIMER1",50,1,TIMER1_ID,key_timeout_handler,0))==NULL)
-  {
-    u_printf("create timer 1 fail\n");
-  }
-	if(hfthread_mutext_new(&keythread_lock)!=0)
-	{
-		HF_Debug(DEBUG_LEVEL,"create mutex fail\n");
-		return;
-	}
-	///hfthread_create(keyscan_thread_func,"keycontrol",256,(void*)1,1,NULL,NULL);    //线程初始化
+    if((user_key_timer = hftimer_create("TIMER1",50,1,TIMER1_ID,key_timeout_handler,0))==NULL){
+        u_printf("create timer 1 fail\n");
+    }
+    if(hfthread_mutext_new(&keythread_lock)!=0){
+        HF_Debug(DEBUG_LEVEL,"create mutex fail\n");
+        return;
+    }
+    ///hfthread_create(keyscan_thread_func,"keycontrol",256,(void*)1,1,NULL,NULL);    //线程初始化
 
 
-	if(hfgpio_configure_fpin_interrupt(KEY,HFPIO_IT_EDGE,key_rising_irq_handler,1)!=HF_SUCCESS)
-	{
-		u_printf("configure HFGPIO_F_USER_RELOAD fail\n");
-   		 HF_Debug(DEBUG_WARN,"configure KEY fail\n");		
-		return;
-	}else
-	 HF_Debug(DEBUG_WARN,"configure KEY process success\n");		
-	
-	hftimer_start(user_key_timer);
-	appRestoreDefault();
-	
+    if(hfgpio_configure_fpin_interrupt(KEY,HFPIO_IT_EDGE,key_rising_irq_handler,1)!=HF_SUCCESS){
+        u_printf("configure HFGPIO_F_USER_RELOAD fail\n");
+        HF_Debug(DEBUG_WARN,"configure KEY fail\n");        
+        return;
+    } else {
+        HF_Debug(DEBUG_WARN,"configure KEY process success\n");        
+    }
+    hftimer_start(user_key_timer);
+    appRestoreDefault();
+    
 }
 
 void USER_FUNC appRestoreDefault(  void  )
 {
     int i, j;
-		char nstr[]="TC1";
+    char nstr[]="TC1";
     //u_printf("mqtt-port=%d",u_config.mqtt_port);
-		strcpy(deviceid,nstr);
+    strcpy(deviceid,nstr);
     u_config.mqtt_ip[0] = 0;
     u_config.mqtt_port = 0;
     u_config.mqtt_user[0] = 0;
@@ -282,7 +275,7 @@ void USER_FUNC appRestoreDefault(  void  )
         u_config.plug[i].on = 0;
 
         //???? ??1-6
-			  u_config.plug[i].name[0] = 0xe6;
+        u_config.plug[i].name[0] = 0xe6;
         u_config.plug[i].name[1] = 0x8f;
         u_config.plug[i].name[2] = 0x92;
         u_config.plug[i].name[3] = 0xe5;
@@ -291,9 +284,6 @@ void USER_FUNC appRestoreDefault(  void  )
         u_config.plug[i].name[6] = i + '1';
         u_config.plug[i].name[7] = 0;
 
-       
-
-      
         for ( j = 0; j < PLUG_TIME_TASK_NUM; j++ )
         {
             u_config.plug[i].task[j].hour = 0;
@@ -305,25 +295,25 @@ void USER_FUNC appRestoreDefault(  void  )
     }
 //    mico_system_context_update( sys_config );
     user_defaultconfig=u_config;
-		HF_Debug(DEBUG_WARN,"userdata config success...\n");	
+        HF_Debug(DEBUG_WARN,"userdata config success...\n");    
 }
 
 void printTask(){
-	 int i, j;
-	 for ( i = 0; i < 1; i++ )
+     int i, j;
+     for ( i = 0; i < 1; i++ )
     {
 
-			u_printf("u_config.plug[i].name:%s\n",u_config.plug[i].name);
+            u_printf("u_config.plug[i].name:%s\n",u_config.plug[i].name);
         for ( j = 0; j < 3; j++ )
         {
-		u_printf("u_config.plug[%d].task[%d].hour: %d\n",i,j,u_config.plug[i].task[j].hour);
-		u_printf("u_config.plug[%d].task[%d].minute: %d\n",i,j,u_config.plug[i].task[j].minute);
-		u_printf("u_config.plug[%d].task[%d].repeat: %d\n",i,j,u_config.plug[i].task[j].repeat);
-		u_printf("u_config.plug[%d].task[%d].on: %d\n",i,j,u_config.plug[i].task[j].on);
-		u_printf("u_config.plug[%d].task[%d].action: %d\n",i,j,u_config.plug[i].task[j].action);
+        u_printf("u_config.plug[%d].task[%d].hour: %d\n",i,j,u_config.plug[i].task[j].hour);
+        u_printf("u_config.plug[%d].task[%d].minute: %d\n",i,j,u_config.plug[i].task[j].minute);
+        u_printf("u_config.plug[%d].task[%d].repeat: %d\n",i,j,u_config.plug[i].task[j].repeat);
+        u_printf("u_config.plug[%d].task[%d].on: %d\n",i,j,u_config.plug[i].task[j].on);
+        u_printf("u_config.plug[%d].task[%d].action: %d\n",i,j,u_config.plug[i].task[j].action);
 
         }
     }
-	
-	
+    
+    
 }

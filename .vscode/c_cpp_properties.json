@@ -24,7 +24,9 @@
                 "USE_STDPERIPH_DRIVER",
                 "STM32F10X_MD"
             ],
-            "intelliSenseMode": "msvc-x64"
+            "intelliSenseMode": "msvc-x64",
+            "configurationProvider": "ms-vscode.makefile-tools",
+            "compilerPath": "C:/Program Files (x86)/GNU Tools ARM Embedded/5.4 2016q3/bin/arm-none-eabi-gcc.exe"
         }
     ],
     "version": 4

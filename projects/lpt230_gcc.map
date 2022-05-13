@@ -17796,16 +17796,16 @@ OUTPUT(./lpt230_gcc.elf elf32-littlearm)
                 0x00000000                SVC_Table
                 0x00000000                SVC_Count
 
-.debug_line     0x00000000     0x2178
+.debug_line     0x00000000     0x2171
  .debug_line    0x00000000       0x8d ./startup_lpbx3gcc.o
  .debug_line    0x0000008d      0x393 ./app_main.o
  .debug_line    0x00000420      0x282 ./httpd.o
  .debug_line    0x000006a2      0x383 ./user_function.o
- .debug_line    0x00000a25      0x339 ./user_gpio.o
- .debug_line    0x00000d5e      0x212 ./user_mdns.o
- .debug_line    0x00000f70      0x2f0 ./user_rtc.o
- .debug_line    0x00001260      0x37d ./user_udp.o
- .debug_line    0x000015dd      0xb9b ./cjson.o
+ .debug_line    0x00000a25      0x332 ./user_gpio.o
+ .debug_line    0x00000d57      0x212 ./user_mdns.o
+ .debug_line    0x00000f69      0x2f0 ./user_rtc.o
+ .debug_line    0x00001259      0x37d ./user_udp.o
+ .debug_line    0x000015d6      0xb9b ./cjson.o
 
 .debug_info     0x00000000     0x79ad
  .debug_info    0x00000000       0x78 ./startup_lpbx3gcc.o

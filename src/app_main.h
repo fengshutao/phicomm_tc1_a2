@@ -9,11 +9,11 @@
 #define ZTC1_NAME "zTC1_%02X%02X"
 
 #define USER_CONFIG_VERSION 2
-#define SETTING_MQTT_STRING_LENGTH_MAX  32      //±ØĞë 4 ×Ö½Ú¶ÔÆë¡£
+#define SETTING_MQTT_STRING_LENGTH_MAX  32      //å¿…é¡» 4 å­—èŠ‚å¯¹é½ã€‚
 
 #define PLUG_NAME_LENGTH 32
-#define PLUG_NUM 6              //²å×ùÊıÁ¿
-#define PLUG_TIME_TASK_NUM 5    //Ã¿¸ö²å×ù×î¶à5×é¶¨Ê±ÈÎÎñ
+#define PLUG_NUM 6              //æ’åº§æ•°é‡
+#define PLUG_TIME_TASK_NUM 5    //æ¯ä¸ªæ’åº§æœ€å¤š5ç»„å®šæ—¶ä»»åŠ¡
 
 
 #define Relay_ON     1
@@ -27,22 +27,22 @@
 
 typedef struct
 {
-    char hour;      //Ğ¡Ê±
-    char minute;    //·ÖÖÓ
-    uint8_t repeat; //bit7:Ò»´Î   bit6-0:ÖÜÈÕ-ÖÜÒ»
-    char action;    //¶¯×÷
-    char on;    //¿ª¹Ø
+    char hour;      //å°æ—¶
+    char minute;    //åˆ†é’Ÿ
+    uint8_t repeat; //bit7:ä¸€æ¬¡   bit6-0:å‘¨æ—¥-å‘¨ä¸€
+    char action;    //åŠ¨ä½œ
+    char on;    //å¼€å…³
 } user_plug_task_config_t;
 
 typedef struct
 {
     char name[PLUG_NAME_LENGTH];
-    char on;    //¼ÇÂ¼µ±Ç°¿ª¹Ø
+    char on;    //è®°å½•å½“å‰å¼€å…³
     user_plug_task_config_t task[PLUG_TIME_TASK_NUM];
 
 } user_plug_config_t;
 
-//ÓÃ»§±£´æ²ÎÊı½á¹¹Ìå
+//ç”¨æˆ·ä¿å­˜å‚æ•°ç»“æ„ä½“
 typedef struct
 {
     char mqtt_ip[SETTING_MQTT_STRING_LENGTH_MAX];   //mqtt service ip
