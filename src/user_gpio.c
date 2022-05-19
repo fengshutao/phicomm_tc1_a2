@@ -103,22 +103,24 @@ void USER_FUNC key_long_press( void )
         u_printf("plug=%d---",u_config.plug[i].on );
 }
 
-void USER_FUNC key_long_10s_press( void )
-{
-    //OSStatus err;
-   // char i = 0;
-    //os_log( "WARNGIN: user params restored!" );
+// void USER_FUNC key_long_5s_press( void )
+// {
+//     // OSStatus err;
+//     char i = 0;
+//     // os_log( "WARNGIN: user params restored!" );
 //    for ( i = 0; i < 3; i++ )
 //    {
-//        user_led_set( 1 );
-//        mico_rtos_thread_msleep( 100 );
-//        user_led_set( 0 );
+//         user_led_set( 1 );
+//     //    mico_rtos_thread_msleep( 100 );
+//         msleep(100);
+//         user_led_set( 0 );
+//         msleep(100);
 //    }
-//
-    //appRestoreDefault_callback( user_config, sizeof(user_config_t) );
-    ////sys_config->micoSystemConfig.ssid[0] = 0;
-    //mico_system_context_update( mico_system_context_get( ) );
-}
+// //
+//     //appRestoreDefault_callback( user_config, sizeof(user_config_t) );
+//     ////sys_config->micoSystemConfig.ssid[0] = 0;
+//     //mico_system_context_update( mico_system_context_get( ) );
+// }
 void USER_FUNC key_short_press( void )
 {
     int i;
@@ -139,7 +141,7 @@ void USER_FUNC key_short_press( void )
 }
 
 
- void USER_FUNC key_timeout_handler( void* arg )
+void USER_FUNC key_timeout_handler( void* arg )
 {
 
     static uint8_t key_trigger, key_continue;
@@ -161,17 +163,18 @@ void USER_FUNC key_short_press( void )
         //if(key_time%5==0)u_printf("button long pressed:%d",key_time);
         if ( key_time < 10 ){
             key_last = key_continue;
-            //u_printf("button short pressed:%d,key_last=%d",key_time,key_last);
+            u_printf("button short pressed:%d,key_last=%d",key_time,key_last);
         } else {
             if ( key_time == 50 )
             {
                 key_long_press( );
                 printtime();//打印时间
+                // hfsmtaplk_start();
                 //u_printf("hfuflash_size:%d\n",hfuflash_size());
             }
             else if ( key_time == 100 )
             {
-                //key_long_10s_press( );
+                // key_long_5s_press( );
             }
             else if ( key_time ==180 ){                    
                 user_function_cmd_received(1,"{\"cmd\":\"device report\"}");

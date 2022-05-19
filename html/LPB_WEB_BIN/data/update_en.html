@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script type="text/javascript">
+/*<%
+CONFIG_VAR(cover_ver, CFG_PVER);
+%>*/
+function apply()
+{
+	var f=document.form_sw_upload;
+	if(f.files.value=="")
+    {
+		alert("Please select the file!");
+		return ;
+	}
+	document.getElementById("up_sw").style.visibility = "hidden";
+	document.getElementById("up_sw").style.display = "";
+	document.getElementById("progressbar_id").style.visibility = "visible";
+	document.getElementById("progressbar_id").style.display = "";
+	f.submit();
+}
+function init_ver()
+{
+	document.getElementById("cover_ver").innerHTML=cover_ver;
+}
+</script>
+<style>
+.div_c
+{
+	margin-left:50px;
+	margin-right:50px;
+	margin-top:50px;
+	margin-bottom:50px;
+}
+.in_body
+{
+	margin-top:0px;
+	margin-left:0px;
+	margin-right:0px;
+	margin-bottom:0px;
+	background-color:transparent;
+}
+.w_s15_b
+{
+	color:White;
+	font-size:15px;
+	font-weight:bold;
+}
+.sp_120
+{
+	width:10px;
+	height:50px;	
+}
+.lab_4
+{
+	margin-left:70px;
+	margin-right:50px;
+	color:white;
+	font-size:13px;
+}
+.sp_53
+{
+	width:10px;
+	height:53px;	
+}
+.btn
+{
+	width:76px;
+	height:27px;
+	border-style:none;
+	border-radius:3px 3px 3px 3px;
+	font-size:14px;
+	color:#0163AC;
+	cursor:pointer;
+.r20
+{
+	margin-right:20px;
+}
+</style>
+</head>
+<body class="in_body" onload="init_ver()">
+	<div class="div_c" style="display:none;font-family:Arial" id="progressbar_id">
+		<font class="w_s15_b">Upgrade Software</font>
+		<div class="sp_120"></div>
+		<div class="lab_4">Uploading,please wait patiently...</div>
+		<div class="sp_120"></div>
+		<marquee style="margin-left:70px;solid #000000" direction="right" width="350" scrollamount="5" scrolldelay="50" bgcolor="#ECF2FF">
+			<table cellspacing="1" cellpadding="0">
+			<tr height=30>
+				<td bgcolor=#006699 width=12></td>
+				<td bgcolor=#006699 width=12></td>
+				<td bgcolor=#006699 width=12></td>
+			</tr>
+			</table>
+		</marquee>
+	</div>
+    <div class="div_c" style="font-family:Arial" id="up_sw">
+        <form name= "form_sw_upload" method="post" action=success_en.html enctype="multipart/form-data">
+		<INPUT type=hidden name=CMD value=SW_UPLOAD>
+        <div style="height:100px">
+            <font class="w_s15_b">Upgrade Software</font>
+            <div class="sp_120"></div>
+            <div class="lab_4">Current version: <a id="cover_ver"></a><br /><br />
+			<div class="sp_5"></div><input name="files" size="40" maxlength="256" type="file" value=""></div>
+            <div class="sp_53"></div>
+            <div class="lab_4"><input onclick="apply()" type="button" class="btn r20" value="Upload"/></div>
+        </div>
+		</form>
+    </div>
+</body>
+</html>

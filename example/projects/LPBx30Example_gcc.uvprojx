@@ -282,7 +282,7 @@
               <MiscControls> -mthumb -D__LPT230__ -DHF_OTA_SUPPORT  --include=mbed_config.h -DTOOLCHAIN_GCC_ARM -DLWIP_TIMEVAL_PRIVATE=0</MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\sdk\4.13\include;..\..\sdk\4.13\include\hsf;..\..\sdk\4.13\include\hal\api;..\..\sdk\4.13\include\hal\targets\cmsis;..\..\sdk\4.13\include\rtos\rtx\TARGET_CORTEX_M;..\..\sdk\4.13\include\lwip-wifi\arch;..\..\sdk\4.13\include\lwip-sys;..\..\thirdpartylib\Cyassl;..\..\thirdpartylib\MQTT\MQTTClient-C;..\..\thirdpartylib\MQTT\MQTTPacket;..\..\thirdpartylib\websocket;..\..\sdk\4.13\include\mdns</IncludePath>
+              <IncludePath>..\..\sdk\4.13\include;..\..\sdk\4.13\include\hsf;..\..\sdk\4.13\include\hal\api;..\..\sdk\4.13\include\hal\targets\cmsis;..\..\sdk\4.13\include\rtos\rtx\TARGET_CORTEX_M;..\..\sdk\4.13\include\lwip-wifi\arch;..\..\sdk\4.13\include\lwip-sys;..\..\thirdpartylib\Cyassl;..\..\thirdpartylib\MQTT\MQTTClient-C;..\..\thirdpartylib\MQTT\MQTTPacket;..\..\thirdpartylib\websocket;..\..\sdk\4.13\include\mdns;..\..\thirdpartylib\hilinksdk\include</IncludePath>
             </VariousControls>
           </Carm>
           <Aarm>
@@ -304,7 +304,7 @@
             <TextAddressRange></TextAddressRange>
             <DataAddressRange></DataAddressRange>
             <BSSAddressRange></BSSAddressRange>
-            <IncludeLibs>LPBX3Kernel -L ..\..\thirdpartylib\Cyassl -lLPBx30SSL -L ..\..\thirdpartylib\MQTT -lLPBx30MQTT -L ..\..\thirdpartylib\websocket -lLPBx30LWS -L ..\..\thirdpartylib\Cyassl -lLPBx30SSL</IncludeLibs>
+            <IncludeLibs>LPBX3Kernel -L ..\..\thirdpartylib\Cyassl -lLPBx30SSL -L ..\..\thirdpartylib\MQTT -lLPBx30MQTT -L ..\..\thirdpartylib\websocket -lLPBx30LWS -L ..\..\thirdpartylib\Cyassl -lLPBx30SSL  -L ..\..\thirdpartylib\hilinksdk\lib\softap\release -lhilinkdevicesdk    -L ..\..\thirdpartylib\hilinksdk\lib\ota\release -lhilinkota -L ..\..\thirdpartylib\hilinksdk\lib\softap\release -lhilinkdevicesdk</IncludeLibs>
             <IncludeDir>..\..\sdk\4.13\libs</IncludeDir>
             <Misc>-Wl,--gc-sections -Wl,--wrap,main -Wl,--wrap,_malloc_r -Wl,--wrap,_free_r -Wl,--wrap,_realloc_r -Wl,--wrap,_calloc_r -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=softfp  -Wl,--start-group -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys -lstdc++ -lsupc++ -L ..\sdk\4.13\libs -lLPBX3Kernel -Wl,--end-group</Misc>
             <ScatterFile>..\..\sdk\4.13\libs\LPBX3.ld</ScatterFile>
@@ -484,6 +484,41 @@
               <FileName>smtptest.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\smtp\smtptest.c</FilePath>
+            </File>
+            <File>
+              <FileName>hi_link_test.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\hi_Link\hi_link_test.c</FilePath>
+            </File>
+            <File>
+              <FileName>hilink_device.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\thirdpartylib\hilinksdk\hilink_device.c</FilePath>
+            </File>
+            <File>
+              <FileName>hilink_device_sdk.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\thirdpartylib\hilinksdk\hilink_device_sdk.c</FilePath>
+            </File>
+            <File>
+              <FileName>hilink_ota.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\thirdpartylib\hilinksdk\hilink_ota.c</FilePath>
+            </File>
+            <File>
+              <FileName>hi_link_test.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\hi_Link\hi_link_test.c</FilePath>
+            </File>
+            <File>
+              <FileName>httpd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\httpd\httpd.c</FilePath>
+            </File>
+            <File>
+              <FileName>httpdtest.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\httpd\httpdtest.c</FilePath>
             </File>
           </Files>
         </Group>

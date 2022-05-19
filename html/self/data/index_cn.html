@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>外部网页</title>
+	<script type="text/javascript">
+		/*<%
+		CONFIG_VAR(sta_setting_ssid, CFG_WSSSID);
+		CONFIG_VAR(sta_setting_auth, CFG_WSAUTH);
+		CONFIG_VAR(sta_setting_encry, CFG_WSENC);
+		CONFIG_VAR(sta_setting_wpakey, CFG_WSKEY);
+		CONFIG_VAR(wan_setting_dhcp, CFG_WSDHCP);
+		CONFIG_VAR(wan_setting_ip, CFG_WSIP);
+		CONFIG_VAR(wan_setting_msk, CFG_WSMSK);
+		CONFIG_VAR(wan_setting_gw, CFG_WSGW);
+		CONFIG_VAR(wan_setting_dns, CFG_WSDNS);
+		%>*/
+		function init_sta_setting() {
+			var f = document.form_sta_setting;
+			f.wan_setting_test.value = "123";
+			f.sta_setting_encry.value = sta_setting_encry;
+			f.sta_setting_auth.value = sta_setting_auth;
+			f.sta_setting_wpakey.value = sta_setting_wpakey;
+			f.wan_setting_dhcp.value = wan_setting_dhcp;
+			f.wan_setting_ip.value = wan_setting_ip;
+			f.wan_setting_msk.value = wan_setting_msk;
+			f.wan_setting_gw.value = wan_setting_gw;
+			f.wan_setting_dns.value = wan_setting_dns;
+			
+		}
+
+		function change() {
+			var f = document.form_sta_setting;
+			f.wan_setting_test.value = "456";
+			// init_sta_setting();
+		}
+
+	</script>
+</head>
+
+<body class="in_body" onload="init_sta_setting()">
+	<form name="form_sta_setting">
+		<table>
+			<h1>设置</h1>
+			<tr>
+				<td>网络名称（SSID）</td>
+				<td><input name="sta_setting_ssid" /></td>
+			</tr>
+			<tr>
+				<td>密码</td>
+				<td><input name="sta_setting_wpakey" type="password"></td>
+			</tr>
+			<tr>
+				<td>DHCP</td>
+				<td>
+					<select name="wan_setting_dhcp">
+						<option value="DHCP">Enable</option>
+						<option value="STATIC">Disable</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>IP</td>
+				<td><input name="wan_setting_ip"></td>
+			</tr>
+			<tr>
+				<td>子网掩码</td>
+				<td><input name="wan_setting_msk"></td>
+			</tr>
+			<tr>
+				<td>网关</td>
+				<td><input name="wan_setting_gw"></td>
+			</tr>
+			<tr>
+				<td>DNS</td>
+				<td><input name="wan_setting_dns"></td>
+			</tr>
+			<tr>
+				<td>TEST</td>
+				<td><input name="wan_setting_test"></td>
+			</tr>
+
+
+		</table>
+		<input type="button" onclick="change()" value="保存" />
+
+</body>
+
+</html>

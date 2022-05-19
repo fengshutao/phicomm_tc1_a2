@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>survey</title>
+<script language="JavaScript" type="text/javascript">
+
+function selectedSSIDChange(ssid, bssid, channel, auth, encry)
+{
+	parent.set_value(ssid, bssid, channel, auth, encry);
+}
+</script>
+<style>
+.s15
+{
+	font-size:15px;
+}
+.tab_t
+{
+	border-top:solid 1px white;
+}
+.tab_l
+{
+	border-left:solid 1px white;
+}
+.tab_r
+{
+	border-right:solid 1px white;
+}
+.tab_b
+{
+	border-bottom:solid 1px white;
+}
+</style>
+</head>
+<body style="margin-top:0px;margin-left:0px;margin-right:0px;margin-bottom:0px;background-color:#006699">
+<table><tr><td>
+<form method=post name="sta_site_survey">
+<table width="500" border="0" style="border-style:none;border-spacing:0px;color:White;font-size:13px;font-family:Arial;border-collapse:collapse;">
+  <tr>
+    <td class="s15" colspan="5" id="scanSiteSurvey">Site Survey</td>
+  </tr>
+  <tr>
+    <td id="scanSelect">&nbsp;</td>
+    <td class="tab_l tab_t tab_r tab_b" id="scanSSID">SSID</td>
+    <td class="tab_t tab_r tab_b" id="scanBSSID">BSSID</td>
+    <td class="tab_t tab_r tab_b" id="scanRSSI">RSSI</td>
+    <td class="tab_t tab_r tab_b" id="scanChannel">Channel</td>
+  </tr>
+  /*<% CONFIG_VAR(survey_cmd, CFG_SURVEY); %>*/
+</table>
+</form>
+</td></tr>
+</table>
+</body>
+</html>

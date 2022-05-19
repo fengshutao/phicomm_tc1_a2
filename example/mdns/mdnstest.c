@@ -515,14 +515,14 @@ void app_init(void)
 static char module_mac[21];
 
 static struct mdns_service test_service1 = {
-	.servname = module_mac,
-	.servtype = "teamviewer",
-	.domain   = "local",
+	.servname = module_mac,//max len is 63
+	.servtype = "teamviewer",//max len is 63
+	.domain   = "local",//max len is 63
 	.proto    = MDNS_PROTO_TCP,
 	.port     = 2020,
-	.keyvals = "DynagteID=1234567890",
-	.kvlen = sizeof("DynagteID=1234567890")
+	.keyvals = ""
 };
+static char test_service1_record[] = "DynagteID=1234567890";//max len is 255
 
 static struct mdns_service test_service2 = {
 	.servname = "webserver demo",
@@ -530,9 +530,9 @@ static struct mdns_service test_service2 = {
 	.domain   = "local",
 	.proto    = MDNS_PROTO_TCP,
 	.port     = 80,
-	.keyvals = "description=Web Server Demo",
-	.kvlen = sizeof("description=Web Server Demo")
+	.keyvals = ""
 };
+static char test_service2_record[] = "description=Web Server Demo:UserName=admin:PassWord=12345";
 	
 int USER_FUNC app_main (void)
 {
@@ -599,8 +599,11 @@ int USER_FUNC app_main (void)
 	//start mDNS test
 	hfnet_get_mac_address(module_mac);
 	mdns_start("local", module_mac);
-
+	
+	mdns_set_txt_rec(&test_service1, test_service1_record);
 	mdns_announce_service(&test_service1, "STA");
+	
+	mdns_set_txt_rec(&test_service2, test_service2_record);
 	mdns_announce_service(&test_service2, "STA");
 	
 	return 1;

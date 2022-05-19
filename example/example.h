@@ -60,8 +60,12 @@
 
 #define USER_SMTP_DEMO   	24
 
+#define USER_HI_LINK_DEMO   25
+
+#define USER_HTTPD_DEMO    26
+
 //通过下面可以选择不同的例子进行编译
-#define EXAMPLE_USE_DEMO	USER_AT_DEMO
+#define EXAMPLE_USE_DEMO	USER_MQTT_DEMO
 
 #endif
 

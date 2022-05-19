@@ -168,7 +168,10 @@ typedef struct {
 	// Will topic
 	uint8_t will_retain;
 	uint8_t will_qos;
+	uint8_t will_flag;
 	uint8_t clean_session;
+	char will_topic[64+1];
+	char will_msg[128+1];
 	// Management fields
 	uint16_t seq;
 	uint16_t alive;

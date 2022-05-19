@@ -1,0 +1,318 @@
+﻿<html>
+<head>
+	<script type="text/javascript">
+/*<%
+CONFIG_VAR(uart_setting_baud, CFG_UBAUD);
+CONFIG_VAR(uart_setting_data,CFG_UDATA);
+CONFIG_VAR(uart_setting_parity,CFG_UPARITY);
+CONFIG_VAR(uart_setting_stop,CFG_USTOP);
+CONFIG_VAR(uart_setting_fc,CFG_UFC);
+CONFIG_VAR(net_setting_pro,CFG_NPROT);
+CONFIG_VAR(net_setting_cs,CFG_NPCS);
+CONFIG_VAR(net_setting_port,CFG_NPORT);
+CONFIG_VAR(net_setting_ip,CFG_NADDR);
+CONFIG_VAR(net_setting_to,CFG_NTCPTO);
+%>*/
+	var height = 0;
+	function child_getH()
+	{
+		var nh = document.body.offsetHeight+100;
+		if(nh < 500)
+		{
+			nh = 500;
+		}
+		if(height != nh)
+		{
+			height = nh;
+			window.parent.child_height(height);
+		}
+	}
+	function init_uart_setting()
+	{
+		var f=document.form_uart_setting;
+		f.uart_setting_baud.value=uart_setting_baud;
+		f.uart_setting_data.value=uart_setting_data;
+		f.uart_setting_parity.value=uart_setting_parity;
+		f.uart_setting_stop.value=uart_setting_stop;
+		f.uart_setting_fc.value=uart_setting_fc;
+	}
+	function init_net_setting()
+	{
+		var f=document.form_net_setting;
+		if ((net_setting_pro== "TCP")&&(net_setting_cs== "SERVER"))
+			f.net_setting_pro_sel.options.selectedIndex= 0;
+		else if ((net_setting_pro== "TCP")&&(net_setting_cs== "CLIENT"))
+			f.net_setting_pro_sel.options.selectedIndex= 1;
+		else
+			f.net_setting_pro_sel.options.selectedIndex= 2;
+		f.net_setting_port.value=net_setting_port;
+		f.net_setting_ip.value=net_setting_ip;
+		f.net_setting_to.value=net_setting_to;
+		internetSet();
+	}
+function enableCon(c,v)
+{
+    var con = document.getElementById(c);
+    if(con  != null)
+    {
+        if(v == 1)
+        {
+            con.disabled = "disabled";
+        }
+        else
+        {
+            con.disabled = "";
+        }
+    }
+}
+function internetSet()
+{
+	var pro = document.getElementById("div_5_3_tcp");
+	if(pro != null)
+	{
+		if(pro.options.selectedIndex == 0)
+		{
+			enableCon("div_5_3_server",2);
+			enableCon("div_5_3_add",1);
+			enableCon("div_5_3_conn",2);
+			enableCon("div_5_3_time",2);
+		}
+		else if (pro.options.selectedIndex == 1)
+		{
+			enableCon("div_5_3_server",2);
+			enableCon("div_5_3_add",2);
+			enableCon("div_5_3_conn",1);
+			enableCon("div_5_3_time",2);
+		}
+		else
+		{
+			enableCon("div_5_3_server",1);
+			enableCon("div_5_3_add",2);
+			enableCon("div_5_3_conn",1);
+			enableCon("div_5_3_time",1);
+		}
+	}
+}
+function uart_setting_apply()
+{
+	var f=document.form_uart_setting;
+	f.submit();
+}
+function checkPort(v)
+{
+	var re=/^[0-9]\d*$/;
+	return re.test(v);
+}
+function ipAdd(v)
+{
+    var re=/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+    return re.test(v);
+}
+function net_setting_apply()
+{
+	var f=document.form_net_setting;
+	if (f.net_setting_pro_sel.options.selectedIndex== 0)
+	{
+		f.net_setting_pro.value="TCP";
+		f.net_setting_cs.value="SERVER";
+	}
+	else if (f.net_setting_pro_sel.options.selectedIndex== 1)
+	{
+		f.net_setting_pro.value="TCP";
+		f.net_setting_cs.value="CLIENT";
+	}
+	else
+	{
+		f.net_setting_pro.value="UDP";
+	}
+	if(parseInt(f.net_setting_port.value)>=65535)
+	{
+		alert("端口数值必须小于65535！");
+		return;
+	}
+	if(!checkPort(f.net_setting_port.value))
+	{
+		alert("端口不正确！");
+		return;
+	}
+	if(!checkPort(f.net_setting_to.value))
+	{
+		alert("TCP超时设置不正确！");
+		return;
+	}
+	if(parseInt(f.net_setting_to.value)>600)
+	{
+		alert("TCP超时设置必须小于等于600秒！");
+		return;
+	}
+	f.submit();
+}
+	</script>
+<style>
+.in_body
+{
+	margin-top:0px;
+	margin-left:0px;
+	margin-right:0px;
+	margin-bottom:0px;
+	background-color:transparent;
+}
+.div_c
+{
+	margin-left:50px;
+	margin-right:50px;
+	margin-top:50px;
+	margin-bottom:50px;
+}
+.white
+{
+	color:White;
+}
+.s15
+{
+	font-size:15px;
+}
+.b
+{
+	font-weight:bold;
+}
+.lab_4
+{
+	color:white;
+	font-size:13px;
+}
+.label
+{
+	float:left;
+	width:50%;
+	color:white;
+	margin-bottom:-2px;
+	font-size:13px;
+}
+.cl
+{
+	clear:left;
+}
+.line
+{
+	height:1px;
+	background-color:white;
+	width:100%;
+	margin-top:5px;
+	margin-bottom:5px;
+	overflow:hidden;
+}
+.tr
+{
+	text-align:right;
+}
+.btn
+{
+	width:66px;
+	height:27px;
+	border-style:none;
+	border-radius:3px 3px 3px 3px;
+	font-size:14px;
+	color:#0163AC;
+	cursor:pointer;
+}
+</style>
+</head>
+<body class="in_body" onload="init_uart_setting();init_net_setting()">
+    <div class="div_c" style="font-family:微软雅黑">
+        <div id="port_cn">
+            <font class="white s15 b">串口参数设置</font>
+			<form name= "form_uart_setting" method="post" action="do_cmd_cn.html">			
+            <div class="lab_4">
+                <div class="label">波特率</div>
+                <div class="tr"><select style="width:160px;height:20px" name="uart_setting_baud">
+                    <option value="300">300</option>
+                    <option value="600">600</option>
+                    <option value="1200">1200</option>
+                    <option value="1800">1800</option>
+                    <option value="2400">2400</option>
+                    <option value="4800">4800</option>
+                    <option value="9600">9600</option>
+                    <option value="19200">19200</option>
+                    <option value="38400">38400</option>
+                    <option value="57600">57600</option>
+                    <option selected="selected" value="115200">115200</option>
+                    <option value="230400">230400</option>
+                    <option value="380400">380400</option>
+                    <option value="460800">460800</option></select>
+                </div>
+                <div class="cl"></div>
+                <div class="line"></div>
+                <div class="label">数据位</div>
+                <div class="tr"><select style="width:160px;height:20px" name="uart_setting_data">
+                    <option value="databit_5">5</option>
+                    <option value="databit_6">6</option>
+                    <option value="databit_7">7</option>
+                    <option selected="selected" value="databit_8">8</option></select>
+                </div>
+                <div class="cl"></div>
+                <div class="line"></div>
+                <div class="label">校验位</div>
+                <div class="tr"><select style="width:160px;height:20px" name="uart_setting_parity">
+                    <option value="none">None</option>
+                    <option value="odd">Odd</option>
+                    <option value="even">Even</option>
+                    <option value="mark">Mark</option>
+                    <option value="space">Space</option>
+                </select></div>
+                <div class="cl"></div>
+                <div class="line"></div>
+                <div class="label">停止位</div>
+                <div class="tr"><select style="width:160px;height:20px" name="uart_setting_stop">
+                    <option value="stopbit_1">1</option>
+                    <option value="stopbit_2">2</option>
+                </select></div>
+                <div class="cl"></div>
+                <div class="line"></div>
+                <div class="label">CTSRTS</div>
+                <div class="tr"><select style="width:160px;height:20px" name="uart_setting_fc">
+                    <option value="NFC">Disable</option>
+                    <option value="FC">Enable</option>
+                </select></div>
+                <div class="cl"></div>
+                <div class="line"></div>			
+            </div>
+			<div class="lab_4 tr"><input onclick="uart_setting_apply()" type="button" class="btn" value="保存"/></div>	            
+			</form>			
+            <div class="line"></div>
+            <font class="white s15 b">网络参数设置</font>
+			<form name= "form_net_setting" method="post" action="do_cmd_cn.html">
+			<input type="hidden" name="net_setting_pro">
+			<input type="hidden" name="net_setting_cs">
+            <div class="lab_4">
+                <div class="label">协议</div>
+                <div class="tr"><select name="net_setting_pro_sel" id="div_5_3_tcp" style="width:160px;height:20px" onclick="internetSet()">
+                    <option value="TCPSERVER">TCP-Server</option>
+                    <option value="TCPCLIENT">TCP-Client</option>
+                    <option value="UDP">UDP</option></select>
+                </div>
+                <div class="cl"></div>
+                <div class="line"></div>
+                <div class="label">端口</div>
+                <div class="tr"><input name="net_setting_port" id="div_5_3_port" type="text" style="width:160px;height:20px" /></div>
+                <div class="cl"></div>
+                <div class="line"></div>
+                <div class="label">服务器地址</div>
+                <div class="tr"><input name="net_setting_ip" id="div_5_3_add" type="text" style="width:160px;height:20px" /></div>
+                <div class="cl"></div>
+                <div class="line"></div>
+
+                <div class="label">TCP超时设置 </div>
+                <div class="tr"><input name="net_setting_to" id="div_5_3_time" type="text" style="width:160px;height:20px" /></div>
+                <div class="cl"></div>
+                <div class="line"></div>
+            </div>
+            <div class="lab_4 tr"><input onclick="net_setting_apply()" type="button" class="btn" value="保存"/></div>
+			</form>
+        </div>
+    </div>
+			<script type="text/javascript">
+			child_getH();
+		   </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head> 
+<title>do_cmd</title>    
+<meta http-equiv="Content-Type" content="text/html" charset="utf-8" />  
+<style>
+.div_c
+{
+	margin-left:50px;
+	margin-right:50px;
+	margin-top:50px;
+	margin-bottom:50px;
+}
+.white
+{
+	color:White;
+}
+.s15
+{
+	font-size:15px;
+}
+.b
+{
+	font-weight:bold;
+}
+.sp_50
+{
+	width:10px;
+	height:50px;	
+}
+.lab_4
+{
+	margin-left:70px;
+	margin-right:50px;
+	color:white;
+	font-size:13px;
+}
+</style>
+</HEAD>
+<body class="in_body">
+<iframe  width="0px" height="0px" id="cmd_iframe_id" style="border-style:none"></iframe>
+<form name= "form_do_cmd" method="post" action="success_en.html">
+<INPUT type=hidden name=HF_PROCESS_CMD value=RESTART>
+<div id="lang_cn_id" class="div_c white" style="font-family:Arial;font-size:13px;">
+    <div class="s15 b">Saved Successfully!</div>
+    <div class="sp_50"></div>
+    <div class="lab_4">Configurations will take effect after restart.<br />After restart, you will need to re-login the configuration interface for other settings, so it is recommended to restart after completing all settings.<br />Please click [Restart] to restart now, or click [Back] to continue setting.<br />You can restart after all configuration.
+        <div class="sp_50"></div>
+        <div style="width:380px" class="tr"><input type="button" class="btn" value="Restart" style="margin-right:20px" onClick="submit()"/><input type="button" class="btn" value="Back" onClick="window.parent.child_cn(1)"/></div>
+    </div>
+</div>
+</form>
+</body>
+</html>

@@ -178,7 +178,7 @@
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -282,7 +282,7 @@
               <MiscControls> -mthumb -D__LPT230__ -DHF_OTA_SUPPORT  --include=mbed_config.h -DTOOLCHAIN_GCC_ARM -DLWIP_TIMEVAL_PRIVATE=0</MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\sdk\4.13\include;..\sdk\4.13\include\hsf;..\sdk\4.13\include\hal\api;..\sdk\4.13\include\hal\targets\cmsis;..\sdk\4.13\include\rtos\rtx\TARGET_CORTEX_M;..\sdk\4.13\include\lwip-wifi\arch;..\sdk\4.13\include\lwip-sys;..\sdk\4.13\include\mdns;..\thirdpartylib\Cyassl</IncludePath>
+              <IncludePath>..\sdk\4.14\include;..\sdk\4.14\include\hsf;..\sdk\4.14\include\hal\api;..\sdk\4.14\include\hal\targets\cmsis;..\sdk\4.14\include\rtos\rtx\TARGET_CORTEX_M;..\sdk\4.14\include\lwip-wifi\arch;..\sdk\4.14\include\lwip-sys;..\sdk\4.14\include\mdns;..\thirdpartylib\Cyassl;..\sdk\4.14\include\hal\targets\cmsis\TARGET_RDA\TARGET_UNO_91H;..\thirdpartylib\MQTT\MQTTClient-C;..\thirdpartylib\MQTT\MQTTPacket</IncludePath>
             </VariousControls>
           </Carm>
           <Aarm>
@@ -304,10 +304,10 @@
             <TextAddressRange></TextAddressRange>
             <DataAddressRange></DataAddressRange>
             <BSSAddressRange></BSSAddressRange>
-            <IncludeLibs>LPBX3Kernel -L ..\thirdpartylib\Cyassl -lLPBx30SSL</IncludeLibs>
-            <IncludeDir>..\sdk\4.13\libs</IncludeDir>
+            <IncludeLibs>LPBX3Kernel -L ..\thirdpartylib\Cyassl -lLPBx30SSL -L ..\thirdpartylib\MQTT -lLPBx30MQTT</IncludeLibs>
+            <IncludeDir>..\sdk\4.14\libs</IncludeDir>
             <Misc>-Wl,--gc-sections -Wl,--wrap,main -Wl,--wrap,_malloc_r -Wl,--wrap,_free_r -Wl,--wrap,_realloc_r -Wl,--wrap,_calloc_r -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=softfp  -Wl,--start-group -lstdc++ -lsupc++ -lm -lc -lgcc -lnosys -lstdc++ -lsupc++ -L ..\sdk\4.13\libs -lLPBX3Kernel -Wl,--end-group</Misc>
-            <ScatterFile>..\sdk\4.13\libs\LPBX3.ld</ScatterFile>
+            <ScatterFile>..\sdk\4.14\libs\LPBX3.ld</ScatterFile>
           </LDarm>
         </TargetArm>
       </TargetOption>
@@ -318,7 +318,7 @@
             <File>
               <FileName>startup_LPBX3GCC.S</FileName>
               <FileType>2</FileType>
-              <FilePath>..\sdk\4.13\libs\startup_LPBX3GCC.S</FilePath>
+              <FilePath>..\sdk\4.14\libs\startup_LPBX3GCC.S</FilePath>
             </File>
             <File>
               <FileName>app_main.c</FileName>
@@ -329,16 +329,6 @@
               <FileName>app_main.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\src\app_main.h</FilePath>
-            </File>
-            <File>
-              <FileName>httpd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\httpd.c</FilePath>
-            </File>
-            <File>
-              <FileName>httpd.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\src\httpd.h</FilePath>
             </File>
             <File>
               <FileName>user_flash.c</FileName>
@@ -409,6 +399,26 @@
               <FileName>user_udp.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\src\user_udp.h</FilePath>
+            </File>
+            <File>
+              <FileName>user_mqtt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\user_mqtt.c</FilePath>
+            </File>
+            <File>
+              <FileName>user_mqtt.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\src\user_mqtt.h</FilePath>
+            </File>
+            <File>
+              <FileName>user_httpd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\src\user_httpd.c</FilePath>
+            </File>
+            <File>
+              <FileName>user_httpd.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\src\user_httpd.h</FilePath>
             </File>
           </Files>
         </Group>

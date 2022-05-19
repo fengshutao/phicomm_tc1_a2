@@ -1,0 +1,201 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>设置</title>
+<script type="text/javascript">
+function mouseover(c)
+{
+    c.style.textDecoration = "underline"
+}
+function mouseout(c)
+{
+    c.style.textDecoration = "none";
+}
+var sel = 1;
+function child_cn(v)
+{
+    opt_sel(v);
+    initDiv(v,"cn");
+}
+function opt_sel(v)
+{
+    document.getElementById("op_"+sel).className = "opt_no";
+    document.getElementById("op_"+v).className = "opt_sel";
+    sel = v;
+}
+function initDiv(v,lan)
+{
+    var child = document.getElementById("child_page");
+    child.src = getUrl(v,lan);
+    if(v == 1)
+    {
+		child_height(500);
+    }
+    else if(v == 2)
+    {
+		child_height(500);
+    }
+    else if(v == 3)
+    {
+		child_height(500);
+    }
+	else if (v== 4)
+		child_height(500);
+    else if(v == 5)
+    {
+		child_height(500);
+    }
+    else
+    {
+        child_height(500);
+    }
+}
+function getUrl(v,lan)
+{
+    var end = "_en.html";
+    if(lan == "cn")
+    {
+        end = "_cn.html";
+    }
+    switch(v)
+    {
+        case 1:return "status"+end;break;
+        case 2:return "select"+end;break;
+        case 3:return "wireless"+end;break;
+        case 4:return "wirepoint"+end;break;
+        case 5:return "port"+end;break;
+        case 6:return "account"+end;break;
+        case 7:return "update"+end;break;
+        case 8:return "restart"+end;break;
+        case 9:return "reset"+end;break;
+    }
+}
+function underline(c,v)
+{
+    if(v == 1)
+    {
+        c.style.textDecoration = "underline";
+    }
+    if(v == 2)
+    {
+        c.style.textDecoration = "none";
+    }
+}
+function child_height(v)
+{
+	var child = document.getElementById("child_page");
+	if(child != null)
+	{
+		child.style.height = v+"px";
+	}
+}
+
+</script>
+<style>
+.lan
+{
+	cursor:pointer;
+	text-decoration:none;
+	color:#0163AC;
+	font-size:12px;
+	margin-left:3px;
+}
+.font_en
+{
+	font-family:Arial;
+}
+.lan_r
+{
+	margin-right:5px;
+}
+.opt_sel
+{
+	height:30px;
+	background-color:#006699;
+	padding-left:25px;
+	color:White;
+	cursor:pointer;
+}
+.opt_no
+{
+	height:30px;
+	padding-left:25px;
+	cursor:pointer;
+	color:#757475;
+}
+.opt_cn
+{
+	padding-top:4px;
+	font-size:18px;
+}
+.shadow
+{
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,direction=120,strength=4);/*ie*/ 
+	-moz-box-shadow: 2px 2px 10px #909090;/*firefox*/ 
+	-webkit-box-shadow: 2px 2px 10px #909090;/*safari或chrome*/ 
+	box-shadow:2px 2px 10px #909090;/*opera或ie9*/ 
+}
+.back_div
+{
+	width:600px;
+	float:left;
+	background:scroll center center;
+	background-color:#006699;
+	margin-top:10px;
+	border-radius:20px 20px 20px 20px;
+}
+.cl
+{
+	clear:left;
+}
+.sp_20
+{
+	width:10px;
+	height:20px;	
+}
+.sp_80
+{
+	width:10px;
+	height:80px;	
+}
+.bot_txt
+{
+	font-family:Arial;
+	font-size:14px;
+	text-align:center;
+	color:#757475;
+}
+</style>
+</head>
+
+<body style="background-color:#F5F5F5" onload="child_cn(1)">
+	<div style="width:900px;margin-left:auto;margin-right:auto;margin-top:15px;font-family:微软雅黑">
+		<iframe  width="0px" height="0px" id="lang_iframe_id" style="border-style:none"></iframe>
+	    <div style="width:50%;float:left;height:42px"></div>		
+	    <div style="width:50%;float:left;height:22px;margin-top:16px;text-align:center;">
+		<a class="lan lan_r" style="font-family:微软雅黑">中文</a>
+		<font style="font-size: 12px;color: #0163AC">|</font>
+		<a href="index_en.html" class="lan font_en" onmouseover="mouseover(this)" onmouseout="mouseout(this)">English</a>
+		</div>		
+	    <div class="cl"></div>		
+	    <div style="width:140px;float:left;" >
+	        <div class="sp_80"></div>
+	        <div id="op_1" class="opt_sel" onclick="child_cn(1)" onmouseover="underline(this,1)" onmouseout="underline(this,2)"><div class="opt_cn">系统信息</div></div>
+	        <div id="op_2" class="opt_no" onclick="child_cn(2)"  onmouseover="underline(this,1)" onmouseout="underline(this,2)"><div class="opt_cn">模式设置</div></div>
+	        <div id="op_3" class="opt_no" onclick="child_cn(3)"  onmouseover="underline(this,1)" onmouseout="underline(this,2)"><div class="opt_cn">STA设置</div></div>
+	        <div id="op_4" class="opt_no" onclick="child_cn(4)"  onmouseover="underline(this,1)" onmouseout="underline(this,2)"><div class="opt_cn">AP设置</div></div>
+	        <div id="op_5" class="opt_no" onclick="child_cn(5)"  onmouseover="underline(this,1)" onmouseout="underline(this,2)"><div class="opt_cn">其它设置</div></div>
+	        <div id="op_6" class="opt_no" onclick="child_cn(6)"  onmouseover="underline(this,1)" onmouseout="underline(this,2)"><div class="opt_cn">账号管理</div></div>
+	        <div id="op_7" class="opt_no" onclick="child_cn(7)"  onmouseover="underline(this,1)" onmouseout="underline(this,2)"><div class="opt_cn">软件升级</div></div>
+	        <div id="op_8" class="opt_no" onclick="child_cn(8)"  onmouseover="underline(this,1)" onmouseout="underline(this,2)"><div class="opt_cn">重启</div></div>
+	        <div id="op_9" class="opt_no" onclick="child_cn(9)"  onmouseover="underline(this,1)" onmouseout="underline(this,2)"><div class="opt_cn">恢复</div></div>
+	    </div>
+	    <div id="back_div" class="shadow back_div">
+	        <iframe id="child_page" name="child_page" frameborder="0" style="border-style:none;width:100%;height:500px;border-spacing:0px" src="" scrolling="no" allowTransparency="true"></iframe>
+	    </div>
+	    <div class="cl"></div>
+	    <div class="sp_20"></div>
+		<div class="bot_txt">Web Ver:1.0.14</div>
+</body>
+</html>

@@ -15,6 +15,8 @@
 #define PLUG_NUM 6              //插座数量
 #define PLUG_TIME_TASK_NUM 5    //每个插座最多5组定时任务
 
+#define NETWORK_ADDR_LEN        (16)        /* IP网络地址的长度 */
+#define HAL_MAC_LEN             (17 + 1)    /* MAC地址的长度 */
 
 #define Relay_ON     1
 #define Relay_OFF     0

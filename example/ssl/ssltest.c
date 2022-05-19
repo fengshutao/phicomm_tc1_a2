@@ -581,5 +581,8 @@ int USER_FUNC app_main (void)
 	
 	return 1;
 }
+
+//just for reduce codesize
+int hfwifi_wps_main(void){return 0;}
 #endif
 

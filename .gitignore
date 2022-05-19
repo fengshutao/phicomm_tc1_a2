@@ -1,0 +1,4 @@
+.vscode
+sdk/4.13.bak
+projects/*.o
+projects/*.d

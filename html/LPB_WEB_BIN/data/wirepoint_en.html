@@ -1,0 +1,398 @@
+﻿<html>
+<head>
+	<script type="text/javascript">
+/*<%
+CONFIG_VAR(ap_setting_net_mode, CFG_WAMODE);
+CONFIG_VAR(ap_setting_ssid, CFG_WASSID);
+CONFIG_VAR(ap_setting_mac, CFG_WAMAC);
+CONFIG_VAR(ap_setting_freq, CFG_WACHL);
+CONFIG_VAR(ap_setting_auth, CFG_WAAUTH);
+CONFIG_VAR(ap_setting_encryp,CFG_WAENC);
+CONFIG_VAR(ap_setting_wpakey,CFG_WAKEY);
+CONFIG_VAR(lan_setting_ip, CFG_WAIP);
+CONFIG_VAR(lan_setting_msk, CFG_WAMSK);
+CONFIG_VAR(lan_setting_dhcp, CFG_WADHCP);
+%>*/
+	var height = 0;
+	function child_getH()
+	{
+		var nh = document.body.offsetHeight+200;
+		if(nh < 500)
+		{
+			nh = 500;
+		}
+		if(height != nh)
+		{
+			height = nh;
+			window.parent.child_height(height);
+		}
+	}
+	var wpa_key_show= "0";
+	function wpa_key_check_changed()
+	{
+		if (wpa_key_show == "1")
+		{
+			if (window.ActiveXObject)
+			{
+				document.all('ap_setting_wpakey').outerHTML="<input type=password maxlength=64 size=32 name=ap_setting_wpakey id=wep_key_text class='text' value='"+document.all('ap_setting_wpakey').value+"'>";
+			}
+			else
+			{
+				document.getElementById('wpa_key_text').type = "password";
+			}
+			wpa_key_show="0";
+		}  
+		else
+		{
+			if (window.ActiveXObject)
+			{
+				document.all('ap_setting_wpakey').outerHTML="<input type=text maxlength=64 size=32 name=ap_setting_wpakey id=wep_key_text class='text' value='"+document.all('ap_setting_wpakey').value+"'>";
+			}
+			else
+			{
+				document.getElementById('wpa_key_text').type = "text";
+			}
+			wpa_key_show="1";
+		}
+	}	
+
+	function hide(v)
+	{
+		var c = document.getElementById(v);
+		if(c != null)
+		{
+			c.style.visibility = "hidden";
+			c.style.display = "none";
+		}
+	}
+		function show(v)
+	{
+		var c = document.getElementById(v);
+		if(c != null)
+		{
+			c.style.visibility = "visible";
+			c.style.display = "";
+		}
+	}
+	function auth_change()
+	{
+		var v=document.form_ap_secu_setting.ap_setting_auth_sel.options.selectedIndex;
+		if (v== 0)
+		{
+			hide("ap_key");
+			hide("wpa_enc");
+			hide("wpa_type");
+		}
+		else
+		{
+			show("ap_key");
+			show("wpa_enc");
+			hide("wpa_type");
+		}
+	}	
+	function init_ap_setting()
+	{
+		var f=document.form_ap_setting;
+		if (ap_setting_net_mode== "11b")
+			f.ap_setting_net_mode_sel.options.selectedIndex= 0;
+		else if (ap_setting_net_mode== "11bg")
+			f.ap_setting_net_mode_sel.options.selectedIndex= 1;
+		else if (ap_setting_net_mode== "11bgn")
+			f.ap_setting_net_mode_sel.options.selectedIndex= 2;
+		else
+			f.ap_setting_net_mode_sel.options.selectedIndex= 2;
+		f.ap_setting_ssid.value=ap_setting_ssid;
+		document.getElementById("ap_setting_mac").innerHTML= ap_setting_mac;
+		f.ap_setting_freq.value= ap_setting_freq;
+	}
+	function init_ap_seu()
+	{
+		var f=document.form_ap_secu_setting;
+		if ((ap_setting_auth== "OPEN")&&(ap_setting_encryp== "NONE"))
+			f.ap_setting_auth_sel.options.selectedIndex= 0;
+		else
+			f.ap_setting_auth_sel.options.selectedIndex= 1;
+
+		f.ap_setting_encryp_sel[1].checked= true;
+		show("wpa");
+
+		f.ap_setting_wpakey.value= ap_setting_wpakey;		
+		auth_change();				
+	}
+	function init_lan_setting()
+	{
+		var f=document.form_lan_setting;
+		f.lan_setting_ip.value=lan_setting_ip;
+		f.lan_setting_msk.value=lan_setting_msk;
+		f.lan_setting_dhcp.value=lan_setting_dhcp;
+	}
+	function ap_setting_apply()
+	{
+		var f=document.form_ap_setting;
+		if (f.ap_setting_net_mode_sel.options.selectedIndex== 0)
+			f.ap_setting_net_mode.value= "11b";
+		else if (f.ap_setting_net_mode_sel.options.selectedIndex== 1)
+			f.ap_setting_net_mode.value= "11bg";
+		else if (f.ap_setting_net_mode_sel.options.selectedIndex== 2)
+			f.ap_setting_net_mode.value= "11bgn";
+		else
+			f.ap_setting_net_mode.value= "11bgn";
+		if(f.ap_setting_ssid.value=="")
+		{
+			alert("SSID is empty!");
+			return;
+		}
+		if(f.ap_setting_ssid.value.length>32)
+		{
+			alert("Please enter 1-32 characters!");
+			return;
+		}
+		f.submit();
+	}
+	function ap_secu_setting_apply()
+	{
+		var f=document.form_ap_secu_setting;
+		if (f.ap_setting_auth_sel.options.selectedIndex== 0)
+		{
+			f.ap_setting_auth.value= "OPEN";
+			f.ap_setting_encryp.value= "NONE";
+		}
+		else
+		{
+			f.ap_setting_auth.value= "WPA2PSK";
+			f.ap_setting_encryp.value= "AES";
+		}
+		if((f.ap_setting_auth_sel.options.selectedIndex!=0)&&(f.ap_setting_wpakey.value == ""))
+		{
+			alert("The password is empty!");
+			return;
+		}
+		if((f.ap_setting_auth_sel.options.selectedIndex!=0)&&((f.ap_setting_wpakey.value.length <8)||(f.ap_setting_wpakey.value.length >64)))
+		{
+			alert("Please enter 8-63 characters!");
+			return;
+		}
+		f.submit();
+	}
+	function ipAdd(v)
+	{
+		var re=/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+		return re.test(v);
+	}
+	function lan_setting_apply()
+	{
+		var f=document.form_lan_setting;
+		if(!ipAdd(f.lan_setting_ip.value))
+		{
+			alert("Invalid IP address!");
+			return;
+		}
+		if(!ipAdd(f.lan_setting_ip.value))
+		{
+			alert("Invalid subnet mask!");
+			return;
+		}
+		f.submit();
+	}
+	</script>
+<style>
+.div_c
+{
+	margin-left:50px;
+	margin-right:50px;
+	margin-top:50px;
+	margin-bottom:50px;
+}
+.in_body
+{
+	margin-top:0px;
+	margin-left:0px;
+	margin-right:0px;
+	margin-bottom:0px;
+	background-color:transparent;
+}
+.white
+{
+	color:White;
+}
+.s15
+{
+	font-size:15px;
+}
+.b
+{
+	font-weight:bold;
+}
+.sp_30
+{
+	width:10px;
+	height:30px;	
+}
+.lab_4
+{
+	color:white;
+	font-size:13px;
+}
+.tr
+{
+	text-align:right;
+}
+.label
+{
+	float:left;
+	width:50%;
+	color:white;
+	margin-bottom:-2px;
+	font-size:13px;
+}
+.cl
+{
+	clear:left;
+}
+.line
+{
+	height:1px;
+	background-color:white;
+	width:100%;
+	margin-top:5px;
+	margin-bottom:5px;
+	overflow:hidden;
+}
+.sp_10
+{
+	width:10px;
+	height:10px;	
+}
+.btn
+{
+	width:66px;
+	height:27px;
+	border-style:none;
+	border-radius:3px 3px 3px 3px;
+	font-size:14px;
+	color:#0163AC;
+	cursor:pointer;
+}
+</style>
+</head>
+<body class="in_body" onload="init_ap_setting();init_ap_seu();init_lan_setting()">
+    <div class="div_c" style="font-family:Arial">
+        <div>
+            <font class="white s15 b">Wireless AP Setting</font>
+			<form name= "form_ap_setting" method="post" action="do_cmd_en.html">			
+            <div class="lab_4">									
+				<input type="hidden" name="ap_setting_net_mode">
+                <div class="label">Network Mode</div>
+                <div class="tr"><select style="width:160px;height:20px" name="ap_setting_net_mode_sel">
+                    <option value="0">11b </option>
+                    <option value="1">11bg </option>
+                    <option value="2">11bgn </option></select>
+                </div>
+                <div class="cl"></div>
+                <div class="line"></div>
+                <div class="label">Network Name(SSID)</div>
+                <div class="tr"><input type="text" style="width:160px;height:20px" value="" name="ap_setting_ssid"></div>
+                <div class="cl"></div>
+                <div class="line"></div>
+                <div class="label">Module MAC Address</div>
+                <div class="tr"><label style="width:160px;display:inline-block;text-align:right" id="ap_setting_mac"></label></div>
+                <div class="cl"></div>
+                <div class="line"></div>
+                <div class="label">Select Channel</div>
+                <div class="tr"><select style="width:160px;height:20px" name="ap_setting_freq">
+                    <option id="ap_FrequencyAS_lan_id" value="0" selected="">Auto-select</option>
+		            <option value="1">2412MHz(channel 1)</option>
+		            <option value="2">2417MHz(channel 2)</option>
+		            <option value="3">2422MHz(channel 3)</option>
+		            <option value="4">2427MHz(channel 4)</option>
+		            <option value="5">2432MHz(channel 5)</option>
+		            <option value="6">2437MHz(channel 6)</option>
+		            <option value="7">2442MHz(channel 7)</option>
+		            <option value="8">2447MHz(channel 8)</option>
+		            <option value="9">2452MHz(channel 9)</option>
+		            <option value="10">2457MHz(channel 10)</option>
+		            <option value="11">2462MHz(channel 11)</option>
+					</select>
+				</div>
+                <div class="cl"></div>
+                <div class="line"></div>			
+		    </div>
+			<div class="lab_4 tr"><input type="button" class="btn" value="Save" onclick="ap_setting_apply()"/></div>
+			</form>					
+            <div class="line"></div>
+            <font class="white s15 b">Wireless AP Security Setting</font>
+		    <form name= "form_ap_secu_setting" method="post" action="do_cmd_en.html">
+            <div class="lab_4">
+                <div class="label">Encryption Mode</div>
+				<input type="hidden" name="ap_setting_auth">
+				<input type="hidden" name="ap_setting_encryp">
+                <div class="tr"><select id="div_5_4_wep" style="width:160px;height:20px" onchange="auth_change()" name="ap_setting_auth_sel">
+                    <option value="CLOSE" selected="">Disable</option>
+                    <option value="WPA2PSK">WPA2-PSK</option></select>
+                </div>
+                <div class="cl"></div>
+                <div class="line"></div>
+                <div id="wpa_enc" style="visibility:hidden;display:none">
+                    <font class="label">WPA Encryption</font><br />
+                    <div class="tr">
+					<input type="radio" id="rad_tpik" name="ap_setting_encryp_sel" disabled="true"/>TKIP
+					<input type="radio" id="rad_aes" name="ap_setting_encryp_sel" checked="true"/>AES
+					<input type="radio" id="rad_tkipaes" name="ap_setting_encryp_sel" disabled="true"/>TKIPAES
+					</div>
+					<div class="cl"></div>
+                    <div class="line"></div>
+                </div>
+				<div id="wpa_type" style="visibility:hidden;display:none">
+                    <font class="label">WEP Type</font><br />
+                    <div class="tr" >
+					<input type="radio" id="rad_ascii" name="ap_setting_type_sel" checked="true"/>ASCII
+					<input type="radio" id="rad_hex" name="ap_setting_type_sel"/>HEX
+					</div>
+					<div class="cl"></div>
+                    <div class="line"></div>
+                </div>
+				<div id="ap_key" style="visibility:hidden;display:none">
+                    <div class="label">Password</div>
+                    <div class="tr">
+					<input name="ap_setting_wpakey" type="password" class="text" id="wpa_key_text">
+					<div>
+				    <input onclick="wpa_key_check_changed()" type="checkbox" style="margin-left: 0px;"/>
+				    <font style="color:White;font-size:13px">Show Passwords</font>
+				    </div>
+					</div>
+                    <div class="cl"></div>
+                    <div class="line"></div>
+                </div>
+			</div>
+            <div class="lab_4 tr"><input onclick="ap_secu_setting_apply()" type="button" class="btn" value="Save"/></div>
+			</form>
+            <div class="line"></div>
+            <font class="white s15 b">Network Parameters Setting</font>
+			<form name= "form_lan_setting" method="post" action="do_cmd_en.html">
+            <div class="lab_4">
+                <div class="label">IP Address (DHCP Gateway Setting)</div>
+                <div class="tr"><input name="lan_setting_ip" type="text" style="width:160px" value="10.10.100.254"/></div>
+                <div class="cl"></div>
+                <div class="line"></div>
+                <div class="label">Subnet Mask</div>
+                <div class="tr"><input name="lan_setting_msk" type="text" style="width:160px" value="255.255.255.0"/></div>
+                <div class="cl"></div>
+                <div class="line"></div>
+                <div class="label">DHCP Server</div>
+                <div class="tr"><select style="width:160px" name="lan_setting_dhcp" >
+                    <option id="ap_DHCPDisable_lan_id" value="disable">Disabled</option>
+                    <option id="ap_DHCPServer_lan_id" value="enable" selected="">Enable</option></select>
+                </div>
+                <div class="cl"></div>
+                <div class="line"></div>
+            </div>
+            <div class="lab_4 tr"><input type="button" class="btn" value="Save" onclick="lan_setting_apply()"/></div>
+			</form>
+        </div>
+    </div>
+			<script type="text/javascript">
+			child_getH();
+		   </script>
+</body>
+</html>
+

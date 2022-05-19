@@ -321,6 +321,21 @@ int hfmqtt_set_alive_time(int second)
 	mqtt_set_alive(&g_mqtt_handle.mqtt_broker, second);
 	return HF_SUCCESS;
 }
+int hfmqtt_set_will(char *will_topic,char*will_msg)
+{
+	if(strlen(will_topic) > MQTT_TOPIC_MAX_LEN || strlen(will_msg) > MQTT_WILL_MSG_LEN)
+	{
+		u_printf("will topic or msg over size\n");
+		return 0;
+	}
+	else
+	{
+		g_mqtt_handle.mqtt_broker.will_flag =1;
+		strcpy(g_mqtt_handle.mqtt_broker.will_topic,will_topic);
+		strcpy(g_mqtt_handle.mqtt_broker.will_msg,will_msg);
+	}
+	return HF_SUCCESS;
+}
 
 int hfmqtt_data_parse(char *data)
 {

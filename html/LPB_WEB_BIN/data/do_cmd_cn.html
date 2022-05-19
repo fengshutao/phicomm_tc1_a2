@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head> 
+<title>do_cmd</title>    
+<meta http-equiv="Content-Type" content="text/html" charset="utf-8" />  
+<style>
+.div_c
+{
+	margin-left:50px;
+	margin-right:50px;
+	margin-top:50px;
+	margin-bottom:50px;
+}
+.white
+{
+	color:White;
+}
+.s15
+{
+	font-size:15px;
+}
+.b
+{
+	font-weight:bold;
+}
+.sp_50
+{
+	width:10px;
+	height:50px;	
+}
+.lab_4
+{
+	margin-left:70px;
+	margin-right:50px;
+	color:white;
+	font-size:13px;
+}
+</style>
+</HEAD>
+<body class="in_body">
+<iframe  width="0px" height="0px" id="cmd_iframe_id" style="border-style:none"></iframe>
+<form name= "form_do_cmd" method="post" action="success_cn.html">
+<INPUT type=hidden name=HF_PROCESS_CMD value=RESTART>
+<div id="lang_cn_id" class="div_c white" style="font-family:微软雅黑;font-size:13px;">
+    <div class="s15 b">保存成功！</div>
+    <div class="sp_50"></div>
+    <div class="lab_4">重启设备后配置才能生效。<br />重启之后，您需要重新登录配置界面进行其他配置，建议您在完成所有设置后再重启。<br />请点击[重启]按键立即重启；或点击[返回]按键继续配置。<br />您可以在完成所有设置后选择菜单栏中的重启功能进行重启。
+        <div class="sp_50"></div>
+        <div style="width:380px" class="tr"><input type="button" class="btn" value="重启" style="margin-right:20px" onClick="submit()"/><input type="button" class="btn" value="返回" onClick="window.parent.child_cn(1)"/></div>
+    </div>
+</div>
+</form>
+</body>
+</html>

@@ -37,6 +37,7 @@
 
 #define MQTT_CLEAN_SESSION  1<<1
 #define MQTT_WILL_FLAG      1<<2
+#define MQTT_WILL_QoS       1<<3
 #define MQTT_WILL_RETAIN    1<<5
 #define MQTT_USERNAME_FLAG  1<<7
 #define MQTT_PASSWORD_FLAG  1<<6
@@ -217,22 +218,37 @@ int mqtt_connect(mqtt_broker_handle_t* broker)
 {
     uint8_t flags = 0x00;
 
-    uint16_t clientidlen = strlen(broker->clientid);
-    uint16_t usernamelen = strlen(broker->username);
-    uint16_t passwordlen = strlen(broker->password);
-    uint16_t payload_len = clientidlen + 2;
+    uint16_t clientidlen  = strlen(broker->clientid);
+	uint16_t willtopiclen = strlen(broker->will_topic);
+	uint16_t willmsglen = strlen(broker->will_msg);
+    uint16_t usernamelen  = strlen(broker->username);
+    uint16_t passwordlen  = strlen(broker->password);
+    uint16_t payload_len  = clientidlen + 2;
 
     // Preparing the flags
-    if(usernamelen) {
+    if(usernamelen)
+	{
         payload_len += usernamelen + 2;
         flags |= MQTT_USERNAME_FLAG;
     }
-    if(passwordlen) {
+    if(passwordlen) 
+	{
         payload_len += passwordlen + 2;
         flags |= MQTT_PASSWORD_FLAG;
     }
-    if(broker->clean_session) {
+    if(broker->clean_session)
+	{
         flags |= MQTT_CLEAN_SESSION;
+    }
+	if(broker->will_flag) 
+	{
+		payload_len += willtopiclen+2;
+		payload_len += willmsglen  +2;
+        flags |= MQTT_WILL_FLAG;
+    }
+	if(broker->will_qos) 
+	{
+        flags |= MQTT_WILL_QoS;
     }
 
 #ifdef MQTT_VERSION_USE_3_1 //VERSION:3.1
@@ -266,9 +282,12 @@ int mqtt_connect(mqtt_broker_handle_t* broker)
     fixed_header[0] = MQTT_MSG_CONNECT;
 
     // Remaining Length
-    if (remainLen <= 127) {
+    if (remainLen <= 127) 
+	{
         fixed_header[1] = remainLen;
-    } else {
+    } 
+	else
+	{
         // first byte is remainder (mod) of 128, then set the MSB to indicate more bytes
         fixed_header[1] = remainLen % 128;
         fixed_header[1] = fixed_header[1] | 0x80;
@@ -278,8 +297,8 @@ int mqtt_connect(mqtt_broker_handle_t* broker)
 
     uint16_t offset = 0;
     int packet_len = fixedHeaderSize+sizeof(var_header)+payload_len;
-    uint8_t packet[128];
-    memset(packet, 0, 128);
+    uint8_t packet[256];
+    memset(packet, 0, 256);
     memcpy(packet, fixed_header, fixedHeaderSize);
     offset += fixedHeaderSize;
     memcpy(packet+offset, var_header, sizeof(var_header));
@@ -290,6 +309,23 @@ int mqtt_connect(mqtt_broker_handle_t* broker)
     memcpy(packet+offset, broker->clientid, clientidlen);
     offset += clientidlen;
 
+	 // willtopic - UTF encoded
+    if(willtopiclen)
+	{
+	    packet[offset++] = willtopiclen>>8;
+	    packet[offset++] = willtopiclen&0xFF;
+	    memcpy(packet+offset, broker->will_topic, willtopiclen);
+	    offset += willtopiclen;
+	}
+
+	 // willmsg - UTF encoded
+	if(willmsglen)
+	{
+	    packet[offset++] = willmsglen>>8;
+	    packet[offset++] = willmsglen&0xFF;
+	    memcpy(packet+offset, broker->will_msg, willmsglen);
+	    offset += willmsglen;
+	}
     if(usernamelen) {
         // Username - UTF encoded
         packet[offset++] = usernamelen>>8;

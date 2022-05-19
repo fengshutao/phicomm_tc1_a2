@@ -1,0 +1,455 @@
+<html>
+<head>
+	<script type="text/javascript">
+/*<%
+CONFIG_VAR(par_time_zone, CFG_TIMEZONE);
+CONFIG_VAR(par_ntp_server, CFG_NTPSER);
+CONFIG_VAR(par_sys_time, CFG_NTPTIME);
+CONFIG_VAR(par_ntp_sync_rate, CFG_NTPSYNCRATE);
+CONFIG_VAR(par_transfer_route, CFG_TRANSROUTE);
+CONFIG_VAR(par_post_route, CFG_POSTROUTE);
+CONFIG_VAR(par_socket_ip, CFG_SOCKIP);
+CONFIG_VAR(par_socket_port, CFG_SOCKPORT);
+CONFIG_VAR(par_heartbeat_rate, CFG_HEARTBEAT);
+CONFIG_VAR(par_get_par_url, CFG_PARURL);
+CONFIG_VAR(par_shop_code, CFG_SHOPCODE);
+CONFIG_VAR(par_ap_scan_frequence, CFG_AP_DATA_SCAN_FREQUENCE);
+CONFIG_VAR(par_data_filter, CFG_DATA_FILTER);
+CONFIG_VAR(par_reset_frequence, CFG_RESET_FREQUENCE);
+CONFIG_VAR(par_ch1, CFG_SNIFFER_CH1);
+CONFIG_VAR(par_ch2, CFG_SNIFFER_CH2);
+CONFIG_VAR(par_ch3, CFG_SNIFFER_CH3);
+CONFIG_VAR(par_ch4, CFG_SNIFFER_CH4);
+CONFIG_VAR(par_ch5, CFG_SNIFFER_CH5);
+CONFIG_VAR(par_ch6, CFG_SNIFFER_CH6);
+CONFIG_VAR(par_ch7, CFG_SNIFFER_CH7);
+CONFIG_VAR(par_ch8, CFG_SNIFFER_CH8);
+CONFIG_VAR(par_ch9, CFG_SNIFFER_CH9);
+CONFIG_VAR(par_ch10, CFG_SNIFFER_CH10);
+CONFIG_VAR(par_ch11, CFG_SNIFFER_CH11);
+CONFIG_VAR(par_ch12, CFG_SNIFFER_CH12);
+CONFIG_VAR(par_ch13, CFG_SNIFFER_CH13);
+CONFIG_VAR(par_ch15, CFG_SNIFFER_CH15);
+CONFIG_VAR(par_ch16, CFG_SNIFFER_CH16);
+%>*/
+window.isChecked = false;
+function judgeIsSelectAll(){
+	var checkboxsAll = document.getElementsByClassName("chooseAll");
+	for (var m=0;m<checkboxsAll.length;m++) {
+		var e=checkboxsAll[m];
+		if (e.checked === true) {
+			window.isChecked = true;
+		}else{
+			window.isChecked = false;
+		}
+	}
+}
+var height = 0;
+function child_getH()
+{
+	var nh = document.body.offsetHeight+100;
+	if(nh < 500)
+	{
+		nh = 500;
+	}
+	if(height != nh)
+	{
+		height = nh;
+		window.parent.child_height(height);
+	}
+}
+function checkPort(v)
+{
+	var re=/^[0-9]\d*$/;
+	return re.test(v);
+}
+function ipAdd(v)
+{
+    var re=/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+    return re.test(v);
+}
+function init_para_setting()
+{
+	var f=document.form_para_setting;
+	f.par_time_zone.value=par_time_zone;
+	f.par_ntp_server.value=par_ntp_server;
+	f.par_sys_time.value=par_sys_time;
+	f.par_ntp_sync_rate.value=par_ntp_sync_rate;
+	f.par_transfer_route.value=par_transfer_route;
+	f.par_post_route.value=par_post_route;
+	f.par_socket_ip.value=par_socket_ip;
+	f.par_socket_port.value=par_socket_port;
+	f.par_heartbeat_rate.value=par_heartbeat_rate;
+	f.par_get_par_url.value=par_get_par_url;
+	f.par_shop_code.value=par_shop_code;
+	f.par_ap_scan_frequence.value=par_ap_scan_frequence;
+	f.par_reset_frequence.value = par_reset_frequence;
+	f.par_data_filter.value = par_data_filter;
+	
+	var par_ch_obj = [
+						{value: par_ch1}, 
+						{value: par_ch2},
+						{value: par_ch3},
+						{value: par_ch4},
+						{value: par_ch5},
+						{value: par_ch6},
+						{value: par_ch7},
+						{value: par_ch8},
+						{value: par_ch9},
+						{value: par_ch10},
+						{value: par_ch11},
+						{value: par_ch12},
+						{value: par_ch13},
+						{value: ""},
+						{value: par_ch15},
+						{value: par_ch16},
+					];
+	for(var i=0; i<par_ch_obj.length;i++){
+		if(par_ch_obj[i].value !== ""){
+			var k = i + 1;
+			document.getElementById("par_ch"+k).checked = true;
+		}
+	}
+	judgeIsSelectAll();
+}
+
+function para_setting_apply()
+{
+	var f=document.form_para_setting;
+	if(parseInt(f.par_socket_port.value)>=65535)
+	{
+		alert("port must less than 65535!");
+		return;
+	}
+	if(!checkPort(f.par_socket_port.value))
+	{
+		alert("invalid port!");
+		return;
+	}
+/*	
+	if(!ipAdd(f.par_socket_ip.value))
+	{
+		alert("invalid IP!");
+		return;
+	}
+*/	
+	f.submit();
+}
+function net_sync_apply()
+{
+	window.location.href = "setpara_en.html";
+}
+
+function para_get_apply()
+{
+	var f=document.form_para_setting;
+	if(f.par_get_par_url.value=="")
+	{
+		alert("URL is NULL!");
+		return;
+	}
+
+	f.par_time_zone.value="";
+	f.par_ntp_server.value="";
+	f.par_sys_time.value="";
+	f.par_ntp_sync_rate.value="";
+	f.par_transfer_route.value="";
+	f.par_post_route.value="";
+	f.par_socket_ip.value="";
+	f.par_socket_port.value="";
+	f.par_heartbeat_rate.value="";
+	f.par_shop_code.value="";
+	f.par_ap_scan_frequence.value="";
+	f.par_reset_frequence.value="";
+	f.par_data_filter.value="";
+	
+	f.submit();
+}
+
+function para_setting_cancle()
+{
+	window.location.href = "setpara_en.html";
+}
+
+function checkPort(v)
+{
+	var re=/^[0-9]\d*$/;
+	return re.test(v);
+}
+
+function SelectAll(){
+	var checkboxs=document.getElementsByClassName("choose");
+	var checkboxsAuto=document.getElementsByClassName("chooseAuto");
+	for (var k=0;k<checkboxsAuto.length;k++) {
+		var e=checkboxsAuto[k];
+		e.checked = false;
+	}
+	if(window.isChecked === false){
+		for (var i=0;i<checkboxs.length;i++) {
+			var e=checkboxs[i];
+			e.checked = false;
+			e.checked = !e.checked;
+			window.isChecked = true;
+		}
+	}else{
+		for (var i=0;i<checkboxs.length;i++) {
+			var e=checkboxs[i]
+			e.checked = true;
+			e.checked = !e.checked;
+			window.isChecked = false;
+		}
+	}	
+}
+
+function SelectAuto(){
+	var checkboxs=document.getElementsByClassName("choose");
+	var checkboxsAll=document.getElementsByClassName("chooseAll");
+	for (var i = 0; i < checkboxs.length; i++) {
+		var e=checkboxs[i];
+		e.checked = false;
+	}
+	for (var j = 0; j < checkboxsAll.length; j++) {
+		var e=checkboxsAll[j];
+		e.checked = false;
+	}
+	window.isChecked = false;
+}
+
+
+	</script>
+<style>
+.in_body
+{
+	margin-top:0px;
+	margin-left:0px;
+	margin-right:0px;
+	margin-bottom:0px;
+	background-color:transparent;
+}
+.div_c
+{
+	margin-left:50px;
+	margin-right:50px;
+	margin-top:50px;
+	margin-bottom:50px;
+}
+.white
+{
+	color:White;
+}
+.s15
+{
+	font-size:15px;
+}
+.b
+{
+	font-weight:bold;
+}
+.lab_4
+{
+	color:white;
+	font-size:13px;
+}
+.label
+{
+	float:left;
+	width:50%;
+	color:white;
+	margin-bottom:-2px;
+	font-size:13px;
+}
+.cl
+{
+	clear:left;
+}
+.line
+{
+	height:1px;
+	background-color:white;
+	width:100%;
+	margin-top:5px;
+	margin-bottom:5px;
+	overflow:hidden;
+}
+.tr
+{
+	text-align:middle;
+}
+
+.cr
+{
+	text-align:center;
+}
+.r30
+{
+	margin-left:30px;
+}
+.btn
+{
+	width:66px;
+	height:27px;
+	border-style:none;
+	border-radius:3px 3px 3px 3px;
+	font-size:14px;
+	color:#0163AC;
+	cursor:pointer;
+}
+</style>
+</head>
+<body class="in_body" onload="init_para_setting()">
+    <div class="div_c" style="font-family:Arial">
+        <div id="setpara_cn">
+			<form name= "form_para_setting" method="post" action="do_cmd_en.html">
+			<input type="hidden" name="net_setting_pro">
+			<input type="hidden" name="net_setting_cs">
+            <div class="lab_4">
+				<div class="label">Time Zone</div>
+                <div class="tr"><select name="par_time_zone" style="width:160px;height:20px">
+				<option value="UCT_-11">(GMT-11:00) Midway Island, Samoa</option>
+				<option value="UCT_-10">(GMT-10:00) Hawaii</option>
+				<option value="NAS_-09">(GMT-09:00) Alaska</option>
+				<option value="PST_-08">(GMT-08:00) Pacific Time</option>
+				<option value="MST_-07">(GMT-07:00) Mountain Time</option>
+				<option value="UCT_-07">(GMT-07:00) Arizona</option>
+				<option value="CST_-06">(GMT-06:00) Central Time</option>
+				<option value="UCT_-06">(GMT-06:00) Middle America</option>
+				<option value="UCT_-05">(GMT-05:00) Indiana East, Colombia</option>
+				<option value="EST_-05">(GMT-05:00) Eastern Time</option>
+				<option value="AST_-04">(GMT-04:00) Atlantic Time, Brazil West</option>
+				<option value="UCT_-04">(GMT-04:00) Bolivia, Venezuela</option>
+				<option value="UCT_-03">(GMT-03:00) Guyana</option>
+				<option value="EBS_-03">(GMT-03:00)  Brazil East, Greenland</option>
+				<option value="NOR_-02">(GMT-02:00) Mid-Atlantic</option>
+				<option value="EUT_-01">(GMT-01:00) Azores Islands</option>
+				<option value="UCT_000">(GMT+00:00) Gambia, Liberia, Morocco</option>
+				<option value="GMT_000">(GMT+00:00) England</option>
+				<option value="MET_001">(GMT+01:00) Czech Republic</option>
+				<option value="MEZ_001">(GMT+01:00) Germany</option>
+				<option value="UCT_001">(GMT+01:00) Tunisia</option>
+				<option value="EET_002">(GMT+02:00) Greece, Ukraine, Turkey</option>
+				<option value="SAS_002">(GMT+02:00) South Africa</option>
+				<option value="IST_003">(GMT+03:00) Iraq, Jordan, Kuwait</option>
+				<option value="MSK_003">(GMT+03:00) Moscow Winter Time</option>
+				<option value="UCT_004">(GMT+04:00) Armenia</option>
+				<option value="UCT_005">(GMT+05:00) Pakistan, Russia</option>
+				<option value="UCT_006">(GMT+06:00) Bangladesh, Russia</option>
+				<option value="UCT_007">(GMT+07:00) Thailand, Russia</option>
+				<option value="CST_008">(GMT+08:00) China Coast, Hong Kong</option>
+				<option value="CCT_008">(GMT+08:00) Taipei</option>
+				<option value="SST_008">(GMT+08:00) Singapore</option>
+				<option value="AWS_008">(GMT+08:00) Australia (WA)</option>
+				<option value="JST_009">(GMT+09:00) Japan, Korea</option>
+				<option value="KST_009">(GMT+09:00)  North Korea</option>
+				<option value="UCT_010">(GMT+10:00) Guam, Russia</option>
+				<option value="AES_010">(GMT+10:00) Australia (QLD, TAS,NSW,ACT,VIC)</option>
+				<option value="UCT_011">(GMT+11:00) Solomon Islands</option>
+				<option value="UCT_012">(GMT+12:00) Fiji</option>
+				<option value="NZS_012">(GMT+12:00) New Zealand</option>
+				</select>
+                <div class="cl"></div>
+                <div class="line"></div>			
+			
+			
+                <div class="label">NTP Server</div>
+                <div class="tr"><input name="par_ntp_server" id="div_ntp_server" type="text" style="width:160px;height:20px" /></div>
+                <div class="cl"></div>
+                <div class="line"></div>
+				
+                <div class="label">System Time</div>
+                <div class="tr"><input name="par_sys_time" id="div_sys_time" type="text" style="width:160px;height:20px" />
+				<input onclick="net_sync_apply()" id="div_get_sys_time" type="button" class="btn r30" style="width:50px;height:20px" value="SYNC" /></div>
+                <div class="cl"></div>
+                <div class="line"></div>
+
+                <div class="label">NTP SYNC Frequency(h) </div>
+                <div class="tr"><input name="par_ntp_sync_rate" id="div_ntp_sync_rate" type="text" style="width:160px;height:20px" /></div>
+                <div class="cl"></div>
+                <div class="line"></div>
+				
+				<div class="label">Data Transmit Type </div>
+                <div class="tr"><select name="par_transfer_route" style="width:160px;height:20px"><option value="Socket">Socket</option><option value="POST">POST</select>
+                <div class="cl"></div>
+                <div class="line"></div>
+				
+				<div class="label">POST Path </div>
+                <div class="tr"><input name="par_post_route" id="div_post_route" type="text" style="width:160px;height:20px" /></div>
+                <div class="cl"></div>
+                <div class="line"></div>
+				
+				<div class="label">Socket IP </div>
+                <div class="tr"><input name="par_socket_ip" id="div_socket_ip" type="text" style="width:160px;height:20px" /></div>
+                <div class="cl"></div>
+                <div class="line"></div>
+				
+				<div class="label">Socket Port </div>
+                <div class="tr"><input name="par_socket_port" id="div_socket_port" type="text" style="width:160px;height:20px" /></div>
+                <div class="cl"></div>
+                <div class="line"></div>
+				
+				<div class="label">HeartBeat Frequency(s) </div>
+                <div class="tr"><input name="par_heartbeat_rate" id="div_heartbeat_rate" type="text" style="width:160px;height:20px" /></div>
+                <div class="cl"></div>
+                <div class="line"></div>
+				
+				<div class="label">Get Parameter URL </div>
+                <div class="tr"><input name="par_get_par_url" id="div_get_par_url" type="text" style="width:160px;height:20px" />
+				<input onclick="para_get_apply()" id="div_get_sys_para" type="button" class="btn r30" style="width:50px;height:20px" value="GET" /></div>
+                <div class="cl"></div>
+                <div class="line"></div>
+				
+				<div class="label">WorkPlace Number</div>
+                <div class="tr"><input name="par_shop_code" id="div_shop_code" type="text" style="width:160px;height:20px" /></div>
+                <div class="cl"></div>
+                <div class="line"></div>
+				
+				<div class="label">AP data send frequence(s) </div>
+                <div class="tr"><input name="par_ap_scan_frequence" id="div_ap_scan_frequence" type="text" style="width:160px;height:20px" /></div>
+                <div class="cl"></div>
+                <div class="line"></div>
+				
+				<div class="label">device reset frequence(min) </div>
+                <div class="tr"><input name="par_reset_frequence" id="div_reset_frequence" type="text" style="width:160px;height:20px" /></div>
+                <div class="cl"></div>
+                <div class="line"></div>
+
+				<div class="label">set channel</div>
+					<div class="cl"></div>
+					<input type="checkbox" name="par_ch1" id="par_ch1" class="choose" value="1"/><span>1</span>
+					<input type="checkbox" name="par_ch2" id="par_ch2" class="choose" value="2"/><span>2</span>
+					<input type="checkbox" name="par_ch3" id="par_ch3" class="choose" value="3"/><span>3</span>
+					<input type="checkbox" name="par_ch4" id="par_ch4" class="choose" value="4"/><span>4</span>
+					<input type="checkbox" name="par_ch5" id="par_ch5" class="choose" value="5"/><span>5</span>
+					<input type="checkbox" name="par_ch6" id="par_ch6" class="choose" value="6"/><span>6</span>
+					<input type="checkbox" name="par_ch7" id="par_ch7" class="choose" value="7"/><span>7</span>
+					<input type="checkbox" name="par_ch8" id="par_ch8" class="choose" value="8"/><span>8</span>
+					<input type="checkbox" name="par_ch9" id="par_ch9" class="choose" value="9"/><span>9</span>
+					<input type="checkbox" name="par_ch10" id="par_ch10" class="choose" value="10"/><span>10</span>
+					<input type="checkbox" name="par_ch11" id="par_ch11" class="choose" value="11"/><span>11</span>
+					<input type="checkbox" name="par_ch12" id="par_ch12" class="choose" value="12"/><span>12</span>
+					<input type="checkbox" name="par_ch13" id="par_ch13" class="choose" value="13"/><span>13</span>
+					<div class="cl"></div>
+					<input type="checkbox" name="par_ch15" id="par_ch15" class="chooseAuto" value="15" onclick="SelectAuto()"/><span>Auto</span>
+					<input type="checkbox" name="par_ch16" id="par_ch16" class="chooseAll" value="16" onclick="SelectAll()"/><span>All</span>
+                <div class="cl"></div>
+                <div class="line"></div>
+
+				<div class="label">filter repeat data </div>
+					<div class="tr">
+						<input type="radio"  name="par_data_filter" value="1" />Yes
+						<input type="radio"  name="par_data_filter" value="0" >No
+					</div>
+                <div class="line"></div>	
+            </div>
+				<div style="height:20px"></div>
+				<div class="lab_4 cr"><input onclick="para_setting_apply()" type="button" class="btn" value="SET"/>
+				<input onclick="para_setting_cancle()" type="button" class="btn r30" value="Cancle"/>
+			</div>
+			
+			</form>
+        </div>
+    </div>
+			<script type="text/javascript">
+			child_getH();
+		   </script>
+</body>
+</html>

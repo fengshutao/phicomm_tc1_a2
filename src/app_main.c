@@ -32,12 +32,13 @@
 #include "app_main.h"
 #include "user_rtc.h"
 #include "user_udp.h"
+#include "user_mqtt.h"
 //#include "user_power.h"
 //#include "user_mqtt_client.h"
 #include "user_function.h"
 //#include "user_flash.h"
 
-#include "httpd.h"
+#include "user_httpd.h"
 #include "user_mdns.h"
 
 EXTERNC const int hf_gpio_fid_to_pid_map_table[HFM_MAX_FUNC_CODE];
@@ -189,6 +190,18 @@ static int hf_atcmd_set_type(pat_session_t s,int argc,char *argv[],char *rsp,int
 
 const hfat_cmd_t user_define_at_cmds_table[]=
 {
+    {"MQCLIENTID",hf_atcmd_mqclientid,"   AT+MQCLIENTID: MQTT ClientID.\r\n",NULL},
+	{"MQIPPORT",hf_atcmd_mqipport,"   AT+MQIPPORT: MQTT server address and port.\r\n",NULL},
+	{"MQUSERPWD",hf_atcmd_mquserpwd,"   AT+MQUSERPWD: MQTT username and password.\r\n",NULL},
+	{"MQSTATUS",hf_atcmd_mqstatus,"   AT+MQSTATUS: MQTT status.\r\n",NULL},
+	{"MQSTART",hf_atcmd_mqstart,"   AT+MQSTART: start MQTT.\r\n",NULL},
+	{"MQPUBLISH",hf_atcmd_mqpublish,"   AT+MQPUBLISH: MQTT publish data.\r\n",NULL},
+	{"MQSUBSCRIBE",hf_atcmd_mqsubscribe,"   AT+MQSUBSCRIBE: MQTT subscribe topic.\r\n",NULL},
+	{"MQUNSUBSCRIBE",hf_atcmd_mqunsubscribe,"   AT+MQUNSUBSCRIBE: MQTT unsubscribe topic.\r\n",NULL},
+	{"MQAUTOSUB",hf_atcmd_mqautosub,"   AT+MQAUTOSUB: MQTT auto subscribe topic.\r\n",NULL},
+	{"MQRES",hf_atcmd_mqres,"   AT+MQRES: MQTT reload parameter.\r\n",NULL},
+	{"MQVER",hf_atcmd_mqver,"   AT+MQVER: MQTT version.\r\n",NULL},
+	{"MQWILL",hf_atcmd_mqwill,"   AT+MQWILL: MQTT will topic and message.\r\n",NULL},
     {"TYPE",hf_atcmd_set_type,"   AT+TYPE: airkiss device type.\r\n",NULL},    //Modify TYPE
     {"APPVER",hf_cmd_get_version,"   AT+APPVER: get version\r\n", NULL},
     {NULL,NULL,NULL,NULL}
@@ -277,16 +290,16 @@ static int USER_FUNC socketb_recv_callback(uint32_t event,char *data,uint32_t le
             
     return len;
 }*/
-/*
+
 static int USER_FUNC uart_recv_callback(uint32_t event,char *data,uint32_t len,uint32_t buf_len)
 {
-    HF_Debug(DEBUG_LEVEL_LOW,"[%d]uart recv %d bytes data %d\n",event,len,buf_len);
-    if(hfsys_get_run_mode() == HFSYS_STATE_RUN_CMD)
-        return len;
-    
-    return len;
+	HF_Debug(DEBUG_LEVEL_LOW,"[%d]uart recv %d bytes data %d\n",event,len,buf_len);
+	if(hfsys_get_run_mode() == HFSYS_STATE_RUN_CMD)
+		return len;
+	
+	return len;
 }
-*/
+
 static void show_reset_reason(void)
 {
     uint32_t reset_reason=0;
@@ -363,51 +376,29 @@ int USER_FUNC app_main (void)
     show_reset_reason();
 
     while(hfsmtlk_is_start())
-        msleep(100);
-    /*
-    if(hfnet_start_uart(HFTHREAD_PRIORITIES_LOW,(hfnet_callback_t)uart_recv_callback)!=HF_SUCCESS)
     {
-        HF_Debug(DEBUG_WARN,"start uart fail!\n");
-    }
-    
-
-    //See Wi-Fi Config tools APP for detailed usage of this thread
-    if(hfnet_start_assis(ASSIS_PORT)!=HF_SUCCESS)
-    {
-        HF_Debug(DEBUG_WARN,"start assis fail\n");
-    }
-    
-    //AT+NETP socket
-    if(hfnet_start_socketa(HFTHREAD_PRIORITIES_LOW,(hfnet_callback_t)socketa_recv_callback)!=HF_SUCCESS)
-    {
-        HF_Debug(DEBUG_WARN,"start socketa fail\n");
+        msleep(500);
+        user_led_set(-1);
     }
 
-    //AT+SOCKB socket
-    if(hfnet_start_socketb(HFTHREAD_PRIORITIES_LOW,(hfnet_callback_t)socketb_recv_callback)!=HF_SUCCESS)
-    {
-        HF_Debug(DEBUG_WARN,"start socketb fail\n");
-    }*/
-    
+	if(hfnet_start_uart(HFTHREAD_PRIORITIES_LOW,(hfnet_callback_t)uart_recv_callback)!=HF_SUCCESS)
+	{
+		HF_Debug(DEBUG_WARN,"start uart fail!\n");
+	}
+	
+    mqtt_para_init();
+
     //Web Server
     if(hfnet_start_httpd(HFTHREAD_PRIORITIES_MID)!=HF_SUCCESS)
     {
         HF_Debug(DEBUG_WARN,"start httpd fail\n");
     }
     
-    //用不到的话删掉这个
-    //For Wechat airkiss 2.0 device find, can be commened if not use.
-    char wechat_type[21] = {0};
-    char wechat_id[21] = {0};
-    if(dev_param_read(wechat_type) == HF_SUCCESS)
-    {
-        hfnet_get_mac_address(wechat_id);
-        if(hfnet_start_airlink(wechat_type, wechat_id) != HF_SUCCESS)
-            HF_Debug(DEBUG_WARN,"start airlink fail!\n");
-    }
-    
-    
-    hfdbg_set_level(3);
+	//Register Web Server Event Callbacks
+	// hfnet_httpd_set_get_nvram_callback(hfhttpd_yz_nvset, hfhttpd_yz_nvget);
+	
+	// wifi_scan_thread_func();
+
     //memset(rsp, 0, sizeof(rsp));
     //hfat_send_cmd("AT+WSMAC\r\n", sizeof("AT+WSMC\r\n"), rsp, 64);
     //u_printf("AT+WSMAC's response:%s\n",rsp);
@@ -423,10 +414,8 @@ int USER_FUNC app_main (void)
     hfgpio_fset_out_low(LED);
     while(!hfnet_wifi_is_active())
     {
-        
         msleep(50);
     }
-    
     
     user_mdns_init( );
 

@@ -216,6 +216,7 @@ static void mqtt_thread(void *arg)
 	//hfmqtt_set_clientid(char *clientid); //default is station MAC address
 	//hfmqtt_set_auth(char *username, char *password);
 	//hfmqtt_set_alive_time(300);//default is 300 seconds
+	//hfmqtt_set_will(char *will_topic,char*will_msg);
 	hfmqtt_sub("mqtt_test_topic_1");
 	hfmqtt_sub("mqtt_test_topic_2");
 	

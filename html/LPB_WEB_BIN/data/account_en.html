@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<script type="text/javascript">
+	/*<%
+	CONFIG_VAR(user_name, CFG_PWUSR);
+	CONFIG_VAR(user_password, CFG_PWPWD);
+	%>*/
+function init_account_form()
+{
+	document.getElementById("user_name").innerHTML=user_name;
+	document.getElementById("user_password").innerHTML=user_password;
+}
+function user_update_apply()
+{
+	var f=document.form_user_update;
+	if (f.new_user_name.value=="")
+	{
+		alert("The user name is empty!");
+		return ;
+	}
+	if(f.new_user_name.value.length>15)
+	{
+		alert("Please enter 1-15 characters!");
+		return ;
+	}
+	if(f.new_user_password.value.length>15)
+	{
+		alert("Please enter 0-15 characters!");
+		return ;
+	}
+	document.getElementById("user_name").value=f.new_user_name.value;
+	document.getElementById("user_password").value=f.new_user_password.value;
+	f.submit();
+}
+	</script>
+<style>
+.in_body
+{
+	margin-top:0px;
+	margin-left:0px;
+	margin-right:0px;
+	margin-bottom:0px;
+	background-color:transparent;
+}
+.div_c
+{
+	margin-left:50px;
+	margin-right:50px;
+	margin-top:50px;
+	margin-bottom:50px;
+}
+.white
+{
+	color:White;
+}
+.s15
+{
+	font-size:15px;
+}
+.b
+{
+	font-weight:bold;
+}
+.sp_60
+{
+	width:10px;
+	height:60px;	
+}
+.lab_4
+{
+	margin-left:70px;
+	margin-right:50px;
+	color:white;
+	font-size:13px;
+}
+.lab_2
+{
+	float:left;
+	width:40%;
+	color:white;
+	margin-bottom:-2px;
+	font-size:13px;
+}
+.cl
+{
+	clear:left;
+}
+.sp_10
+{
+	width:10px;
+	height:10px;	
+}
+.line2
+{
+	height:1px;
+	background-color:white;
+	width:100%;
+	margin-bottom:10px;
+	overflow:hidden;
+}
+.text_div
+{
+	float:left;
+	width:60%;
+	text-align:right;
+}
+.btn
+{
+	width:66px;
+	height:27px;
+	border-style:none;
+	border-radius:3px 3px 3px 3px;
+	font-size:14px;
+	color:#0163AC;
+	cursor:pointer;
+}
+</style>
+</head>
+<body class="in_body" onload="init_account_form()">
+    <div class="div_c" style="font-family:Arial">
+        <form name= "form_user_update" method="post" action="do_cmd_en.html">
+            <font class=" white s15 b">Set a New Account and Password</font>
+            <div class="sp_60"></div>
+            <div class="lab_4">
+                <div class="lab_2">Current User Name</div>
+				<div class="lab_2" style="float:right" id="user_name" ></div>
+                <div class="cl"></div>
+                <div class="sp_10"></div>
+                <div class="line2"></div>
+                <div class="lab_2">Current Password</div>
+				<div class="lab_2" style="float:right" id="user_password" ></div>
+                <div class="cl"></div>
+                <div class="sp_10"></div>
+                <div class="line2"></div>
+                <div class="lab_2">New User Name</div>
+                <div class="text_div"><input name="new_user_name" type="text" class="text2" /></div>
+                <div class="cl"></div>
+                <div class="sp_10"></div>
+                <div class="line2"></div>
+                <div class="lab_2">New Password</div>
+                <div class="text_div"><input name="new_user_password" type="text" class="text2" /></div>
+                <div class="cl"></div>
+                <div class="sp_10"></div>
+                <div class="line2"></div>
+                <div class="sp_10"></div>
+                <div class="sp_10"></div>
+                <div style="width:100%;text-align:right">
+                    <input onclick="user_update_apply()" type="button" class="btn" value="Save"/>
+                </div>
+            </div>
+			</form>
+    </div>
+</body>
+</html>

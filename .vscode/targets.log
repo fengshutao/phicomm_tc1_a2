@@ -8,7 +8,7 @@ make.exe CFLAGS="-I/e/iot/汉枫/develop/phicomm_tc1_a2/sdk/4.13/include/ -I/e/i
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri May 13 00:23:16 2022
+# Make data base, printed on Thu May 19 12:08:19 2022
 
 # Variables
 
@@ -45,8 +45,7 @@ SHELL := C:/ProgramData/Anaconda3/Library/usr/bin/sh.exe
 # makefile (from '../Makefile.mk', line 8)
 NM = $(CROSS)nm
 # environment
-APPCODE_VM_OPTIONS = D:\Software\JetBrains\ja-netfilter-all 
-\vmoptions\appcode.vmoptions
+APPCODE_VM_OPTIONS = D:\Software\JetBrains\ja-netfilter-all\vmoptions\appcode.vmoptions
 # environment
 WINDIR = C:\WINDOWS
 # environment
@@ -61,7 +60,8 @@ ONEDRIVE = C:\Users\zPC\OneDrive - Office
 MAVEN_HOME = D:\Software\Java\java-photon\apache-maven-3.5.4
 # environment
 PATHEXT = .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW
-# makefile (from '../Makefile.mk', line 1)
+# mak 
+efile (from '../Makefile.mk', line 1)
 MAKEFILE_LIST :=  Makefile ../Makefile.mk
 # environment
 TMP = C:\Users\zPC\AppData\Local\Temp
@@ -76,13 +76,13 @@ PROGRAMDATA = C:\ProgramData
 # environment
 WEBIDE_VM_OPTIONS = D:\Software\JetBrains\ja-netfilter-all\vmoptions\webide.vmoptions
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-1edcd16e-addc-4e9a-82d8-e68c81a2e20e-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-1c466831-68c9-4935-901a-074eaddc9aa7-sock
 # environment
 VSCODE_CWD = D:\Software\Tools\Microsoft VS Code
 # default
 MAKE_HOST := x86_64-w64-mingw32
 # environment
-PATH = C:\Program Files\Common Files\Oracle\Java\javapath;C:\Python310\Scripts;C:\Python310;C:\ProgramData\Anaconda3;C:\ProgramData\Anaconda3\Library\mingw-w64\bin;C:\ProgramData\Anaconda3\Library\usr\bin;C:\ProgramData\Anaconda3\Library\usr\bin;C:\ProgramData\Anaconda3\Scripts;D:\Software\Tools\VMware\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\dotnet;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\110\Tools\Binn;C:\Program Files (x86)\Microsoft SQL Server\120\Tools\Binn;C:\Program Files\Microsoft SQL Server\120\Tools\Binn;C:\Program Files\Microsoft SQL Server\120\DTS\Binn;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit;C:\ProgramData\Anaconda3\envs\pyqt\Lib\site-packages\pyqt5_tools;C:\ProgramData\Anaconda3\envs\pyqt\Scripts;C:\Program Files\nodejs;C:\ProgramData\chocolatey\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;D:\Software\Java\jdk-18\bin;D:\Software\Java\java-photon\apache-maven-3.5.4\bin;D:\Software\Java\apache-tomcat-9.0.62\lib;D:\Software\Java\apache-tomcat-9.0.62\bin;C:\Program Files (x86)\GNU Tools ARM Embedded\5.4 2016q3\bin;C:\Users\zPC\AppData\Local\Microsoft\WindowsApps;D:\Software\Tools\Microsoft VS Code\bin;C:\Users\zPC\.dotnet\tools;C:\Users\zPC\AppData\Roaming\npm;D:\Software\JetBrains\IntelliJ IDEA 2022.1\bin;D:\Software\Java\java-photon\apache-maven-3.5.4\bin;D:\Software\develop\mingw64\bin
+PATH = C:\Program Files\VanDyke Software\Clients;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Python310\Scripts;C:\Python310;C:\ProgramData\Anaconda3;C:\ProgramData\Anaconda3\Library\mingw-w64\bin;C:\ProgramData\Anaconda3\Library\usr\bin;C:\ProgramData\Anaconda3\Library\usr\bin;C:\ProgramData\Anaconda3\Scripts;D:\Software\Tools\VMware\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\dotnet;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\110\Tools\Binn;C:\Program Files (x86)\Microsoft SQL Server\120\Tools\Binn;C:\Program Files\Microsoft SQL Server\120\Tools\Binn;C:\Program Files\Microsoft SQL Server\120\DTS\Binn;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit;C:\ProgramData\Anaconda3\envs\pyqt\Lib\site-packages\pyqt5_tools;C:\ProgramData\Anaconda3\envs\pyqt\Scripts;C:\Program Files\nodejs;C:\ProgramData\chocolatey\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;D:\Software\Java\jdk-18\bin;D:\Software\Java\java-photon\apache-maven-3.5.4\bin;D:\Software\Java\apache-tomcat-9.0.62\lib;D:\Software\Java\apache-tomcat-9.0.62\bin;C:\Program Files (x86)\GNU Tools ARM Embedded\5.4 2016q3\bin;C:\Users\zPC\AppData\Local\Microsoft\WindowsApps;D:\Software\Tools\Microsoft VS Code\bin;C:\Users\zPC\.dotnet\tools;C:\Users\zPC\AppData\Roaming\npm;D:\Software\JetBrains\IntelliJ IDEA 2022.1\bin;D:\Software\Java\java-photon\apache-maven-3.5.4\bin;D:\Software\develop\mingw64\bin
 # environment
 SW_SIM_HYDRA = C:\Program Files\Common Files\SolidWorks Shared\Simulation Worker Agent\
 # makefile (from '../Makefile.mk', line 6)
@@ -126,7 +126,7 @@ INTELLIJ IDEA = D:\Software\JetBrains\IntelliJ IDEA 2022.1\bin;
 # automatic
 %F = $(notdir $%)
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_10332_VFDTXNBZJIWHZABT
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_5368_SPMSRCCMPUJDZHWO
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
@@ -290,7 +290,7 @@ PROCESSOR_LEVEL = 25
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 10332
+VSCODE_PID = 5368
 # environment
 USERDOMAIN_ROAMINGPROFILE = DESKTOP-FS22IU3
 # variable set hash-table stats:
@@ -302,9 +302,9 @@ USERDOMAIN_ROAMINGPROFILE = DESKTOP-FS22IU3
 
 # Directories
 
-# . (key e:/iot/����/develop/phicomm_tc1_a2/src, mtime 1652367291): 22 files, no impossibilities.
+# . (key e:/iot/����/develop/phicomm_tc1_a2/src, mtime 1652886041): 24 files, no impossibilities.
 
-# 22 files, no impossibilities in 1 directories.
+# 24 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -409,13 +409,13 @@ clean:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 34 / storage = 333 B / avg = 9 B
-# current buf: size = 8162 B / used = 333 B / count = 34 / avg = 9 B
+# strcache buffers: 1 (0) / strings = 36 / storage = 367 B / avg = 10 B
+# current buf: size = 8162 B / used = 367 B / count = 36 / avg = 10 B
 
-# strcache performance: lookups = 43 / hit rate = 20%
+# strcache performance: lookups = 45 / hit rate = 20%
 # hash-table stats:
-# Load=34/8192=0%, Rehash=0, Collisions=1/43=2%
-# Finished Make data base on Fri May 13 00:23:16 2022
+# Load=36/8192=0%, Rehash=0, Collisions=1/45=2%
+# Finished Make data base on Thu May 19 12:08:19 2022
 
  
 # GNU Make 4.2.1
@@ -425,7 +425,7 @@ clean:
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri May 13 00:23:16 2022
+# Make data base, printed on Thu May 19 12:08:19 2022
 
 # Variables
 
@@ -495,13 +495,13 @@ PROGRAMDATA = C:\ProgramData
 # environment
 WEBIDE_VM_OPTIONS = D:\Software\JetBrains\ja-netfilter-all\vmoptions\webide.vmoptions
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-1edcd16e-addc-4e9a-82d8-e68c81a2e20e-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-1c466831-68c9-4935-901a-074eaddc9aa7-sock
 # environment
 VSCODE_CWD = D:\Software\Tools\Microsoft VS Code
 # default
 MAKE_HOST := x86_64-w64-mingw32
 # environment
-PATH = C:\Program Files\Common Files\Oracle\Java\javapath;C:\Python310\Scripts\;C:\Python310\;C:\ProgramData\Anaconda3;C:\ProgramData\Anaconda3\Library\mingw-w64\bin;C:\ProgramData\Anaconda3\Library\usr\bin;C:\ProgramData\Anaconda3\Library\bin;C:\ProgramData\Anaconda3\Scripts;D:\Software\Tools\VMware\bin\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\dotnet\;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\110\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\DTS\Binn\;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\ProgramData\Anaconda3\envs\pyqt\Lib\site-packages\pyqt5_tools;C:\ProgramData\Anaconda3\envs\pyqt\Scripts;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;D:\Software\Java\jdk-18\bin;D:\Software\Java\java-photon\apache-maven-3.5.4\bin;D:\Software\Java\apache-tomcat-9.0.62\lib;D:\Software\Java\apache-tomcat-9.0.62\bin;C:\Program Files (x86)\GNU Tools ARM Embedded\5.4 2016q3\bin;C:\Users\zPC\AppData\Local\Microsoft\WindowsApps;D:\Software\Tools\Microsoft VS Code\bin;C:\Users\zPC\.dotnet\tools;C:\Users\zPC\AppData\Roaming\npm;D:\Software\JetBrains\IntelliJ IDEA 2022.1\bin;;D:\Software\Java\java-photon\apache-maven-3.5.4\bin;D:\Software\develop\mingw64\bin
+PATH = C:\Program Files\VanDyke Software\Clients\;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Python310\Scripts\;C:\Python310\;C:\ProgramData\Anaconda3;C:\ProgramData\Anaconda3\Library\mingw-w64\bin;C:\ProgramData\Anaconda3\Library\usr\bin;C:\ProgramData\Anaconda3\Library\bin;C:\ProgramData\Anaconda3\Scripts;D:\Software\Tools\VMware\bin\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\dotnet\;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\110\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\DTS\Binn\;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\ProgramData\Anaconda3\envs\pyqt\Lib\site-packages\pyqt5_tools;C:\ProgramData\Anaconda3\envs\pyqt\Scripts;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;D:\Software\Java\jdk-18\bin;D:\Software\Java\java-photon\apache-maven-3.5.4\bin;D:\Software\Java\apache-tomcat-9.0.62\lib;D:\Software\Java\apache-tomcat-9.0.62\bin;C:\Program Files (x86)\GNU Tools ARM Embedded\5.4 2016q3\bin;C:\Users\zPC\AppData\Local\Microsoft\WindowsApps;D:\Software\Tools\Microsoft VS Code\bin;C:\Users\zPC\.dotnet\tools;C:\Users\zPC\AppData\Roaming\npm;D:\Software\JetBrains\IntelliJ IDEA 2022.1\bin;;D:\Software\Java\java-photon\apache-maven-3.5.4\bin;D:\Software\develop\mingw64\bin;
 # environment
 SW_SIM_HYDRA = C:\Program Files\Common Files\SolidWorks Shared\Simulation Worker Agent\
 # makefile (from 'Makefile', line 17)
@@ -547,7 +547,7 @@ INTELLIJ IDEA = D:\Software\JetBrains\IntelliJ IDEA 2022.1\bin;
 # automatic
 %F = $(notdir $%)
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_10332_VFDTXNBZJIWHZABT
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_5368_SPMSRCCMPUJDZHWO
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
@@ -715,7 +715,7 @@ LANG = C
 # environment
 PROCESSOR_LEVEL = 25
 # environment
-VSCODE_PID = 10332
+VSCODE_PID = 5368
 # environment
 USERDOMAIN_ROAMINGPROFILE = DESKTOP-FS22IU3
 # variable set hash-table stats:
@@ -727,9 +727,9 @@ USERDOMAIN_ROAMINGPROFILE = DESKTOP-FS22IU3
 
 # Directories
 
-# . (key e:/iot/����/develop/phicomm_tc1_a2, mtime 1652367465): 17 files, no impossibilities.
+# . (key e:/iot/����/develop/phicomm_tc1_a2, mtime 1652625564): 18 files, no impossibilities.
 
-# 17 files, no impossibilities in 1 directories.
+# 18 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -880,12 +880,12 @@ asm:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 32 / storage = 336 B / avg = 10 B
-# current buf: size = 8162 B / used = 336 B / count = 32 / avg = 10 B
+# strcache buffers: 1 (0) / strings = 33 / storage = 341 B / avg = 10 B
+# current buf: size = 8162 B / used = 341 B / count = 33 / avg = 10 B
 
-# strcache performance: lookups = 47 / hit rate = 31%
+# strcache performance: lookups = 48 / hit rate = 31%
 # hash-table stats:
-# Load=32/8192=0%, Rehash=0, Collisions=1/47=2%
-# Finished Make data base on Fri May 13 00:23:16 2022
+# Load=33/8192=0%, Rehash=0, Collisions=1/48=2%
+# Finished Make data base on Thu May 19 12:08:19 2022
 
  

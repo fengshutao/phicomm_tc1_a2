@@ -9,6 +9,7 @@
 #define MQTT_TOPIC_MAX_LEN 64
 #define MQTT_TOPIC_MAX_NUM 5
 #define MQTT_BEAT_TIME_SEC 60
+#define MQTT_WILL_MSG_LEN  128
 
 /*Error No*/
 #define HFMQTT_ERR_NOT_INIT				-1

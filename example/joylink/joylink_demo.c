@@ -31,12 +31,10 @@
 #include "HFService_config.h"
 #include "HFService_downstream.h"
 #include "HFService_upstream.h"
-#include "joylink_config_handle.h"
 
 
 
 EXTERNC const int hf_gpio_fid_to_pid_map_table[HFM_MAX_FUNC_CODE];
-#define CONFIG_TIMEOUT 60*1000
 
 #ifdef __LPT230__
 int g_module_id= HFM_TYPE_LPT230;
@@ -311,17 +309,29 @@ static int hf_cmd_get_version(pat_session_t s,int argc,char *argv[],char *rsp,in
 	}
 	return -3;
 }
+static int hf_atcmd_start_jd_softap(pat_session_t s,int argc,char *argv[],char *rsp,int len)
+{
+	if(argc==0)
+	{ 
+		extern void cmd_reply(char *reply);
+	    cmd_reply("+ok");
+		hf_jd_softap_start();
+		return 0;
+	}
+	return -3;
+}
+
 static int hf_atcmd_setprikey(pat_session_t s,int argc,char *argv[],char *rsp,int len)
 {
 	if(argc==0)
 	{ 
-		sprintf(rsp,"=%s",read_prikey());
+		sprintf(rsp,"=%s,%s",read_mac(),read_prikey());
 		return 0;
 	}
-	else if(argc == 1)
+	else if(argc == 2)
 	{
-		u_printf("argv[0]=%s,argv[1]\r\n",argv[0],argv[1]);
-		write_prikey(argv[0]);
+		u_printf("jd mac=%s,jd prikey=%s\r\n",argv[0],argv[1]);
+		write_prikey(argv[0],argv[1]);
 		return 0;
 	}
 	return -3;
@@ -331,6 +341,7 @@ const hfat_cmd_t user_define_at_cmds_table[]=
 {
 	{"JDNOBIND", hf_atcmd_nobind, "   AT+JDNOBIND: no bind jd.\r\n",NULL},
 	{"APPVER",hf_cmd_get_version,"   AT+APPVER: get version\r\n", NULL},
+	{"STARTJDSOFTAP", hf_atcmd_start_jd_softap, "   AT+STARTJDSOFTAP: start jd softap.\r\n",NULL},
 	{"SETPRIKEY", hf_atcmd_setprikey, "   AT+SETPRIKEY: write prikey.\r\n",NULL},
 	{NULL,NULL,NULL,NULL} //the last item must be null
 };
@@ -429,7 +440,8 @@ static void show_reset_reason(void)
 	}
 	if(reset_reason&HFSYS_RESET_REASON_SMARTLINK_START)
 	{
-	    joylink_config_start(CONFIG_TIMEOUT);
+		extern void start_joylink_smnt_config(void);
+	    start_joylink_smnt_config();
 		u_printf("RESET FOR SMARTLINK START\n");
 	}
 	if(reset_reason&HFSYS_RESET_REASON_SMARTLINK_OK)
@@ -465,8 +477,8 @@ int USER_FUNC app_main (void)
 		return 0;
 	hfsys_register_system_event(sys_event_callback);
 	show_reset_reason();
-    
-	while(hfsmtlk_is_start())
+    get_jd_config();
+	while(hfsmtlk_is_start() || joylink_smtlkap_is_start())
 		msleep(100);
 	if(hfnet_start_uart(HFTHREAD_PRIORITIES_LOW,(hfnet_callback_t)uart_recv_callback)!=HF_SUCCESS)
 	{

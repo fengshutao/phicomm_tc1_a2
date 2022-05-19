@@ -282,7 +282,7 @@
               <MiscControls> -mthumb -D__LPT230__ -DHF_OTA_SUPPORT  --include=mbed_config.h -DTOOLCHAIN_GCC_ARM -DLWIP_TIMEVAL_PRIVATE=0</MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\sdk\4.13\include;..\..\sdk\4.13\include\hsf;..\..\sdk\4.13\include\hal\api;..\..\sdk\4.13\include\hal\targets\cmsis;..\..\sdk\4.13\include\rtos\rtx\TARGET_CORTEX_M;..\..\sdk\4.13\include\lwip-wifi\arch;..\..\sdk\4.13\include\lwip-sys;..\..\thirdpartylib\JingDong;..\..\thirdpartylib\JingDong\joylink_smnt;..\..\thirdpartylib\JingDong\jsmn;..\..\thirdpartylib\JingDong\json;..\..\thirdpartylib\JingDong\auth;..\..\thirdpartylib\HFService</IncludePath>
+              <IncludePath>..\..\sdk\4.13\include;..\..\sdk\4.13\include\hsf;..\..\sdk\4.13\include\hal\api;..\..\sdk\4.13\include\hal\targets\cmsis;..\..\sdk\4.13\include\rtos\rtx\TARGET_CORTEX_M;..\..\sdk\4.13\include\lwip-wifi\arch;..\..\sdk\4.13\include\lwip-sys;..\..\thirdpartylib\JingDong;..\..\thirdpartylib\JingDong\joylink_smnt;..\..\thirdpartylib\JingDong\jsmn;..\..\thirdpartylib\JingDong\json;..\..\thirdpartylib\JingDong\auth;..\..\thirdpartylib\HFService;..\..\thirdpartylib\JingDong\config</IncludePath>
             </VariousControls>
           </Carm>
           <Aarm>
@@ -361,11 +361,6 @@
               <FilePath>..\..\thirdpartylib\JingDong\packets.c</FilePath>
             </File>
             <File>
-              <FileName>aes.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\thirdpartylib\JingDong\auth\aes.c</FilePath>
-            </File>
-            <File>
               <FileName>crc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\thirdpartylib\JingDong\auth\crc.c</FilePath>
@@ -404,6 +399,46 @@
               <FileName>joylink_auth_uECC.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\thirdpartylib\JingDong\jsmn\joylink_auth_uECC.c</FilePath>
+            </File>
+            <File>
+              <FileName>joylink_json.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\thirdpartylib\JingDong\json\joylink_json.c</FilePath>
+            </File>
+            <File>
+              <FileName>joylink_probe.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\thirdpartylib\JingDong\config\joylink_probe.c</FilePath>
+            </File>
+            <File>
+              <FileName>joylink_thunder_slave_sdk.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\thirdpartylib\JingDong\config\joylink_thunder_slave_sdk.c</FilePath>
+            </File>
+            <File>
+              <FileName>joylink_aes.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\thirdpartylib\JingDong\auth\joylink_aes.c</FilePath>
+            </File>
+            <File>
+              <FileName>joylink_cloud_log.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\thirdpartylib\JingDong\softap\joylink_cloud_log.c</FilePath>
+            </File>
+            <File>
+              <FileName>joylink_dev_active.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\thirdpartylib\JingDong\softap\joylink_dev_active.c</FilePath>
+            </File>
+            <File>
+              <FileName>joylink_softap.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\thirdpartylib\JingDong\softap\joylink_softap.c</FilePath>
+            </File>
+            <File>
+              <FileName>joylink_softap_start.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\thirdpartylib\JingDong\softap\joylink_softap_start.c</FilePath>
             </File>
           </Files>
         </Group>

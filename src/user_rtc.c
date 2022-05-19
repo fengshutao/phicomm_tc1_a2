@@ -25,8 +25,8 @@ USER_FUNC void rtc_thread_func(void * arg){
     ntptime_succeed=0;
     struct tm * t_t;
     time_t t;  
-  t=1546272000;  //2019-01-1 0:0:0
-  t_t=gmtime(&t); //时间结构体
+    t=1546272000;  //2019-01-1 0:0:0
+    t_t=gmtime(&t); //时间结构体
     //u_printf("now time:hour:%d,min:%d,sec:%d\n",t_t->tm_hour,t_t->tm_min,t_t->tm_sec);
     u_printf("rtc_thread started.");
     while(1){
@@ -130,9 +130,8 @@ USER_FUNC void rtc_thread_func(void * arg){
     u_printf("rtc_thread_func exit..");
 }
 
- void USER_FUNC rtctime_timeout_handler( void* arg ){
-     
-    time_t t;  
+void USER_FUNC rtctime_timeout_handler( void* arg ){     
+  time_t t;  
   rtctimes=rtctimes+1;
   t=rtctimes+8*3600;  
   user_time_t=gmtime(&t); //时间结构体

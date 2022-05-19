@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<style>
+.div_c
+{
+	margin-left:50px;
+	margin-right:50px;
+	margin-top:50px;
+	margin-bottom:50px;
+}
+.w_s15_b
+{
+	color:White;
+	font-size:15px;
+	font-weight:bold;
+}
+.sp_60
+{
+	width:10px;
+	height:60px;	
+}
+.lab_4
+{
+	margin-left:70px;
+	margin-right:50px;
+	color:white;
+	font-size:13px;
+}
+.sp_53
+{
+	width:10px;
+	height:53px;	
+}
+.in_body
+{
+	margin-top:0px;
+	margin-left:0px;
+	margin-right:0px;
+	margin-bottom:0px;
+	background-color:transparent;
+}
+.btn
+{
+	width:66px;
+	height:27px;
+	border-style:none;
+	border-radius:3px 3px 3px 3px;
+	font-size:14px;
+	color:#0163AC;
+	cursor:pointer;
+}
+.r20
+{
+	margin-right:20px;
+}
+</style>
+</head>
+<body class="in_body">
+    <div class="div_c" style="font-family:Arial">
+        <form name= "form_restart" method="post" action="success_en.html">
+		<INPUT type=hidden name=HF_PROCESS_CMD value=RESTART>
+        <div style="height:400px">
+            <font class="w_s15_b">Restart Device</font>
+            <div class="sp_60"></div>
+            <div class="lab_4">Important notice:<br /><br />After restart, you will need to re-login the configuration interface.It is recommended to restart after completing all configurations.<br />Restart will interrupt the network for a very short period, are you sure to restart now?</div>
+            <div class="sp_53"></div>
+            <div class="lab_4"><input onclick="submit()" type="button" class="btn r20" value="OK"/><input type="button" class="btn" value="Back" onclick="window.parent.child_cn(1)"/></div>
+        </div>
+		</form>
+    </div>
+</body>
+</html>

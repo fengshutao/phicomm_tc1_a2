@@ -141,7 +141,7 @@ static void MQTTClient_thread(void *arg)
 				goto MQTT_END;
 			}
 			
-			//Ó¦ÓÃ²ãÊµÏÖping¹¦ÄÜ ·ÀÖ¹ mqttÒì³£¶Ï¿ª
+			//Ó¦ï¿½Ã²ï¿½Êµï¿½ï¿½pingï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ö¹ mqttï¿½ì³£ï¿½Ï¿ï¿½
 			if(hfsys_get_time() - ping_time > (MQTTConnectData.keepAliveInterval-10)*1000)
 			{
 				ping_time = hfsys_get_time();
