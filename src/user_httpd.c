@@ -12,10 +12,13 @@
 #include "cJSON/cJSON.h"
 #include "user_function.h"
 #include "user_mqtt.h"
+#include "user_rtc.h"
 
 #define HFEASY_VERSION_MAJOR 0
 #define HFEASY_VERSION_MINOR 4
 
+extern HF_CONFIG_FILE  g_hf_config_file;
+extern hftimer_handle_t user_rtc_timer;
 web_info_data_t web_config_info;
 
 enum
@@ -261,6 +264,7 @@ void status_cbk(char *url, char *rsp)
 	cJSON *json_plug_send = cJSON_CreateObject();
 	cJSON *json_mqtt_send = cJSON_CreateObject();
 	cJSON *json_wifi_send = cJSON_CreateObject();
+	cJSON *json_config_send = cJSON_CreateObject();
 	cJSON *json_send = cJSON_CreateObject();
 
 	cJSON_AddStringToObject(json_send, "plug", send_buf);
@@ -275,14 +279,26 @@ void status_cbk(char *url, char *rsp)
 
 	cJSON_AddStringToObject(json_wifi_send, "mac", mac);
 	cJSON_AddStringToObject(json_wifi_send, "ip", ip_str);
+	cJSON_AddStringToObject(json_wifi_send, "ssid", (char*) g_hf_config_file.sta_ssid);
+	cJSON_AddStringToObject(json_wifi_send, "password", (char*) g_hf_config_file.sta_key);
+	char time_s[20] = {0};
+	get_time_string(time_s);
+	cJSON_AddStringToObject(json_wifi_send, "time", time_s);
+
 	cJSON_AddItemToObject(json_send, "wifi", json_wifi_send);
 
 	struct MQTT_PRA g_mqtt_config = get_mqtt_pra();
 	cJSON_AddStringToObject(json_mqtt_send, "ip", g_mqtt_config.seraddr);
+	cJSON_AddStringToObject(json_mqtt_send, "sub_topic", g_mqtt_config.sub_topic);
 	cJSON_AddItemToObject(json_send, "mqtt", json_mqtt_send);
+	// hfwifi_sta_get_current_bssid
+
+	get_user_config_info(json_config_send);
+	cJSON_AddItemToObject(json_send, "config", json_config_send);
 
 	char *out = cJSON_Print(json_send);
 	strcpy(rsp, out);
+	cJSON_Delete(json_send);
 	free(power_temp_buf);
 	free(send_buf);
 }

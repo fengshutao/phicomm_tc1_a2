@@ -103,11 +103,11 @@ void USER_FUNC key_long_press( void )
         u_printf("plug=%d---",u_config.plug[i].on );
 }
 
-// void USER_FUNC key_long_5s_press( void )
-// {
-//     // OSStatus err;
-//     char i = 0;
-//     // os_log( "WARNGIN: user params restored!" );
+void USER_FUNC key_long_5s_press( void )
+{
+    // OSStatus err;
+    // char i = 0;
+    // os_log( "WARNGIN: user params restored!" );
 //    for ( i = 0; i < 3; i++ )
 //    {
 //         user_led_set( 1 );
@@ -116,11 +116,11 @@ void USER_FUNC key_long_press( void )
 //         user_led_set( 0 );
 //         msleep(100);
 //    }
-// //
-//     //appRestoreDefault_callback( user_config, sizeof(user_config_t) );
-//     ////sys_config->micoSystemConfig.ssid[0] = 0;
-//     //mico_system_context_update( mico_system_context_get( ) );
-// }
+//
+    //appRestoreDefault_callback( user_config, sizeof(user_config_t) );
+    ////sys_config->micoSystemConfig.ssid[0] = 0;
+    //mico_system_context_update( mico_system_context_get( ) );
+}
 void USER_FUNC key_short_press( void )
 {
     int i;
