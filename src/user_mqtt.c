@@ -7,7 +7,7 @@
 #define MQTT_DEBUG_LEVEL 5
 
 
-static struct MQTT_PRA g_mqtt_config;
+MQTT_CONFIG g_mqtt_config;
 static Client MQTTCli;
 static int mqtt_is_connected = 0;
 
@@ -16,7 +16,7 @@ static int mqtt_is_connected = 0;
 #define MQTTCli_Command_Timeout_MS 		1000
 #define MQTTCli_KeepAliveInterval_S 			120
 
-struct MQTT_PRA get_mqtt_pra(void)
+MQTT_CONFIG get_mqtt_pra(void)
 {
 	return g_mqtt_config;
 }
@@ -66,8 +66,6 @@ static void topic_message_callback(MessageData* md)
 	hfmem_free(data);
 }
 
-
-
 static void MQTTClient_thread(void *arg)
 {	
 	int ping_time=0;
@@ -108,7 +106,7 @@ static void MQTTClient_thread(void *arg)
 		}
 		else
 			MQTTConnectData.willFlag = 0;
-		MQTTConnectData.MQTTVersion = g_mqtt_config.mqtt_ver;
+		MQTTConnectData.MQTTVersion = g_mqtt_config.mqtt_config.mqtt_ver;
 		MQTTConnectData.clientID.cstring = g_mqtt_config.clientid;
 		MQTTConnectData.username.cstring = g_mqtt_config.username;
 		MQTTConnectData.password.cstring = g_mqtt_config.password;
@@ -193,22 +191,12 @@ static void mqtt_start(void)
 	mqtt_init=1;
 }
 
-static unsigned char crc_calc(unsigned char *data, int len)
-{
-	unsigned int crc = 0;
-	int i;
-	for(i=0; i<len; i++)
-		crc += data[i];
-
-	return crc;
-}
-
-static void default_mqtt_config(struct MQTT_PRA *mqtt)
+static void default_mqtt_config(MQTT_CONFIG *mqtt)
 {
 	char mac[21] = {0};
 	hfnet_get_mac_address(mac);
 
-	memset((char *)mqtt, 0, sizeof(struct MQTT_PRA));
+	memset((char *)mqtt, 0, sizeof(MQTT_CONFIG));
 	strcpy(mqtt->seraddr, "192.168.64.201");
 	mqtt->port = 1883;
 	strcpy(mqtt->clientid, mac);
@@ -221,11 +209,11 @@ static void default_mqtt_config(struct MQTT_PRA *mqtt)
 	mqtt->mqtt_ver = 4;
 }
 
-static void save_mqtt_config(struct MQTT_PRA *mqtt)
+static void save_mqtt_config(MQTT_CONFIG *mqtt)
 {
 	mqtt->magic_head = MQTT_MAGIC_HEAD;
-	mqtt->crc = crc_calc((unsigned char *)mqtt, sizeof(struct MQTT_PRA)-1);
-	hffile_userbin_write(MQTT_CONFIG_USERBIN_ADDR, (char *)mqtt, sizeof(struct MQTT_PRA));
+	mqtt->crc = crc_calc((unsigned char *)mqtt, sizeof(MQTT_CONFIG)-1);
+	hffile_userbin_write(MQTT_CONFIG_USERBIN_ADDR, (char *)mqtt, sizeof(MQTT_CONFIG));
 }
 
 int hf_atcmd_mqclientid(pat_session_t s,int argc,char *argv[],char *rsp,int len)
@@ -460,7 +448,7 @@ int hf_atcmd_mqver(pat_session_t s,int argc,char *argv[],char *rsp,int len)
 {
 	if(argc == 0)
 	{
-		sprintf(rsp, "=%d", g_mqtt_config.mqtt_ver);
+		sprintf(rsp, "=%d", g_mqtt_config.mqtt_config.mqtt_ver);
 	}
 	else if(argc == 1)
 	{
@@ -468,7 +456,7 @@ int hf_atcmd_mqver(pat_session_t s,int argc,char *argv[],char *rsp,int len)
 		if(ver != 3 && ver != 4)
 			return -4;
 
-		g_mqtt_config.mqtt_ver = ver ;
+		g_mqtt_config.mqtt_config.mqtt_ver = ver ;
 		save_mqtt_config(&g_mqtt_config);
 	}
 	else
@@ -504,36 +492,18 @@ int hf_atcmd_mqwill(pat_session_t s,int argc,char *argv[],char *rsp,int len)
 
 void mqtt_para_init(void)
 {
-	// unsigned char crc;
-	// memset((char *)&g_mqtt_config, 0, sizeof(struct MQTT_PRA));
-	// hffile_userbin_read(MQTT_CONFIG_USERBIN_ADDR, (char *)&g_mqtt_config, sizeof(struct MQTT_PRA));
-	// crc = crc_calc((unsigned char *)&g_mqtt_config, sizeof(struct MQTT_PRA)-1);
-	// if(MQTT_MAGIC_HEAD == g_mqtt_config.magic_head && crc == g_mqtt_config.crc)
-	// {
-	// 	u_printf("[MQTT] mqtt config read success\r\n");
-	// 	u_printf("[MQTT] mqtt version: %d\r\n", g_mqtt_config.mqtt_ver);
-	// 	u_printf("[MQTT] mqtt ip: %s, port: %d\r\n", g_mqtt_config.seraddr, g_mqtt_config.port);
-	// 	u_printf("[MQTT] mqtt clientid: %s\r\n", g_mqtt_config.clientid);
-	// 	u_printf("[MQTT] mqtt username: %s\r\n", g_mqtt_config.username);
-	// 	u_printf("[MQTT] mqtt password: %s\r\n", g_mqtt_config.password);
-	// 	if(g_mqtt_config.enable_sub)
-	// 	{
-	// 		u_printf("[MQTT] mqtt subscribe topic: %s\r\n", g_mqtt_config.sub_topic);
-	// 		u_printf("[MQTT] mqtt subscribe qos: %d\r\n", g_mqtt_config.sub_qos);
-	// 	}
-	// 	if(strlen(g_mqtt_config.will_topic) > 0 && strlen(g_mqtt_config.will_msg) > 0)
-	// 	{
-	// 		u_printf("[MQTT] mqtt will topic: %s\r\n", g_mqtt_config.will_topic);
-	// 		u_printf("[MQTT] mqtt will message: %s\r\n", g_mqtt_config.will_msg);
-	// 	}
-	// }
-	// else
-	// {
-		u_printf("[MQTT] mqtt config read failed, reinit\r\n");
-		
+	unsigned char crc;
+	memset((char *)&g_mqtt_config, 0, sizeof(MQTT_CONFIG));
+	hffile_userbin_read(MQTT_CONFIG_USERBIN_ADDR, (char *)&g_mqtt_config, sizeof(MQTT_CONFIG));
+	crc = crc_calc((unsigned char *)&g_mqtt_config, sizeof(MQTT_CONFIG)-1);
+	if(MQTT_MAGIC_HEAD == g_mqtt_config.magic_head && crc == g_mqtt_config.crc)
+	{
+	}
+	else
+	{
 		default_mqtt_config(&g_mqtt_config);
 		save_mqtt_config(&g_mqtt_config);
-	// }
+	}
     mqtt_start();
 }
 

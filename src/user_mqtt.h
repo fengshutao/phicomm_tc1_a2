@@ -7,49 +7,17 @@ extern "C" {
 #endif
 
 #include "hsf.h"
-
-
-#define MQTT_CONFIG_USERBIN_ADDR		0
-
-
-#define MQTT_SERADDR_MAX_LEN			128
-#define MQTT_CLIENTID_MAX_LEN			128
-#define MQTT_USERNAME_MAX_LEN		128
-#define MQTT_PASSWORD_MAX_LEN		128
-#define MQTT_TOPIC_MAX_LEN			128
-#define MQTT_MESSAGE_MAX_LEN			128
-
-
-#define MQTT_MAGIC_HEAD 0x5A5AA5A5
+#include "user_config.h"
 
 #pragma pack(push)
 #pragma pack(1)
-
-struct MQTT_PRA
-{
-	unsigned int magic_head;
-	char seraddr[MQTT_SERADDR_MAX_LEN+1];
-	unsigned short port;
-	char clientid[MQTT_CLIENTID_MAX_LEN+1];
-	char username[MQTT_USERNAME_MAX_LEN+1];
-	char password[MQTT_PASSWORD_MAX_LEN+1];
-	unsigned char enable_sub;
-	char sub_topic[MQTT_TOPIC_MAX_LEN+1]; //for at+mqautosub topic
-	char topic[MQTT_TOPIC_MAX_LEN+1];  //for at+mqsubscribe topic
-	unsigned char sub_qos;
-	unsigned char mqtt_ver;
-	char will_topic[MQTT_TOPIC_MAX_LEN+1];
-	char will_msg[MQTT_MESSAGE_MAX_LEN+1];
-	char pub_topic[MQTT_TOPIC_MAX_LEN+1];
-	unsigned char crc;
-};
 
 #pragma pack(pop)
 
 
 void mqtt_para_init(void);
 
-struct MQTT_PRA get_mqtt_pra(void);
+MQTT_CONFIG get_mqtt_pra(void);
 
 //MQTT AT cmd
 int hf_atcmd_mqclientid(pat_session_t s,int argc,char *argv[],char *rsp,int len);
