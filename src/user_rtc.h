@@ -12,9 +12,9 @@ USER_FUNC void rtc_thread_func(void * arg);
 int printtime();
 
 void update_rtctime();
+void update_time();
 void get_time_string(char*,int);
 void get_user_config_info(cJSON*);
-extern struct tm * user_time_t;  
 
 
 #endif

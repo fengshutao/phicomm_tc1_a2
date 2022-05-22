@@ -411,7 +411,6 @@ int USER_FUNC app_main (void)
     httpd_init();
     
     hfnet_get_mac_address(strMac);
-    u_printf("local mac:%s\n", strMac);  
     hfgpio_fset_out_low(LED);
     while(!hfnet_wifi_is_active())
     {

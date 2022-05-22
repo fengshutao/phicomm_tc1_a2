@@ -22,58 +22,30 @@ Dialog DLL:      TCM.DLL V1.14.6.0
  
 <h2>Project:</h2>
 E:\iot\ºº·ã\develop\phicomm_tc1_a2\projects\LPT230_gcc.uvprojx
-Project File Date:  05/19/2022
+Project File Date:  05/22/2022
 
 <h2>Output:</h2>
 Build target 'LPT230'
-compiling user_mdns.c...
-../src/user_mdns.c(11): warning: 'txt_record' defined but not used [-Wunused-variable]
- static char txt_record[] = "name=TC1_A2:model=com.iotserv.devices.phicomm_tc1_a1:mac=GHS00GG:id=GHS00GG";//max len is 255
-compiling user_power.c...
-compiling user_config.c...
-compiling user_udp.c...
-../src/user_udp.c: In function 'udp_thread':
-../src/user_udp.c(38): warning: variable 'maxfd' set but not used [-Wunused-but-set-variable]
-../src/user_udp.c(36): warning: variable 'err' set but not used [-Wunused-but-set-variable]
-../src/user_udp.c(33): warning: variable 'timeout' set but not used [-Wunused-but-set-variable]
 compiling user_rtc.c...
-compiling user_function.c...
-compiling app_main.c...
-compiling user_httpd.c...
-../src/user_httpd.c: In function 'switch_cbk':
-../src/user_httpd.c(248): warning: implicit declaration of function 'json_plug_analysis' [-Wimplicit-function-declaration]
-../src/user_httpd.c(245): warning: variable 'update_user_config_flag' set but not used [-Wunused-but-set-variable]
-../src/user_httpd.c: In function 'status_cbk':
-../src/user_httpd.c(264): warning: unused variable 'json_plug_send' [-Wunused-variable]
-../src/user_httpd.c: In function 'httpd_init':
-../src/user_httpd.c(310): warning: implicit declaration of function 'hfhttpd_url_callback_register' [-Wimplicit-function-declaration]
-../src/user_httpd.c: At top level:
-../src/user_httpd.c(47): warning: 'convert_ascii' defined but not used [-Wunused-function]
-compiling user_gpio.c...
-../src/user_gpio.c: In function 'key_timeout_handler':
-../src/user_gpio.c(181): warning: implicit declaration of function 'user_function_cmd_received' [-Wimplicit-function-declaration]
-                 user_function_cmd_received(1, "{\"cmd\":\"device report\"}");
-../src/user_gpio.c(143): warning: unused variable 'key_trigger' [-Wunused-variable]
-compiling user_mqtt.c...
 linking...
 After Build - User command #1: ../tools/arm-none-eabi-objcopy -O binary ./lpt230_gcc.elf ./lpt230_gcc.bin
 After Build - User command #2: ../tools/LPB100_IMG_Tools.exe LPB230 lzma  ../tools/bootloader.bin lpt230_gcc.bin ./lpt230_gcc_image.bin ./lpt230_gcc_upgrade.bin
 LZMA 16.04 : Igor Pavlov : Public domain : 2016-10-04
-Input size:  533952 (0 MiB)
-                                                                Output size: 330096 (0 MiB)
+Input size:  533944 (0 MiB)
+                                                                Output size: 330060 (0 MiB)
 LZMA 16.04 : Igor Pavlov : Public domain : 2016-10-04
-Input size:  330096 (0 MiB)
-                                                                Output size: 533952 (0 MiB)
-Firmware:		crc32=fb43a9eb size=533952
-Hiflying OTA file:	crc32=febf4c88 size=330096
-".\lpt230_gcc.elf" - 0 Error(s), 11 Warning(s).
+Input size:  330060 (0 MiB)
+                                                                Output size: 533944 (0 MiB)
+Firmware:		crc32=31645370 size=533944
+Hiflying OTA file:	crc32=15cab82d size=330060
+".\lpt230_gcc.elf" - 0 Error(s), 0 Warning(s).
 
 <h2>Collection of Component include folders:</h2>
   E:\iot\ºº·ã\develop\phicomm_tc1_a2\projects\RTE
   C:\Keil_v5\ARM\PACK\ARM\CMSIS\4.5.0\Device\ARM\ARMCM4\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:04
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>

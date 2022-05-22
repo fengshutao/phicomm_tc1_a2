@@ -17,8 +17,6 @@
 #define HFEASY_VERSION_MAJOR 0
 #define HFEASY_VERSION_MINOR 4
 
-extern HF_CONFIG_FILE  g_hf_config_file;
-extern hftimer_handle_t user_rtc_timer;
 web_info_data_t web_config_info;
 
 enum
@@ -285,10 +283,8 @@ void status_cbk(char *url, char *rsp)
 	char time_s[20] = {0};
 	get_time_string(time_s,20);
 	cJSON_AddStringToObject(json_wifi_send, "time", time_s);
-
 	cJSON_AddItemToObject(json_send, "wifi", json_wifi_send);
 
-	// MQTT_CONFIG user_mqtt_config = get_mqtt_pra();
 	cJSON_AddStringToObject(json_mqtt_send, "ip", user_mqtt_config.seraddr);
 	cJSON_AddStringToObject(json_mqtt_send, "sub_topic", user_mqtt_config.sub_topic);
 	cJSON_AddItemToObject(json_send, "mqtt", json_mqtt_send);

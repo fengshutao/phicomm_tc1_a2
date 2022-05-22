@@ -10,7 +10,6 @@
 
 #define TIMER1_ID (1) //定时器id
 
-char ntpserver[] = "ntp1.aliyun.com";
 
 uint8_t key_time = 0;
 #define BUTTON_LONG_PRESS_TIME 10 //

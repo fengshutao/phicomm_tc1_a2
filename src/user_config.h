@@ -35,15 +35,16 @@ typedef struct _TASK_CONFIG
 {
     unsigned short hour;   //小时
     unsigned short minute; //分钟
+    unsigned short second; //秒钟
     unsigned short action; //动作
     unsigned short enable; //开关
-    uint8_t repeat;        // bit7:一次   bit6-0:周日-周一
+    uint8_t repeat[8]; 
 } TASK_CONFIG;
 
 typedef struct _PLUG_CONFIG
 {
     char name[PLUG_NAME_LENGTH];
-    unsigned short status; //记录当前开关
+    // unsigned short status; //记录当前开关
     TASK_CONFIG task[PLUG_TIME_TASK_NUM];
 } PLUG_CONFIG;
 
@@ -72,14 +73,26 @@ typedef struct _USER_CONFIG
     PLUG_CONFIG *plug;
 } USER_CONFIG;
 
+extern HF_CONFIG_FILE g_hf_config_file;
 unsigned short plug_status[PLUG_NUM];
 USER_CONFIG user_config;
 MQTT_CONFIG user_mqtt_config;
 PLUG_CONFIG user_plug_config[PLUG_NUM];
 
+///extern char rtc_init;
+char strMac[13];
+char strIp[32];
+uint32_t power;
+char deviceid[32];
+char ntpserver[] = "ntp1.aliyun.com";
+
 void user_config_init(void);
 unsigned char crc_calc(unsigned char *, int);
 void get_user_config_str(char *);
 void get_user_config_simple_str(char *);
+
+bool update_mqtt_config_flag = false;
+bool update_plug_config_flag = false;
+bool update_plug_status_flag = false;
 
 #endif

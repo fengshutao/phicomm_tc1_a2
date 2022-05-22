@@ -17,8 +17,6 @@ extern "C" {
 
 void mqtt_para_init(void);
 
-MQTT_CONFIG get_mqtt_pra(void);
-
 //MQTT AT cmd
 int hf_atcmd_mqclientid(pat_session_t s,int argc,char *argv[],char *rsp,int len);
 

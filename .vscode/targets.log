@@ -8,7 +8,7 @@ make.exe CFLAGS="-I/e/iot/汉枫/develop/phicomm_tc1_a2/sdk/4.13/include/ -I/e/i
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu May 19 12:08:19 2022
+# Make data base, printed on Sun May 22 22:16:08 2022
 
 # Variables
 
@@ -29,7 +29,8 @@ VSCODE_LOG_NATIVE = false
 # automatic
 ?D = $(patsubst %/,%,$(patsubst %\,%,$(dir $?)))
 # environment
-WEBSTORM_VM_OPTIONS = D:\Software\JetBrains\ja-netfilter-all\vmoptions\webstorm.vmoptions
+WEBSTORM_VM_OPTION 
+S = D:\Software\JetBrains\ja-netfilter-all\vmoptions\webstorm.vmoptions
 # automatic
 @D = $(patsubst %/,%,$(patsubst %\,%,$(dir $@)))
 # environment
@@ -60,9 +61,10 @@ ONEDRIVE = C:\Users\zPC\OneDrive - Office
 MAVEN_HOME = D:\Software\Java\java-photon\apache-maven-3.5.4
 # environment
 PATHEXT = .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW
-# mak 
-efile (from '../Makefile.mk', line 1)
+# makefile (from '../Makefile.mk', line 1)
 MAKEFILE_LIST :=  Makefile ../Makefile.mk
+# environment
+FPS_BROWSER_USER_PROFILE_STRING = Default
 # environment
 TMP = C:\Users\zPC\AppData\Local\Temp
 # environment
@@ -76,7 +78,7 @@ PROGRAMDATA = C:\ProgramData
 # environment
 WEBIDE_VM_OPTIONS = D:\Software\JetBrains\ja-netfilter-all\vmoptions\webide.vmoptions
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-1c466831-68c9-4935-901a-074eaddc9aa7-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-1d4be1c6-7d9f-4b7e-8368-aebc8144d0c1-sock
 # environment
 VSCODE_CWD = D:\Software\Tools\Microsoft VS Code
 # default
@@ -126,7 +128,7 @@ INTELLIJ IDEA = D:\Software\JetBrains\IntelliJ IDEA 2022.1\bin;
 # automatic
 %F = $(notdir $%)
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_5368_SPMSRCCMPUJDZHWO
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_15268_GTVXXYPXTMWXSTAU
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
@@ -154,7 +156,7 @@ HOME = C:\Users\zPC
 # environment
 RIDER_VM_OPTIONS = D:\Software\JetBrains\ja-netfilter-all\vmoptions\rider.vmoptions
 # environment
-VSCODE_CODE_CACHE_PATH = C:\Users\zPC\AppData\Roaming\Code\CachedData\da15b6fd3ef856477bf6f4fb29ba1b7af717770d
+VSCODE_CODE_CACHE_PATH = C:\Users\zPC\AppData\Roaming\Code\CachedData\c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5
 # environment
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # environment
@@ -216,7 +218,7 @@ PROCESSOR_IDENTIFIER = AMD64 Family 25 Model 33 Stepping 0, AuthenticAMD
 # environment
 OS = Windows_NT
 # environment
-VSCODE_IPC_HOOK = \\.\pipe\58aec84ced3fbd5b26d1d3a3c59b7666-1.67.1-main-sock
+VSCODE_IPC_HOOK = \\.\pipe\58aec84ced3fbd5b26d1d3a3c59b7666-1.67.2-main-sock
 # environment
 HOMEPATH = \Users\zPC
 # environment
@@ -290,11 +292,13 @@ PROCESSOR_LEVEL = 25
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 5368
+FPS_BROWSER_APP_PROFILE_STRING = Internet Explorer
+# environment
+VSCODE_PID = 15268
 # environment
 USERDOMAIN_ROAMINGPROFILE = DESKTOP-FS22IU3
 # variable set hash-table stats:
-# Load=140/1024=14%, Rehash=0, Collisions=26/175=15%
+# Load=142/1024=14%, Rehash=0, Collisions=26/177=15%
 
 # Pattern-specific Variable Values
 
@@ -302,9 +306,9 @@ USERDOMAIN_ROAMINGPROFILE = DESKTOP-FS22IU3
 
 # Directories
 
-# . (key e:/iot/����/develop/phicomm_tc1_a2/src, mtime 1652886041): 24 files, no impossibilities.
+# . (key e:/iot/����/develop/phicomm_tc1_a2/src, mtime 1653212630): 26 files, no impossibilities.
 
-# 24 files, no impossibilities in 1 directories.
+# 26 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -409,13 +413,13 @@ clean:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 36 / storage = 367 B / avg = 10 B
-# current buf: size = 8162 B / used = 367 B / count = 36 / avg = 10 B
+# strcache buffers: 1 (0) / strings = 38 / storage = 395 B / avg = 10 B
+# current buf: size = 8162 B / used = 395 B / count = 38 / avg = 10 B
 
-# strcache performance: lookups = 45 / hit rate = 20%
+# strcache performance: lookups = 47 / hit rate = 19%
 # hash-table stats:
-# Load=36/8192=0%, Rehash=0, Collisions=1/45=2%
-# Finished Make data base on Thu May 19 12:08:19 2022
+# Load=38/8192=0%, Rehash=0, Collisions=1/47=2%
+# Finished Make data base on Sun May 22 22:16:08 2022
 
  
 # GNU Make 4.2.1
@@ -425,7 +429,7 @@ clean:
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu May 19 12:08:19 2022
+# Make data base, printed on Sun May 22 22:16:08 2022
 
 # Variables
 
@@ -483,6 +487,8 @@ PATHEXT = .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW
 # makefile (from 'Makefile.mk', line 1)
 MAKEFILE_LIST :=  Makefile Makefile.mk
 # environment
+FPS_BROWSER_USER_PROFILE_STRING = Default
+# environment
 TMP = C:\Users\zPC\AppData\Local\Temp
 # environment
 VSCODE_VERBOSE_LOGGING = true
@@ -495,7 +501,7 @@ PROGRAMDATA = C:\ProgramData
 # environment
 WEBIDE_VM_OPTIONS = D:\Software\JetBrains\ja-netfilter-all\vmoptions\webide.vmoptions
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-1c466831-68c9-4935-901a-074eaddc9aa7-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-1d4be1c6-7d9f-4b7e-8368-aebc8144d0c1-sock
 # environment
 VSCODE_CWD = D:\Software\Tools\Microsoft VS Code
 # default
@@ -547,7 +553,7 @@ INTELLIJ IDEA = D:\Software\JetBrains\IntelliJ IDEA 2022.1\bin;
 # automatic
 %F = $(notdir $%)
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_5368_SPMSRCCMPUJDZHWO
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_15268_GTVXXYPXTMWXSTAU
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
@@ -577,7 +583,7 @@ RIDER_VM_OPTIONS = D:\Software\JetBrains\ja-netfilter-all\vmoptions\rider.vmopti
 # makefile (from 'Makefile', line 35)
 ARCH_FLAGS = -mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=softfp
 # environment
-VSCODE_CODE_CACHE_PATH = C:\Users\zPC\AppData\Roaming\Code\CachedData\da15b6fd3ef856477bf6f4fb29ba1b7af717770d
+VSCODE_CODE_CACHE_PATH = C:\Users\zPC\AppData\Roaming\Code\CachedData\c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5
 # makefile (from 'Makefile', line 46)
 EXAMPLE_NAME = null
 # environment
@@ -641,7 +647,7 @@ PROCESSOR_IDENTIFIER = AMD64 Family 25 Model 33 Stepping 0, AuthenticAMD
 # environment
 OS = Windows_NT
 # environment
-VSCODE_IPC_HOOK = \\.\pipe\58aec84ced3fbd5b26d1d3a3c59b7666-1.67.1-main-sock
+VSCODE_IPC_HOOK = \\.\pipe\58aec84ced3fbd5b26d1d3a3c59b7666-1.67.2-main-sock
 # environment
 HOMEPATH = \Users\zPC
 # environment
@@ -715,11 +721,13 @@ LANG = C
 # environment
 PROCESSOR_LEVEL = 25
 # environment
-VSCODE_PID = 5368
+FPS_BROWSER_APP_PROFILE_STRING = Internet Explorer
+# environment
+VSCODE_PID = 15268
 # environment
 USERDOMAIN_ROAMINGPROFILE = DESKTOP-FS22IU3
 # variable set hash-table stats:
-# Load=144/1024=14%, Rehash=0, Collisions=50/322=16%
+# Load=146/1024=14%, Rehash=0, Collisions=50/324=15%
 
 # Pattern-specific Variable Values
 
@@ -727,9 +735,9 @@ USERDOMAIN_ROAMINGPROFILE = DESKTOP-FS22IU3
 
 # Directories
 
-# . (key e:/iot/����/develop/phicomm_tc1_a2, mtime 1652625564): 18 files, no impossibilities.
+# . (key e:/iot/����/develop/phicomm_tc1_a2, mtime 1652940979): 19 files, no impossibilities.
 
-# 18 files, no impossibilities in 1 directories.
+# 19 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -878,14 +886,15 @@ asm:
 
 # No 'vpath' search paths.
 
-# No general ('VPATH' variable) search path.
+# No general ('VPATH' varia 
+ble) search path.
 
-# strcache buffers: 1 (0) / strings = 33 / storage = 341 B / avg = 10 B
-# current buf: size = 8162 B / used = 341 B / count = 33 / avg = 10 B
+# strcache buffers: 1 (0) / strings = 34 / storage = 352 B / avg = 10 B
+# current buf: size = 8162 B / used = 352 B / count = 34 / avg = 10 B
 
-# strcache performance: lookups = 48 / hit rate = 31%
+# strcache performance: lookups = 49 / hit rate = 30%
 # hash-table stats:
-# Load=33/8192=0%, Rehash=0, Collisions=1/48=2%
-# Finished Make data base on Thu May 19 12:08:19 2022
+# Load=34/8192=0%, Rehash=0, Collisions=1/49=2%
+# Finished Make data base on Sun May 22 22:16:08 2022
 
  
