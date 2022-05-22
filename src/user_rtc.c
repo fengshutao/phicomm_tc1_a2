@@ -40,7 +40,7 @@ USER_FUNC void rtc_thread_func(void *arg)
         {
             for (j = 0; j < PLUG_TIME_TASK_NUM; j++)
             {
-                if (user_config.plug[i].task[j].status != 0)
+                if (user_config.plug[i].task[j].enable != 0)
                 {
                     uint8_t repeat = user_config.plug[i].task[j].repeat;
                     if (
@@ -57,7 +57,7 @@ USER_FUNC void rtc_thread_func(void *arg)
                         if (repeat == 0x00)
                         {
                             task_flag[i] = j;
-                            user_config.plug[i].task[j].status = 0;
+                            user_config.plug[i].task[j].enable = 0;
                             update_user_config_flag = 1;
                         }
                         //    u_printf("repeat:%d\n",repeat);
@@ -93,7 +93,7 @@ USER_FUNC void rtc_thread_func(void *arg)
                     cJSON_AddNumberToObject(json_send_plug_task, "minute", user_config.plug[i].task[j].minute);
                     cJSON_AddNumberToObject(json_send_plug_task, "repeat", user_config.plug[i].task[j].repeat);
                     cJSON_AddNumberToObject(json_send_plug_task, "action", user_config.plug[i].task[j].action);
-                    cJSON_AddNumberToObject(json_send_plug_task, "on", user_config.plug[i].task[j].status);
+                    cJSON_AddNumberToObject(json_send_plug_task, "on", user_config.plug[i].task[j].enable);
                     cJSON_AddItemToObject(json_send_plug_setting, strTemp2, json_send_plug_task);
                     cJSON_AddItemToObject(json_send_plug, "setting", json_send_plug_setting);
 
@@ -194,7 +194,7 @@ void get_user_config_info(cJSON *json_send)
             cJSON_AddNumberToObject(json_send_plug_task, "minute", user_config.plug[i].task[j].minute);
             cJSON_AddNumberToObject(json_send_plug_task, "repeat", user_config.plug[i].task[j].repeat);
             cJSON_AddNumberToObject(json_send_plug_task, "action", user_config.plug[i].task[j].action);
-            cJSON_AddNumberToObject(json_send_plug_task, "on", user_config.plug[i].task[j].status);
+            cJSON_AddNumberToObject(json_send_plug_task, "on", user_config.plug[i].task[j].enable);
             cJSON_AddItemToObject(json_send_plug_setting, strTemp2, json_send_plug_task);
             cJSON_AddItemToObject(json_send_plug, "setting", json_send_plug_setting);
 

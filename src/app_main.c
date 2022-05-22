@@ -385,7 +385,8 @@ int USER_FUNC app_main (void)
 	{
 		HF_Debug(DEBUG_WARN,"start uart fail!\n");
 	}
-	
+
+    user_config_init();
     mqtt_para_init();
 
     //Web Server

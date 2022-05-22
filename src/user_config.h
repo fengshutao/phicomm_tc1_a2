@@ -5,6 +5,7 @@
 #include <hsf.h>
 
 #define VERSION "v0.1"
+#define TYPE 1
 #define TYPE_NAME "TC1A2"
 
 // #define SETTING_MQTT_STRING_LENGTH_MAX 32 //必须 4 字节对齐。
@@ -21,7 +22,6 @@
 
 #define Relay_NUM PLUG_NUM
 
-
 #define MQTT_CONFIG_USERBIN_ADDR 0
 #define MQTT_SERADDR_MAX_LEN 128
 #define MQTT_CLIENTID_MAX_LEN 128
@@ -33,11 +33,11 @@
 
 typedef struct _TASK_CONFIG
 {
-    unsigned short hour;      //小时
-    unsigned short minute;    //分钟
-    unsigned short action;    //动作
-    unsigned short enable;    //开关
-    uint8_t repeat; // bit7:一次   bit6-0:周日-周一
+    unsigned short hour;   //小时
+    unsigned short minute; //分钟
+    unsigned short action; //动作
+    unsigned short enable; //开关
+    uint8_t repeat;        // bit7:一次   bit6-0:周日-周一
 } TASK_CONFIG;
 
 typedef struct _PLUG_CONFIG
@@ -68,12 +68,18 @@ typedef struct _MQTT_CONFIG
 
 typedef struct _USER_CONFIG
 {
-    MQTT_CONFIG* mqtt_config;
-    PLUG_CONFIG* plug[PLUG_NUM];
+    MQTT_CONFIG *mqtt_config;
+    PLUG_CONFIG *plug;
 } USER_CONFIG;
 
+unsigned short plug_status[PLUG_NUM];
 USER_CONFIG user_config;
+MQTT_CONFIG user_mqtt_config;
+PLUG_CONFIG user_plug_config[PLUG_NUM];
 
 void user_config_init(void);
+unsigned char crc_calc(unsigned char *, int);
+void get_user_config_str(char *);
+void get_user_config_simple_str(char *);
 
 #endif

@@ -7,7 +7,6 @@
 #define MQTT_DEBUG_LEVEL 5
 
 
-MQTT_CONFIG g_mqtt_config;
 static Client MQTTCli;
 static int mqtt_is_connected = 0;
 
@@ -18,7 +17,7 @@ static int mqtt_is_connected = 0;
 
 MQTT_CONFIG get_mqtt_pra(void)
 {
-	return g_mqtt_config;
+	return user_mqtt_config;
 }
 
 static void mqtt_status_callback(int connect)
@@ -61,7 +60,7 @@ static void topic_message_callback(MessageData* md)
 
 	sprintf(data, "+MQD:%d,\"%.*s\"\r\n%.*s", (int)md->message->payloadlen, 
 		md->topicName->lenstring.len, md->topicName->lenstring.data, (int)md->message->payloadlen, (char*)md->message->payload);
-	topic_message_publish(g_mqtt_config.pub_topic, data, strlen(data), 0);
+	topic_message_publish(user_mqtt_config.pub_topic, data, strlen(data), 0);
 	hfuart_send(HFUART0, data, strlen(data), 0);
 	hfmem_free(data);
 }
@@ -90,7 +89,7 @@ static void MQTTClient_thread(void *arg)
 		}
 		HF_Debug(MQTT_DEBUG_LEVEL, "connected.\r\n");
 
-		if(SUCCESS != ConnectNetwork(&cliNetwork, g_mqtt_config.seraddr, g_mqtt_config.port))
+		if(SUCCESS != ConnectNetwork(&cliNetwork, user_mqtt_config.seraddr, user_mqtt_config.port))
 		{
 			HF_Debug(MQTT_DEBUG_LEVEL, "TCPSocket connect fail!\r\n");
 			goto MQTT_END;
@@ -98,18 +97,18 @@ static void MQTTClient_thread(void *arg)
 		HF_Debug(MQTT_DEBUG_LEVEL, "TCPSocket connect success.\r\n");
 
 		MQTTClient(&MQTTCli, &cliNetwork, MQTTCli_Command_Timeout_MS, (unsigned char *)MQTTCliBuf, MQTTCliBufLen, (unsigned char *)MQTTCliReadbuf, MQTTCliReadbufLen);
-		if(strlen(g_mqtt_config.will_topic) > 0 && strlen(g_mqtt_config.will_msg) > 0)
+		if(strlen(user_mqtt_config.will_topic) > 0 && strlen(user_mqtt_config.will_msg) > 0)
 		{
 			MQTTConnectData.willFlag = 1;
-			MQTTConnectData.will.topicName.cstring = g_mqtt_config.will_topic;
-			MQTTConnectData.will.message.cstring = g_mqtt_config.will_msg;
+			MQTTConnectData.will.topicName.cstring = user_mqtt_config.will_topic;
+			MQTTConnectData.will.message.cstring = user_mqtt_config.will_msg;
 		}
 		else
 			MQTTConnectData.willFlag = 0;
-		MQTTConnectData.MQTTVersion = g_mqtt_config.mqtt_config.mqtt_ver;
-		MQTTConnectData.clientID.cstring = g_mqtt_config.clientid;
-		MQTTConnectData.username.cstring = g_mqtt_config.username;
-		MQTTConnectData.password.cstring = g_mqtt_config.password;
+		MQTTConnectData.MQTTVersion = user_mqtt_config.mqtt_ver;
+		MQTTConnectData.clientID.cstring = user_mqtt_config.clientid;
+		MQTTConnectData.username.cstring = user_mqtt_config.username;
+		MQTTConnectData.password.cstring = user_mqtt_config.password;
 		MQTTConnectData.keepAliveInterval = MQTTCli_KeepAliveInterval_S;
 		MQTTConnectData.cleansession = 1;
 			
@@ -120,16 +119,16 @@ static void MQTTClient_thread(void *arg)
 		}
 		HF_Debug(MQTT_DEBUG_LEVEL, "MQTTConnect success.\r\n");
 
-		if(g_mqtt_config.enable_sub)
+		if(user_mqtt_config.enable_sub)
 		{
-			if(SUCCESS == MQTTSubscribe(&MQTTCli, g_mqtt_config.sub_topic, g_mqtt_config.sub_qos, topic_message_callback))
-				HF_Debug(MQTT_DEBUG_LEVEL, "Subscribe[%s] success.\r\n", g_mqtt_config.sub_topic);
+			if(SUCCESS == MQTTSubscribe(&MQTTCli, user_mqtt_config.sub_topic, user_mqtt_config.sub_qos, topic_message_callback))
+				HF_Debug(MQTT_DEBUG_LEVEL, "Subscribe[%s] success.\r\n", user_mqtt_config.sub_topic);
 			else
-				HF_Debug(MQTT_DEBUG_LEVEL, "Subscribe[%s] fail!\r\n", g_mqtt_config.sub_topic);
-            if(SUCCESS == MQTTSubscribe(&MQTTCli, "tc1_1", g_mqtt_config.sub_qos, topic_message_callback))
-				HF_Debug(MQTT_DEBUG_LEVEL, "Subscribe[%s] success.\r\n", g_mqtt_config.sub_topic);
+				HF_Debug(MQTT_DEBUG_LEVEL, "Subscribe[%s] fail!\r\n", user_mqtt_config.sub_topic);
+            if(SUCCESS == MQTTSubscribe(&MQTTCli, "tc1_1", user_mqtt_config.sub_qos, topic_message_callback))
+				HF_Debug(MQTT_DEBUG_LEVEL, "Subscribe[%s] success.\r\n", user_mqtt_config.sub_topic);
 			else
-				HF_Debug(MQTT_DEBUG_LEVEL, "Subscribe[%s] fail!\r\n", g_mqtt_config.sub_topic);
+				HF_Debug(MQTT_DEBUG_LEVEL, "Subscribe[%s] fail!\r\n", user_mqtt_config.sub_topic);
 		}
 
 		mqtt_status_callback(1);
@@ -220,14 +219,14 @@ int hf_atcmd_mqclientid(pat_session_t s,int argc,char *argv[],char *rsp,int len)
 {
 	if(argc == 0)
 	{
-		sprintf(rsp, "=%s", g_mqtt_config.clientid);
+		sprintf(rsp, "=%s", user_mqtt_config.clientid);
 	}
 	else if(argc == 1)
 	{
 		if(strlen(argv[0]) > MQTT_CLIENTID_MAX_LEN)
 			return -4;
-		strcpy(g_mqtt_config.clientid, argv[0]);
-		save_mqtt_config(&g_mqtt_config);
+		strcpy(user_mqtt_config.clientid, argv[0]);
+		save_mqtt_config(&user_mqtt_config);
 	}
 	else
 		return -3;
@@ -239,7 +238,7 @@ int hf_atcmd_mqipport(pat_session_t s,int argc,char *argv[],char *rsp,int len)
 {
 	if(argc == 0)
 	{
-		sprintf(rsp, "=%s,%d", g_mqtt_config.seraddr, g_mqtt_config.port);
+		sprintf(rsp, "=%s,%d", user_mqtt_config.seraddr, user_mqtt_config.port);
 	}
 	else if(argc == 2)
 	{
@@ -248,9 +247,9 @@ int hf_atcmd_mqipport(pat_session_t s,int argc,char *argv[],char *rsp,int len)
 		if(atoi(argv[1]) > 65535)
 			return -4;
 		
-		strcpy(g_mqtt_config.seraddr, argv[0]);
-		g_mqtt_config.port = atoi(argv[1]);
-		save_mqtt_config(&g_mqtt_config);
+		strcpy(user_mqtt_config.seraddr, argv[0]);
+		user_mqtt_config.port = atoi(argv[1]);
+		save_mqtt_config(&user_mqtt_config);
 	}
 	else
 		return -3;
@@ -262,7 +261,7 @@ int hf_atcmd_mquserpwd(pat_session_t s,int argc,char *argv[],char *rsp,int len)
 {
 	if(argc == 0)
 	{
-		sprintf(rsp, "=%s,%s", g_mqtt_config.username, g_mqtt_config.password);
+		sprintf(rsp, "=%s,%s", user_mqtt_config.username, user_mqtt_config.password);
 	}
 	else if(argc == 2)
 	{
@@ -271,9 +270,9 @@ int hf_atcmd_mquserpwd(pat_session_t s,int argc,char *argv[],char *rsp,int len)
 		if(strlen(argv[1]) > MQTT_PASSWORD_MAX_LEN)
 			return -4;
 
-		strcpy(g_mqtt_config.username, argv[0]);
-		strcpy(g_mqtt_config.password, argv[1]);
-		save_mqtt_config(&g_mqtt_config);
+		strcpy(user_mqtt_config.username, argv[0]);
+		strcpy(user_mqtt_config.password, argv[1]);
+		save_mqtt_config(&user_mqtt_config);
 	}
 	else
 		return -3;
@@ -312,7 +311,7 @@ int hf_atcmd_mqpublish(pat_session_t s,int argc,char *argv[],char *rsp,int len)
 {
 	if(argc==0)
 	{
-		sprintf(rsp, "=%s", g_mqtt_config.pub_topic);
+		sprintf(rsp, "=%s", user_mqtt_config.pub_topic);
 	}
 	else if(argc==1)
 	{
@@ -320,8 +319,8 @@ int hf_atcmd_mqpublish(pat_session_t s,int argc,char *argv[],char *rsp,int len)
 		if(strlen(topic) > MQTT_TOPIC_MAX_LEN)
 			return -4;
 		
-		strcpy(g_mqtt_config.pub_topic, topic);
-		save_mqtt_config(&g_mqtt_config);
+		strcpy(user_mqtt_config.pub_topic, topic);
+		save_mqtt_config(&user_mqtt_config);
 	}
 	else if(argc == 2)
 	{
@@ -358,9 +357,9 @@ int hf_atcmd_mqsubscribe(pat_session_t s,int argc,char *argv[],char *rsp,int len
 		if(atoi(argv[1]) > 2)
 			return -4;
 
-		strcpy(g_mqtt_config.topic, argv[0]);
+		strcpy(user_mqtt_config.topic, argv[0]);
 		unsigned char qos =  atoi(argv[1]);
-		if(MQTTSubscribe(&MQTTCli, g_mqtt_config.topic, qos, topic_message_callback) == SUCCESS)
+		if(MQTTSubscribe(&MQTTCli, user_mqtt_config.topic, qos, topic_message_callback) == SUCCESS)
 			sprintf(rsp, "=SUBSCRIBE SUCCESS");
 		else
 			sprintf(rsp, "=SUBSCRIBE FAIL");
@@ -394,18 +393,18 @@ int hf_atcmd_mqautosub(pat_session_t s,int argc,char *argv[],char *rsp,int len)
 {
 	if(argc == 0)
 	{
-		if(g_mqtt_config.enable_sub)
-			sprintf(rsp, "=%d,%s,%d", g_mqtt_config.enable_sub, g_mqtt_config.sub_topic, g_mqtt_config.sub_qos);
+		if(user_mqtt_config.enable_sub)
+			sprintf(rsp, "=%d,%s,%d", user_mqtt_config.enable_sub, user_mqtt_config.sub_topic, user_mqtt_config.sub_qos);
 		else
-			sprintf(rsp, "=%d", g_mqtt_config.enable_sub);
+			sprintf(rsp, "=%d", user_mqtt_config.enable_sub);
 	}
 	else if(argc == 1)
 	{
 		int enable = atoi(argv[0]);
 		if(enable)
 			return -4;
-		g_mqtt_config.enable_sub = enable;	
-		save_mqtt_config(&g_mqtt_config);
+		user_mqtt_config.enable_sub = enable;	
+		save_mqtt_config(&user_mqtt_config);
 	}
 	else if(argc == 3)
 	{
@@ -420,10 +419,10 @@ int hf_atcmd_mqautosub(pat_session_t s,int argc,char *argv[],char *rsp,int len)
 		if(qos != 0 && qos != 1 && qos != 2)
 			return -4;
 
-		g_mqtt_config.enable_sub = enable;	
-		strcpy(g_mqtt_config.sub_topic, topic);
-		g_mqtt_config.sub_qos = qos;
-		save_mqtt_config(&g_mqtt_config);
+		user_mqtt_config.enable_sub = enable;	
+		strcpy(user_mqtt_config.sub_topic, topic);
+		user_mqtt_config.sub_qos = qos;
+		save_mqtt_config(&user_mqtt_config);
 	}
 	else
 		return -3;
@@ -435,8 +434,8 @@ int hf_atcmd_mqres(pat_session_t s,int argc,char *argv[],char *rsp,int len)
 {
 	if(argc == 0)
 	{
-		default_mqtt_config(&g_mqtt_config);
-		save_mqtt_config(&g_mqtt_config);
+		default_mqtt_config(&user_mqtt_config);
+		save_mqtt_config(&user_mqtt_config);
 	}
 	else
 		return -3;
@@ -448,7 +447,7 @@ int hf_atcmd_mqver(pat_session_t s,int argc,char *argv[],char *rsp,int len)
 {
 	if(argc == 0)
 	{
-		sprintf(rsp, "=%d", g_mqtt_config.mqtt_config.mqtt_ver);
+		sprintf(rsp, "=%d", user_mqtt_config.mqtt_ver);
 	}
 	else if(argc == 1)
 	{
@@ -456,8 +455,8 @@ int hf_atcmd_mqver(pat_session_t s,int argc,char *argv[],char *rsp,int len)
 		if(ver != 3 && ver != 4)
 			return -4;
 
-		g_mqtt_config.mqtt_config.mqtt_ver = ver ;
-		save_mqtt_config(&g_mqtt_config);
+		user_mqtt_config.mqtt_ver = ver ;
+		save_mqtt_config(&user_mqtt_config);
 	}
 	else
 		return -3;
@@ -469,7 +468,7 @@ int hf_atcmd_mqwill(pat_session_t s,int argc,char *argv[],char *rsp,int len)
 {
 	if(argc == 0)
 	{
-		sprintf(rsp, "=%s,%s", g_mqtt_config.will_topic, g_mqtt_config.will_msg);
+		sprintf(rsp, "=%s,%s", user_mqtt_config.will_topic, user_mqtt_config.will_msg);
 	}
 	else if(argc == 2)
 	{
@@ -480,9 +479,9 @@ int hf_atcmd_mqwill(pat_session_t s,int argc,char *argv[],char *rsp,int len)
 		if(strlen(msg) > MQTT_MESSAGE_MAX_LEN)
 			return -4;
 		
-		strcpy(g_mqtt_config.will_topic, topic);
-		strcpy(g_mqtt_config.will_msg, msg);
-		save_mqtt_config(&g_mqtt_config);
+		strcpy(user_mqtt_config.will_topic, topic);
+		strcpy(user_mqtt_config.will_msg, msg);
+		save_mqtt_config(&user_mqtt_config);
 	}
 	else
 		return -3;
@@ -493,26 +492,23 @@ int hf_atcmd_mqwill(pat_session_t s,int argc,char *argv[],char *rsp,int len)
 void mqtt_para_init(void)
 {
 	unsigned char crc;
-	memset((char *)&g_mqtt_config, 0, sizeof(MQTT_CONFIG));
-	hffile_userbin_read(MQTT_CONFIG_USERBIN_ADDR, (char *)&g_mqtt_config, sizeof(MQTT_CONFIG));
-	crc = crc_calc((unsigned char *)&g_mqtt_config, sizeof(MQTT_CONFIG)-1);
-	if(MQTT_MAGIC_HEAD == g_mqtt_config.magic_head && crc == g_mqtt_config.crc)
+	memset((char *)&user_mqtt_config, 0, sizeof(MQTT_CONFIG));
+	hffile_userbin_read(MQTT_CONFIG_USERBIN_ADDR, (char *)&user_mqtt_config, sizeof(MQTT_CONFIG));
+	crc = crc_calc((unsigned char *)&user_mqtt_config, sizeof(MQTT_CONFIG)-1);
+	if(!(MQTT_MAGIC_HEAD == user_mqtt_config.magic_head && crc == user_mqtt_config.crc))
 	{
-	}
-	else
-	{
-		default_mqtt_config(&g_mqtt_config);
-		save_mqtt_config(&g_mqtt_config);
+		default_mqtt_config(&user_mqtt_config);
+		save_mqtt_config(&user_mqtt_config);
 	}
     mqtt_start();
 }
 
 void uart_message_publish(char *data, int len)
 {
-	if(memcmp(g_mqtt_config.pub_topic,"\0",1)==0)
+	if(memcmp(user_mqtt_config.pub_topic,"\0",1)==0)
 	{
 		u_printf("mqtt pub_topic is null,please set by \"AT+MQPUBTOPIC\".\r\n");
 	}
-	topic_message_publish(g_mqtt_config.pub_topic, data, len, 0);
+	topic_message_publish(user_mqtt_config.pub_topic, data, len, 0);
 }
 

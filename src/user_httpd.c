@@ -259,12 +259,12 @@ void status_cbk(char *url, char *rsp)
 
 	char *send_buf = (char *)malloc(strlen("{\"slot0\":0,\"slot1\":0,\"slot2\":0,\"slot3\":0,\"slot4\":0,\"slot5\":0,\"power\":}") + strlen(power_temp_buf));
 
-	sprintf(send_buf, "{\"slot0\":%d,\"slot1\":%d,\"slot2\":%d,\"slot3\":%d,\"slot4\":%d,\"slot5\":%d,\"power\":%s}", u_config.plug[0].on, u_config.plug[1].on, u_config.plug[2].on, u_config.plug[3].on, u_config.plug[4].on, u_config.plug[5].on, power_temp_buf);
+	sprintf(send_buf, "{\"slot0\":%d,\"slot1\":%d,\"slot2\":%d,\"slot3\":%d,\"slot4\":%d,\"slot5\":%d,\"power\":%s}", user_config.plug[0].status, user_config.plug[1].status, user_config.plug[2].status, user_config.plug[3].status, user_config.plug[4].status, user_config.plug[5].status, power_temp_buf);
 
 	cJSON *json_plug_send = cJSON_CreateObject();
 	cJSON *json_mqtt_send = cJSON_CreateObject();
 	cJSON *json_wifi_send = cJSON_CreateObject();
-	cJSON *json_config_send = cJSON_CreateObject();
+	// cJSON *json_config_send = cJSON_CreateObject();
 	cJSON *json_send = cJSON_CreateObject();
 
 	cJSON_AddStringToObject(json_send, "plug", send_buf);
@@ -281,20 +281,21 @@ void status_cbk(char *url, char *rsp)
 	cJSON_AddStringToObject(json_wifi_send, "ip", ip_str);
 	cJSON_AddStringToObject(json_wifi_send, "ssid", (char*) g_hf_config_file.sta_ssid);
 	cJSON_AddStringToObject(json_wifi_send, "password", (char*) g_hf_config_file.sta_key);
+
 	char time_s[20] = {0};
-	get_time_string(time_s);
+	get_time_string(time_s,20);
 	cJSON_AddStringToObject(json_wifi_send, "time", time_s);
 
 	cJSON_AddItemToObject(json_send, "wifi", json_wifi_send);
 
-	struct MQTT_PRA g_mqtt_config = get_mqtt_pra();
-	cJSON_AddStringToObject(json_mqtt_send, "ip", g_mqtt_config.seraddr);
-	cJSON_AddStringToObject(json_mqtt_send, "sub_topic", g_mqtt_config.sub_topic);
+	// MQTT_CONFIG user_mqtt_config = get_mqtt_pra();
+	cJSON_AddStringToObject(json_mqtt_send, "ip", user_mqtt_config.seraddr);
+	cJSON_AddStringToObject(json_mqtt_send, "sub_topic", user_mqtt_config.sub_topic);
 	cJSON_AddItemToObject(json_send, "mqtt", json_mqtt_send);
 	// hfwifi_sta_get_current_bssid
 
-	get_user_config_info(json_config_send);
-	cJSON_AddItemToObject(json_send, "config", json_config_send);
+	// get_user_config_info(json_config_send);
+	// cJSON_AddItemToObject(json_send, "config", json_config_send);
 
 	char *out = cJSON_Print(json_send);
 	strcpy(rsp, out);

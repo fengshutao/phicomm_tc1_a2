@@ -26,184 +26,54 @@ Project File Date:  05/19/2022
 
 <h2>Output:</h2>
 Build target 'LPT230'
-compiling user_httpd.c...
-../src/user_httpd.c: In function 'switch_cbk':
-../src/user_httpd.c(248): warning: implicit declaration of function 'json_plug_analysis' [-Wimplicit-function-declaration]
-../src/user_httpd.c(245): warning: variable 'update_user_config_flag' set but not used [-Wunused-but-set-variable]
-../src/user_httpd.c: In function 'status_cbk':
-../src/user_httpd.c(262): error: 'u_config' undeclared (first use in this function)
-  sprintf(send_buf, "{\"slot0\":%d,\"slot1\":%d,\"slot2\":%d,\"slot3\":%d,\"slot4\":%d,\"slot5\":%d,\"power\":%s}", u_config.plug[0].on, u_config.plug[1].on, u_config.plug[2].on, u_config.plug[3].on, u_config.plug[4].on, u_config.plug[5].on, power_temp_buf);
-../src/user_httpd.c(262): error: note: each undeclared identifier is reported only once for each function it appears in
-../src/user_httpd.c(285): error: too few arguments to function 'get_time_string'
-../src/user_rtc.h(15): error: note: declared here
-../src/user_httpd.c(290): error: variable 'g_mqtt_config' has initializer but incomplete type
-../src/user_httpd.c(290): error: storage size of 'g_mqtt_config' isn't known
-../src/user_httpd.c(290): warning: unused variable 'g_mqtt_config' [-Wunused-variable]
-../src/user_httpd.c(264): warning: unused variable 'json_plug_send' [-Wunused-variable]
-../src/user_httpd.c: In function 'httpd_init':
-../src/user_httpd.c(309): warning: implicit declaration of function 'hfhttpd_url_callback_register' [-Wimplicit-function-declaration]
-../src/user_httpd.c: At top level:
-../src/user_httpd.c(47): warning: 'convert_ascii' defined but not used [-Wunused-function]
-compiling user_function.c...
-../src/user_function.c: In function 'user_function_cmd_received':
-../src/user_function.c(52): error: 'TYPE' undeclared (first use in this function)
-../src/cJSON/cJSON.h(141): error: note: in definition of macro 'cJSON_AddNumberToObject'
-../src/user_function.c(52): error: note: each undeclared identifier is reported only once for each function it appears in
-../src/cJSON/cJSON.h(141): error: note: in definition of macro 'cJSON_AddNumberToObject'
-../src/user_function.c(112): error: request for member 'seraddr' in something not a structure or union
-../src/user_function.c(120): error: request for member 'port' in something not a structure or union
-../src/user_function.c(128): error: request for member 'username' in something not a structure or union
-../src/user_function.c(136): error: request for member 'password' in something not a structure or union
-../src/user_function.c(147): error: request for member 'seraddr' in something not a structure or union
-../src/cJSON/cJSON.h(142): error: note: in definition of macro 'cJSON_AddStringToObject'
-../src/user_function.c(149): error: request for member 'port' in something not a structure or union
-../src/cJSON/cJSON.h(141): error: note: in definition of macro 'cJSON_AddNumberToObject'
-../src/user_function.c(151): error: request for member 'username' in something not a structure or union
-../src/cJSON/cJSON.h(142): error: note: in definition of macro 'cJSON_AddStringToObject'
-../src/user_function.c(153): error: request for member 'password' in something not a structure or union
-../src/cJSON/cJSON.h(142): error: note: in definition of macro 'cJSON_AddStringToObject'
-../src/user_function.c: In function 'json_plug_analysis':
-../src/user_function.c(234): error: request for member 'name' in something not a structure or union
-../sdk/4.14/include/hsf/hf_debug.h(125): error: note: in definition of macro 'u_printf'
-../src/user_function.c(235): error: request for member 'name' in something not a structure or union
-../src/user_function.c(238): error: request for member 'name' in something not a structure or union
-../src/cJSON/cJSON.h(142): error: note: in definition of macro 'cJSON_AddStringToObject'
-../src/user_function.c(253): error: request for member 'status' in something not a structure or union
-../src/cJSON/cJSON.h(141): error: note: in definition of macro 'cJSON_AddNumberToObject'
-../src/user_function.c: In function 'json_plug_task_analysis':
-../src/user_function.c(295): error: request for member 'task' in something not a structure or union
-../src/user_function.c(296): error: request for member 'task' in something not a structure or union
-../src/user_function.c(297): error: request for member 'task' in something not a structure or union
-../src/user_function.c(298): error: request for member 'task' in something not a structure or union
-../src/user_function.c(299): error: request for member 'task' in something not a structure or union
-../src/user_function.c(303): error: request for member 'task' in something not a structure or union
-../src/cJSON/cJSON.h(141): error: note: in definition of macro 'cJSON_AddNumberToObject'
-../src/user_function.c(304): error: request for member 'task' in something not a structure or union
-../src/cJSON/cJSON.h(141): error: note: in definition of macro 'cJSON_AddNumberToObject'
-../src/user_function.c(305): error: request for member 'task' in something not a structure or union
-../src/cJSON/cJSON.h(141): error: note: in definition of macro 'cJSON_AddNumberToObject'
-../src/user_function.c(306): error: request for member 'task' in something not a structure or union
-../src/cJSON/cJSON.h(141): error: note: in definition of macro 'cJSON_AddNumberToObject'
-../src/user_function.c(307): error: request for member 'task' in something not a structure or union
-../src/cJSON/cJSON.h(141): error: note: in definition of macro 'cJSON_AddNumberToObject'
-compiling user_mqtt.c...
-../src/user_mqtt.c: In function 'MQTTClient_thread':
-../src/user_mqtt.c(109): error: 'MQTT_CONFIG {aka struct _MQTT_CONFIG}' has no member named 'mqtt_config'
-../src/user_mqtt.c: In function 'save_mqtt_config':
-../src/user_mqtt.c(215): warning: implicit declaration of function 'crc_calc' [-Wimplicit-function-declaration]
-../src/user_mqtt.c: In function 'hf_atcmd_mqver':
-../src/user_mqtt.c(451): error: 'MQTT_CONFIG {aka struct _MQTT_CONFIG}' has no member named 'mqtt_config'
-../src/user_mqtt.c(459): error: 'MQTT_CONFIG {aka struct _MQTT_CONFIG}' has no member named 'mqtt_config'
-compiling user_gpio.c...
-../src/user_gpio.c: In function 'relay_out':
-../src/user_gpio.c(50): error: request for member 'status' in something not a structure or union
-../src/user_gpio.c(50): error: 'PLUG_CONFIG {aka struct _PLUG_CONFIG}' has no member named 'plug'
-../src/user_gpio.c: In function 'user_relay_set':
-../src/user_gpio.c(74): error: 'PLUG_CONFIG {aka struct _PLUG_CONFIG}' has no member named 'plug'
-../src/user_gpio.c(75): error: request for member 'status' in something not a structure or union
-../src/user_gpio.c: In function 'key_long_press':
-../src/user_gpio.c(101): error: request for member 'status' in something not a structure or union
-../sdk/4.14/include/hsf/hf_debug.h(125): error: note: in definition of macro 'u_printf'
-../src/user_gpio.c: In function 'key_timeout_handler':
-../src/user_gpio.c(181): warning: implicit declaration of function 'user_function_cmd_received' [-Wimplicit-function-declaration]
-                 user_function_cmd_received(1, "{\"cmd\":\"device report\"}");
-../src/user_gpio.c(143): warning: unused variable 'key_trigger' [-Wunused-variable]
-../src/user_gpio.c: In function 'appRestoreDefault':
-../src/user_gpio.c(288): error: request for member 'seraddr' in something not a structure or union
-../src/user_gpio.c(289): error: request for member 'port' in something not a structure or union
-../src/user_gpio.c(290): error: request for member 'username' in something not a structure or union
-../src/user_gpio.c(291): error: request for member 'password' in something not a structure or union
-../src/user_gpio.c(294): error: request for member 'status' in something not a structure or union
-../src/user_gpio.c(297): error: request for member 'name' in something not a structure or union
-../src/user_gpio.c(298): error: request for member 'name' in something not a structure or union
-../src/user_gpio.c(299): error: request for member 'name' in something not a structure or union
-../src/user_gpio.c(300): error: request for member 'name' in something not a structure or union
-../src/user_gpio.c(301): error: request for member 'name' in something not a structure or union
-../src/user_gpio.c(302): error: request for member 'name' in something not a structure or union
-../src/user_gpio.c(303): error: request for member 'name' in something not a structure or union
-../src/user_gpio.c(304): error: request for member 'name' in something not a structure or union
-../src/user_gpio.c(308): error: request for member 'task' in something not a structure or union
-../src/user_gpio.c(309): error: request for member 'task' in something not a structure or union
-../src/user_gpio.c(310): error: request for member 'task' in something not a structure or union
-../src/user_gpio.c(311): error: request for member 'task' in something not a structure or union
-../src/user_gpio.c(312): error: request for member 'task' in something not a structure or union
-../src/user_gpio.c(316): error: incompatible types when assigning to type 'PLUG_CONFIG {aka struct _PLUG_CONFIG}' from type 'USER_CONFIG {aka struct _USER_CONFIG}'
-../src/user_gpio.c: In function 'printTask':
-../src/user_gpio.c(326): error: request for member 'name' in something not a structure or union
-         u_printf("user_config.plug[i].name:%s\n", user_config.plug[i].name);
-../sdk/4.14/include/hsf/hf_debug.h(125): error: note: in definition of macro 'u_printf'
-../src/user_gpio.c(329): error: request for member 'task' in something not a structure or union
-             u_printf("user_config.plug[%d].task[%d].hour: %d\n", i, j, user_config.plug[i].task[j].hour);
-../sdk/4.14/include/hsf/hf_debug.h(125): error: note: in definition of macro 'u_printf'
-../src/user_gpio.c(330): error: request for member 'task' in something not a structure or union
-             u_printf("user_config.plug[%d].task[%d].minute: %d\n", i, j, user_config.plug[i].task[j].minute);
-../sdk/4.14/include/hsf/hf_debug.h(125): error: note: in definition of macro 'u_printf'
-../src/user_gpio.c(331): error: request for member 'task' in something not a structure or union
-             u_printf("user_config.plug[%d].task[%d].repeat: %d\n", i, j, user_config.plug[i].task[j].repeat);
-../sdk/4.14/include/hsf/hf_debug.h(125): error: note: in definition of macro 'u_printf'
-../src/user_gpio.c(332): error: request for member 'task' in something not a structure or union
-             u_printf("user_config.plug[%d].task[%d].status: %d\n", i, j, user_config.plug[i].task[j].enable);
-../sdk/4.14/include/hsf/hf_debug.h(125): error: note: in definition of macro 'u_printf'
-../src/user_gpio.c(333): error: request for member 'task' in something not a structure or union
-             u_printf("user_config.plug[%d].task[%d].action: %d\n", i, j, user_config.plug[i].task[j].action);
-../sdk/4.14/include/hsf/hf_debug.h(125): error: note: in definition of macro 'u_printf'
+compiling user_mdns.c...
+../src/user_mdns.c(11): warning: 'txt_record' defined but not used [-Wunused-variable]
+ static char txt_record[] = "name=TC1_A2:model=com.iotserv.devices.phicomm_tc1_a1:mac=GHS00GG:id=GHS00GG";//max len is 255
+compiling user_power.c...
+compiling user_config.c...
 compiling user_udp.c...
 ../src/user_udp.c: In function 'udp_thread':
 ../src/user_udp.c(38): warning: variable 'maxfd' set but not used [-Wunused-but-set-variable]
 ../src/user_udp.c(36): warning: variable 'err' set but not used [-Wunused-but-set-variable]
 ../src/user_udp.c(33): warning: variable 'timeout' set but not used [-Wunused-but-set-variable]
 compiling user_rtc.c...
-../src/user_rtc.c: In function 'rtc_thread_func':
-../src/user_rtc.c(43): error: request for member 'task' in something not a structure or union
-../src/user_rtc.c(45): error: request for member 'task' in something not a structure or union
-../src/user_rtc.c(47): error: request for member 'task' in something not a structure or union
-../src/user_rtc.c(47): error: request for member 'task' in something not a structure or union
-../src/user_rtc.c(49): error: request for member 'status' in something not a structure or union
-../src/user_rtc.c(49): error: request for member 'task' in something not a structure or union
-../src/user_rtc.c(52): error: request for member 'task' in something not a structure or union
-../src/user_rtc.c(60): error: request for member 'task' in something not a structure or union
-../src/user_rtc.c(81): error: request for member 'status' in something not a structure or union
-../src/cJSON/cJSON.h(141): error: note: in definition of macro 'cJSON_AddNumberToObject'
-../src/user_rtc.c(92): error: request for member 'task' in something not a structure or union
-../src/cJSON/cJSON.h(141): error: note: in definition of macro 'cJSON_AddNumberToObject'
-../src/user_rtc.c(93): error: request for member 'task' in something not a structure or union
-../src/cJSON/cJSON.h(141): error: note: in definition of macro 'cJSON_AddNumberToObject'
-../src/user_rtc.c(94): error: request for member 'task' in something not a structure or union
-../src/cJSON/cJSON.h(141): error: note: in definition of macro 'cJSON_AddNumberToObject'
-../src/user_rtc.c(95): error: request for member 'task' in something not a structure or union
-../src/cJSON/cJSON.h(141): error: note: in definition of macro 'cJSON_AddNumberToObject'
-../src/user_rtc.c(96): error: request for member 'task' in something not a structure or union
-../src/cJSON/cJSON.h(141): error: note: in definition of macro 'cJSON_AddNumberToObject'
-../src/user_rtc.c: In function 'get_user_config_info':
-../src/user_rtc.c(182): error: request for member 'status' in something not a structure or union
-../src/cJSON/cJSON.h(141): error: note: in definition of macro 'cJSON_AddNumberToObject'
-../src/user_rtc.c(193): error: request for member 'task' in something not a structure or union
-../src/cJSON/cJSON.h(141): error: note: in definition of macro 'cJSON_AddNumberToObject'
-../src/user_rtc.c(194): error: request for member 'task' in something not a structure or union
-../src/cJSON/cJSON.h(141): error: note: in definition of macro 'cJSON_AddNumberToObject'
-../src/user_rtc.c(195): error: request for member 'task' in something not a structure or union
-../src/cJSON/cJSON.h(141): error: note: in definition of macro 'cJSON_AddNumberToObject'
-../src/user_rtc.c(196): error: request for member 'task' in something not a structure or union
-../src/cJSON/cJSON.h(141): error: note: in definition of macro 'cJSON_AddNumberToObject'
-../src/user_rtc.c(197): error: request for member 'task' in something not a structure or union
-../src/cJSON/cJSON.h(141): error: note: in definition of macro 'cJSON_AddNumberToObject'
-compiling user_flash.c...
-../src/user_flash.c(8): warning: 'upadateConfigData' defined but not used [-Wunused-function]
-compiling user_power.c...
+compiling user_function.c...
 compiling app_main.c...
-compiling user_mdns.c...
-../src/user_mdns.c(11): warning: 'txt_record' defined but not used [-Wunused-variable]
- static char txt_record[] = "name=TC1_A2:model=com.iotserv.devices.phicomm_tc1_a1:mac=GHS00GG:id=GHS00GG";//max len is 255
-compiling cJSON.c...
-".\lpt230_gcc.elf" - 116 Error(s), 14 Warning(s).
+compiling user_httpd.c...
+../src/user_httpd.c: In function 'switch_cbk':
+../src/user_httpd.c(248): warning: implicit declaration of function 'json_plug_analysis' [-Wimplicit-function-declaration]
+../src/user_httpd.c(245): warning: variable 'update_user_config_flag' set but not used [-Wunused-but-set-variable]
+../src/user_httpd.c: In function 'status_cbk':
+../src/user_httpd.c(264): warning: unused variable 'json_plug_send' [-Wunused-variable]
+../src/user_httpd.c: In function 'httpd_init':
+../src/user_httpd.c(310): warning: implicit declaration of function 'hfhttpd_url_callback_register' [-Wimplicit-function-declaration]
+../src/user_httpd.c: At top level:
+../src/user_httpd.c(47): warning: 'convert_ascii' defined but not used [-Wunused-function]
+compiling user_gpio.c...
+../src/user_gpio.c: In function 'key_timeout_handler':
+../src/user_gpio.c(181): warning: implicit declaration of function 'user_function_cmd_received' [-Wimplicit-function-declaration]
+                 user_function_cmd_received(1, "{\"cmd\":\"device report\"}");
+../src/user_gpio.c(143): warning: unused variable 'key_trigger' [-Wunused-variable]
+compiling user_mqtt.c...
+linking...
+After Build - User command #1: ../tools/arm-none-eabi-objcopy -O binary ./lpt230_gcc.elf ./lpt230_gcc.bin
+After Build - User command #2: ../tools/LPB100_IMG_Tools.exe LPB230 lzma  ../tools/bootloader.bin lpt230_gcc.bin ./lpt230_gcc_image.bin ./lpt230_gcc_upgrade.bin
+LZMA 16.04 : Igor Pavlov : Public domain : 2016-10-04
+Input size:  533952 (0 MiB)
+                                                                Output size: 330096 (0 MiB)
+LZMA 16.04 : Igor Pavlov : Public domain : 2016-10-04
+Input size:  330096 (0 MiB)
+                                                                Output size: 533952 (0 MiB)
+Firmware:		crc32=fb43a9eb size=533952
+Hiflying OTA file:	crc32=febf4c88 size=330096
+".\lpt230_gcc.elf" - 0 Error(s), 11 Warning(s).
 
 <h2>Collection of Component include folders:</h2>
   E:\iot\ºº·ã\develop\phicomm_tc1_a2\projects\RTE
   C:\Keil_v5\ARM\PACK\ARM\CMSIS\4.5.0\Device\ARM\ARMCM4\Include
 
 <h2>Collection of Component Files used:</h2>
-Target not created.
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:04
 </pre>
 </body>
 </html>

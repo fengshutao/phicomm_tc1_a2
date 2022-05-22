@@ -23,7 +23,7 @@ hfthread_mutex_t keythread_lock = NULL_MUTEX;
 
 int time_mm;
 unsigned char config_data[1024];
-PLUG_CONFIG user_defaultconfig;
+USER_CONFIG user_defaultconfig;
 
 void USER_FUNC user_led_set(char x)
 {
@@ -283,17 +283,16 @@ void USER_FUNC appRestoreDefault(void)
 {
     int i, j;
     char nstr[] = "TC1";
-    // u_printf("mqtt-port=%d",user_config.mqtt_config.mqtt_port);
+    // u_printf("mqtt-port=%d",user_config.mqtt_config->mqtt_port);
     strcpy(deviceid, nstr);
-    user_config.mqtt_config.seraddr[0] = 0;
-    user_config.mqtt_config.port = 0;
-    user_config.mqtt_config.username[0] = 0;
-    user_config.mqtt_config.password[0] = 0;
+    user_config.mqtt_config->seraddr[0] = 0;
+    user_config.mqtt_config->port = 0;
+    user_config.mqtt_config->username[0] = 0;
+    user_config.mqtt_config->password[0] = 0;
     for (i = 0; i < PLUG_NUM; i++)
     {
         user_config.plug[i].status = 0;
 
-        //???? ??1-6
         user_config.plug[i].name[0] = 0xe6;
         user_config.plug[i].name[1] = 0x8f;
         user_config.plug[i].name[2] = 0x92;
