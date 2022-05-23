@@ -250,7 +250,7 @@ bool json_plug_analysis( int udp_flag, unsigned char x, cJSON * pJsonRoot, cJSON
     }
    // cJSON *p_nvalue = cJSON_GetObjectItem( pJsonRoot, "nvalue" );
    // if ( p_plug || p_nvalue )
-    cJSON_AddNumberToObject( json_plug_send, "on", user_config.plug[x].status );
+    cJSON_AddNumberToObject( json_plug_send, "on", plug_status[x] );
 
     cJSON_AddItemToObject( pJsonSend, plug_str, json_plug_send );
     return return_flag;
@@ -275,18 +275,18 @@ bool json_plug_task_analysis( unsigned char x, unsigned char y, cJSON * pJsonRoo
 
     cJSON *p_plug_task_hour = cJSON_GetObjectItem( p_plug_task, "hour" );
     cJSON *p_plug_task_minute = cJSON_GetObjectItem( p_plug_task, "minute" );
-    cJSON *p_plug_task_repeat = cJSON_GetObjectItem( p_plug_task, "repeat" );
+    // cJSON *p_plug_task_repeat = cJSON_GetObjectItem( p_plug_task, "repeat" );
     cJSON *p_plug_task_action = cJSON_GetObjectItem( p_plug_task, "action" );
     cJSON *p_plug_task_on = cJSON_GetObjectItem( p_plug_task, "on" );
 
-    if ( p_plug_task_hour && p_plug_task_minute && p_plug_task_repeat &&
+    if ( p_plug_task_hour && p_plug_task_minute && //p_plug_task_repeat &&
          p_plug_task_action
          && p_plug_task_on )
     {
 
         if ( cJSON_IsNumber( p_plug_task_hour )
              && cJSON_IsNumber( p_plug_task_minute )
-             && cJSON_IsNumber( p_plug_task_repeat )
+            //  && cJSON_IsNumber( p_plug_task_repeat )
              && cJSON_IsNumber( p_plug_task_action )
              && cJSON_IsNumber( p_plug_task_on )
                                 )
@@ -294,7 +294,7 @@ bool json_plug_task_analysis( unsigned char x, unsigned char y, cJSON * pJsonRoo
             return_flag = true;
             user_config.plug[x].task[y].hour = p_plug_task_hour->valueint;
             user_config.plug[x].task[y].minute = p_plug_task_minute->valueint;
-            user_config.plug[x].task[y].repeat = p_plug_task_repeat->valueint;
+            // user_config.plug[x].task[y].repeat = p_plug_task_repeat->valueint;
             user_config.plug[x].task[y].action = p_plug_task_action->valueint;
             user_config.plug[x].task[y].enable = p_plug_task_on->valueint;
         }
@@ -302,7 +302,7 @@ bool json_plug_task_analysis( unsigned char x, unsigned char y, cJSON * pJsonRoo
     }
     cJSON_AddNumberToObject( json_plug_task_send, "hour", user_config.plug[x].task[y].hour );
     cJSON_AddNumberToObject( json_plug_task_send, "minute", user_config.plug[x].task[y].minute );
-    cJSON_AddNumberToObject( json_plug_task_send, "repeat", user_config.plug[x].task[y].repeat );
+    // cJSON_AddNumberToObject( json_plug_task_send, "repeat", user_config.plug[x].task[y].repeat );
     cJSON_AddNumberToObject( json_plug_task_send, "action", user_config.plug[x].task[y].action );
     cJSON_AddNumberToObject( json_plug_task_send, "on", user_config.plug[x].task[y].enable );
 

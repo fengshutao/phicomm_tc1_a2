@@ -192,7 +192,6 @@ static int USER_FUNC httpd_callback(char *url, char *rsp)
 			strcpy(r, http_header);
 			r += strlen(http_header);
 			p->callback(url, r);
-			u_printf("'%s' size=%d\r\n", url, strlen(rsp));
 			return 0;
 		}
 		p++;
@@ -249,7 +248,7 @@ void switch_cbk(char *url, char *rsp)
 	strcpy(rsp, send_buf);
 }
 
-void status_cbk(char *url, char *rsp)
+void status_cbk_1(char *url, char *rsp)
 {
 	char *power_temp_buf = malloc(16);
 
@@ -300,6 +299,16 @@ void status_cbk(char *url, char *rsp)
 	free(send_buf);
 }
 
+// void status_cbk_all(char *url, char *rsp)
+// {
+// 	get_user_config_str(rsp);
+// }
+
+// void status_cbk(char *url, char *rsp)
+// {
+// 	get_user_config_simple_str(rsp);
+// }
+
 void USER_FUNC httpd_init(void)
 {
 	/* register url handler callback */
@@ -308,5 +317,7 @@ void USER_FUNC httpd_init(void)
 
 	httpd_add_page("/styles.css", styles_cbk);
 	httpd_add_page("/switch", switch_cbk);
-	httpd_add_page("/status", status_cbk);
+	// httpd_add_page("/status_raw", status_cbk_1);
+	// httpd_add_page("/status_simple", status_cbk);
+	// httpd_add_page("/status_all", status_cbk_all);
 }

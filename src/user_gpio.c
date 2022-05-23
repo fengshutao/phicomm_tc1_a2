@@ -46,7 +46,7 @@ bool USER_FUNC relay_out(void)
     uint8_t i;
     for (i = 0; i < PLUG_NUM; i++)
     {
-        if (user_config.plug[i].status != 0 || user_defaultconfig.plug[i].status != 0)
+        if (plug_status[i] != 0)
         {
             return true;
         }
@@ -70,8 +70,7 @@ void USER_FUNC user_relay_set(uint8_t x, uint8_t y)
     else
         hfgpio_fset_out_low(relay[x]);
 
-    user_defaultconfig.plug[x].status = y;
-    user_config.plug[x].status = y;
+    plug_status[x] = y;
     if (relay_out())
         user_led_set(1);
     else
@@ -97,7 +96,7 @@ void USER_FUNC key_long_press(void)
     //    user_mqtt_send( "mqtt test" );
     uint8_t i;
     for (i = 0; i < PLUG_NUM; i++)
-        u_printf("plug=%d---", user_config.plug[i].status);
+        u_printf("plug=%d---", plug_status[i]);
 }
 
 void USER_FUNC key_long_5s_press(void)
@@ -280,39 +279,39 @@ void USER_FUNC key_init()
 
 void USER_FUNC appRestoreDefault(void)
 {
-    int i, j;
-    char nstr[] = "TC1";
-    // u_printf("mqtt-port=%d",user_config.mqtt_config->mqtt_port);
-    strcpy(deviceid, nstr);
-    user_config.mqtt_config->seraddr[0] = 0;
-    user_config.mqtt_config->port = 0;
-    user_config.mqtt_config->username[0] = 0;
-    user_config.mqtt_config->password[0] = 0;
-    for (i = 0; i < PLUG_NUM; i++)
-    {
-        user_config.plug[i].status = 0;
+    // int i, j;
+    // char nstr[] = "TC1";
+    // // u_printf("mqtt-port=%d",user_config.mqtt_config->mqtt_port);
+    // strcpy(deviceid, nstr);
+    // user_config.mqtt_config->seraddr[0] = 0;
+    // user_config.mqtt_config->port = 0;
+    // user_config.mqtt_config->username[0] = 0;
+    // user_config.mqtt_config->password[0] = 0;
+    // for (i = 0; i < PLUG_NUM; i++)
+    // {
+    //     plug_status[i] = 0;
 
-        user_config.plug[i].name[0] = 0xe6;
-        user_config.plug[i].name[1] = 0x8f;
-        user_config.plug[i].name[2] = 0x92;
-        user_config.plug[i].name[3] = 0xe5;
-        user_config.plug[i].name[4] = 0x8f;
-        user_config.plug[i].name[5] = 0xa3;
-        user_config.plug[i].name[6] = i + '1';
-        user_config.plug[i].name[7] = 0;
+    //     user_config.plug[i].name[0] = 0xe6;
+    //     user_config.plug[i].name[1] = 0x8f;
+    //     user_config.plug[i].name[2] = 0x92;
+    //     user_config.plug[i].name[3] = 0xe5;
+    //     user_config.plug[i].name[4] = 0x8f;
+    //     user_config.plug[i].name[5] = 0xa3;
+    //     user_config.plug[i].name[6] = i + '1';
+    //     user_config.plug[i].name[7] = 0;
 
-        for (j = 0; j < PLUG_TIME_TASK_NUM; j++)
-        {
-            user_config.plug[i].task[j].hour = 0;
-            user_config.plug[i].task[j].minute = 0;
-            user_config.plug[i].task[j].repeat = 0x00;
-            user_config.plug[i].task[j].enable = 0;
-            user_config.plug[i].task[j].action = 1;
-        }
-    }
-    //    mico_system_context_update( sys_config );
-    user_defaultconfig = user_config;
-    HF_Debug(DEBUG_WARN, "userdata config success...\n");
+    //     for (j = 0; j < PLUG_TIME_TASK_NUM; j++)
+    //     {
+    //         user_config.plug[i].task[j].hour = 0;
+    //         user_config.plug[i].task[j].minute = 0;
+    //         user_config.plug[i].task[j].repeat = 0x00;
+    //         user_config.plug[i].task[j].enable = 0;
+    //         user_config.plug[i].task[j].action = 1;
+    //     }
+    // }
+    // //    mico_system_context_update( sys_config );
+    // user_defaultconfig = user_config;
+    // HF_Debug(DEBUG_WARN, "userdata config success...\n");
 }
 
 void printTask()
