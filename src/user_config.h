@@ -75,7 +75,10 @@ typedef struct _USER_CONFIG
 
 extern HF_CONFIG_FILE g_hf_config_file;
 unsigned short plug_status[PLUG_NUM];
-USER_CONFIG user_config;
+
+// TODO: 别的地方用这个 config 会导致编译崩溃
+// USER_CONFIG user_config;
+// USER_CONFIG test;
 MQTT_CONFIG user_mqtt_config;
 PLUG_CONFIG user_plug_config[PLUG_NUM];
 
