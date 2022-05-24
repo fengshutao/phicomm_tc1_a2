@@ -1,8 +1,0 @@
-{
-    "makefile.extensionOutputFolder": "./.vscode",
-    "C_Cpp.errorSquiggles": "Disabled",
-    "files.associations": {
-        "mqttclient.h": "c",
-        "mqtthf_lpx30.h": "c"
-    }
-}
