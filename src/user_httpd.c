@@ -215,99 +215,56 @@ void styles_cbk(char *url, char *rsp)
 	strcpy(rsp, css_page);
 }
 
-void switch_cbk(char *url, char *rsp)
-{
-	char slot0[10];
-	char slot1[10];
-	char slot2[10];
-	char slot3[10];
-	char slot4[10];
-	char slot5[10];
-	int ret = httpd_arg_find(url, slot0, slot1, slot2, slot3, slot4, slot5);
-	if (ret > 0)
-	{
-		strcpy(rsp, "ret > 0");
-		return;
-	}
-
-	char *send_buf = (char *)malloc(strlen("{\"plug_0\":{\"on\":1},\"plug_1\":{\"on\":0},\"plug_2\":{\"on\":1},\"plug_3\":{\"on\":1},\"plug_4\":{\"on\":1},\"plug_5\":{\"on\":1}}"));
-	sprintf(send_buf, "{\"plug_0\":{\"on\":%s},\"plug_1\":{\"on\":%s},\"plug_2\":{\"on\":%s},\"plug_3\":{\"on\":%s},\"plug_4\":{\"on\":%s},\"plug_5\":{\"on\":%s}}", slot0, slot1, slot2, slot3, slot4, slot5);
-
-	// strcpy(rsp, send_buf);
-	// return;
-
-	cJSON *pJsonRoot = cJSON_Parse(send_buf);
-	cJSON *json_send = cJSON_CreateObject();
-	unsigned char i;
-	bool update_user_config_flag = false;
-	for (i = 0; i < PLUG_NUM; i++)
-	{
-		if (json_plug_analysis(1, i, pJsonRoot, json_send))
-			update_user_config_flag = true;
-	}
-	strcpy(rsp, send_buf);
-}
-
-void status_cbk_1(char *url, char *rsp)
-{
-	char *power_temp_buf = malloc(16);
-
-	sprintf(power_temp_buf, "%ld.%ld", power / 10, power % 10);
-
-	char *send_buf = (char *)malloc(strlen("{\"slot0\":0,\"slot1\":0,\"slot2\":0,\"slot3\":0,\"slot4\":0,\"slot5\":0,\"power\":}") + strlen(power_temp_buf));
-
-	sprintf(send_buf, "{\"slot0\":%d,\"slot1\":%d,\"slot2\":%d,\"slot3\":%d,\"slot4\":%d,\"slot5\":%d,\"power\":%s}", user_config.plug[0].status, user_config.plug[1].status, user_config.plug[2].status, user_config.plug[3].status, user_config.plug[4].status, user_config.plug[5].status, power_temp_buf);
-
-	cJSON *json_plug_send = cJSON_CreateObject();
-	cJSON *json_mqtt_send = cJSON_CreateObject();
-	cJSON *json_wifi_send = cJSON_CreateObject();
-	// cJSON *json_config_send = cJSON_CreateObject();
-	cJSON *json_send = cJSON_CreateObject();
-
-	cJSON_AddStringToObject(json_send, "plug", send_buf);
-
-	char mac[21] = {0};
-	hfnet_get_mac_address(mac);
-
-	char ip_str[NETWORK_ADDR_LEN] = {0};
-	int ip, mask, gw;
-	hfnet_get_dhcp_ip(&ip, &mask, &gw);
-	sprintf(ip_str, "%d.%d.%d.%d", ((ip >> (8 * 0)) & 0xFF), ((ip >> (8 * 1)) & 0xFF), ((ip >> (8 * 2)) & 0xFF), ((ip >> (8 * 3)) & 0xFF));
-
-	cJSON_AddStringToObject(json_wifi_send, "mac", mac);
-	cJSON_AddStringToObject(json_wifi_send, "ip", ip_str);
-	cJSON_AddStringToObject(json_wifi_send, "ssid", (char*) g_hf_config_file.sta_ssid);
-	cJSON_AddStringToObject(json_wifi_send, "password", (char*) g_hf_config_file.sta_key);
-
-	char time_s[20] = {0};
-	get_time_string(time_s,20);
-	cJSON_AddStringToObject(json_wifi_send, "time", time_s);
-	cJSON_AddItemToObject(json_send, "wifi", json_wifi_send);
-
-	cJSON_AddStringToObject(json_mqtt_send, "ip", user_mqtt_config.seraddr);
-	cJSON_AddStringToObject(json_mqtt_send, "sub_topic", user_mqtt_config.sub_topic);
-	cJSON_AddItemToObject(json_send, "mqtt", json_mqtt_send);
-	// hfwifi_sta_get_current_bssid
-
-	// get_user_config_info(json_config_send);
-	// cJSON_AddItemToObject(json_send, "config", json_config_send);
-
-	char *out = cJSON_Print(json_send);
-	strcpy(rsp, out);
-	cJSON_Delete(json_send);
-	free(power_temp_buf);
-	free(send_buf);
-}
-
-// void status_cbk_all(char *url, char *rsp)
+// void switch_cbk(char *url, char *rsp)
 // {
-// 	get_user_config_str(rsp);
+// 	char slot0[10];
+// 	char slot1[10];
+// 	char slot2[10];
+// 	char slot3[10];
+// 	char slot4[10];
+// 	char slot5[10];
+// 	int ret = httpd_arg_find(url, slot0, slot1, slot2, slot3, slot4, slot5);
+// 	if (ret > 0)
+// 	{
+// 		strcpy(rsp, "ret > 0");
+// 		return;
+// 	}
+
+// 	char *send_buf = (char *)malloc(strlen("{\"plug_0\":{\"on\":1},\"plug_1\":{\"on\":0},\"plug_2\":{\"on\":1},\"plug_3\":{\"on\":1},\"plug_4\":{\"on\":1},\"plug_5\":{\"on\":1}}"));
+// 	sprintf(send_buf, "{\"plug_0\":{\"on\":%s},\"plug_1\":{\"on\":%s},\"plug_2\":{\"on\":%s},\"plug_3\":{\"on\":%s},\"plug_4\":{\"on\":%s},\"plug_5\":{\"on\":%s}}", slot0, slot1, slot2, slot3, slot4, slot5);
+
+// 	// strcpy(rsp, send_buf);
+// 	// return;
+
+// 	cJSON *pJsonRoot = cJSON_Parse(send_buf);
+// 	cJSON *json_send = cJSON_CreateObject();
+// 	unsigned char i;
+// 	bool update_user_config_flag = false;
+// 	for (i = 0; i < PLUG_NUM; i++)
+// 	{
+// 		if (json_plug_analysis(1, i, pJsonRoot, json_send))
+// 			update_user_config_flag = true;
+// 	}
+// 	strcpy(rsp, send_buf);
 // }
 
-// void status_cbk(char *url, char *rsp)
-// {
-// 	get_user_config_simple_str(rsp);
-// }
+
+void status_cbk_all(char *url, char *rsp)
+{
+	get_user_config_str(rsp);
+}
+
+void status_cbk(char *url, char *rsp)
+{
+	get_user_config_simple_str(rsp);
+}
+
+void test_cbk(char *url, char *rsp)
+{
+	strcpy(rsp, "<html><body>Welcome!</body></html>");
+}
+
+
 
 void USER_FUNC httpd_init(void)
 {
@@ -316,8 +273,7 @@ void USER_FUNC httpd_init(void)
 		u_printf("error registering url callback\r\n");
 
 	httpd_add_page("/styles.css", styles_cbk);
-	httpd_add_page("/switch", switch_cbk);
-	// httpd_add_page("/status_raw", status_cbk_1);
-	// httpd_add_page("/status_simple", status_cbk);
-	// httpd_add_page("/status_all", status_cbk_all);
+	httpd_add_page("/status_simple", status_cbk);
+	httpd_add_page("/status_all", status_cbk_all);
+	httpd_add_page("/test", test_cbk);
 }

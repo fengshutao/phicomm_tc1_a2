@@ -2,6 +2,7 @@
 #ifndef __USER_RTC_H_
 #define __USER_RTC_H_
 
+#include "user_config.h"
 #include "cJSON/cJSON.h"
 
 #define UTC8 28800

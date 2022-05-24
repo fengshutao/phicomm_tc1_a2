@@ -104,10 +104,10 @@ const int hf_gpio_fid_to_pid_map_table[HFM_MAX_FUNC_CODE]=
 
 
 
-char strMac[13] = { 0 };
-char strIp[32];
-char deviceid[32];
-uint32_t power;
+// char strMac[13] = { 0 };
+// char strIp[32];
+// char deviceid[32];
+// uint32_t power;
 //For type written and read
 static int dev_param_read(char *wechat_type)
 {

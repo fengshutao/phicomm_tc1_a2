@@ -420,16 +420,6 @@
               <FileType>5</FileType>
               <FilePath>..\src\user_httpd.h</FilePath>
             </File>
-            <File>
-              <FileName>user_config.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\user_config.c</FilePath>
-            </File>
-            <File>
-              <FileName>user_config.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\src\user_config.h</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
