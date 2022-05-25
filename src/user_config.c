@@ -21,8 +21,10 @@ void user_config_init()
  	update_plug_config_flag = false;
 	update_plug_status_flag = false;
 
-	user_config.mqtt_config = &user_mqtt_config;
-	user_config.plug = user_plug_config;
+	plug_config_loaded = 0;
+	plug_status_loaded = 0;
+	mqtt_config_loaded = 0;
+	mqtt_is_connected = 0;
 }
 
 void get_user_config_str(char *res)
@@ -42,8 +44,8 @@ void get_user_config_str(char *res)
 	for (i = 0; i < PLUG_NUM; i++)
 	{
 		cJSON *json_plug_send = cJSON_CreateObject();
-		cJSON_AddStringToObject(json_plug_send, "name", user_plug_config[i].name);
-		cJSON_AddNumberToObject(json_plug_send, "status", plug_status[i]);
+		cJSON_AddStringToObject(json_plug_send, "name", user_plug_config.plug[i].name);
+		cJSON_AddNumberToObject(json_plug_send, "status", plug_status.plug[i]);
 
 
 		cJSON *json_tasks_send = cJSON_CreateArray();
@@ -53,17 +55,17 @@ void get_user_config_str(char *res)
 			sprintf(plug_task_config_str,
 					"id: %d, time: %d:%d:%d, repeat:%d, days:%d,%d,%d,%d,%d,%d,%d, action:%d, enable:%d",
 					j,
-					user_plug_config[i].task[j].hour, user_plug_config[i].task[j].minute, user_plug_config[i].task[j].second,
-					user_plug_config[i].task[j].repeat[0],
-					1 * user_plug_config[i].task[j].repeat[1],
-					2 * user_plug_config[i].task[j].repeat[2],
-					3 * user_plug_config[i].task[j].repeat[3],
-					4 * user_plug_config[i].task[j].repeat[4],
-					5 * user_plug_config[i].task[j].repeat[5],
-					6 * user_plug_config[i].task[j].repeat[6],
-					7 * user_plug_config[i].task[j].repeat[7],
-					user_plug_config[i].task[j].action,
-					user_plug_config[i].task[j].enable);
+					user_plug_config.plug[i].task[j].hour, user_plug_config.plug[i].task[j].minute, user_plug_config.plug[i].task[j].second,
+					user_plug_config.plug[i].task[j].repeat[0],
+					1 * user_plug_config.plug[i].task[j].repeat[1],
+					2 * user_plug_config.plug[i].task[j].repeat[2],
+					3 * user_plug_config.plug[i].task[j].repeat[3],
+					4 * user_plug_config.plug[i].task[j].repeat[4],
+					5 * user_plug_config.plug[i].task[j].repeat[5],
+					6 * user_plug_config.plug[i].task[j].repeat[6],
+					7 * user_plug_config.plug[i].task[j].repeat[7],
+					user_plug_config.plug[i].task[j].action,
+					user_plug_config.plug[i].task[j].enable);
 			cJSON_AddItemToArray(json_tasks_send, cJSON_CreateString(plug_task_config_str));
 		}
 		cJSON_AddItemToObject(json_plug_send, "tasks", json_tasks_send);
@@ -101,8 +103,8 @@ void get_user_config_simple_str(char *res)
 	for (i = 0; i < PLUG_NUM; i++)
 	{
 		cJSON *json_plug_send = cJSON_CreateObject();
-		cJSON_AddStringToObject(json_plug_send, "name", user_plug_config[i].name);
-		cJSON_AddNumberToObject(json_plug_send, "status", plug_status[i]);
+		cJSON_AddStringToObject(json_plug_send, "name", user_plug_config.plug[i].name);
+		cJSON_AddNumberToObject(json_plug_send, "status", plug_status.plug[i]);
 
 		strTemp1[5] = i + '0';
 		cJSON_AddItemToObject(json_send, strTemp1, json_plug_send);
@@ -111,7 +113,12 @@ void get_user_config_simple_str(char *res)
 	cJSON *json_mqtt_send = cJSON_CreateObject();
 	cJSON_AddStringToObject(json_mqtt_send, "ip", user_mqtt_config.seraddr);
 	cJSON_AddStringToObject(json_mqtt_send, "sub_topic", user_mqtt_config.sub_topic);
+	cJSON_AddNumberToObject(json_mqtt_send, "connected", mqtt_is_connected);
+	
 	cJSON_AddItemToObject(json_send, "mqtt", json_mqtt_send);
+	cJSON_AddNumberToObject(json_send, "plug_config_loaded", plug_config_loaded);
+	cJSON_AddNumberToObject(json_send, "plug_status_loaded", plug_status_loaded);
+	cJSON_AddNumberToObject(json_send, "mqtt_config_loaded", mqtt_config_loaded);
 
 	char *json_str = cJSON_Print(json_send);
 	strcpy(res, json_str);

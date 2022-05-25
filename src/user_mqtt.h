@@ -17,6 +17,12 @@ extern "C" {
 
 void mqtt_para_init(void);
 
+void user_mqtt_topic_publish(char* topic, char *data);
+void user_mqtt_publish(char *data);
+
+void mqtt_report_status(void);
+void mqtt_report_plug_status(uint8_t);
+
 //MQTT AT cmd
 int hf_atcmd_mqclientid(pat_session_t s,int argc,char *argv[],char *rsp,int len);
 

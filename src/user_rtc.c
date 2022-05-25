@@ -20,7 +20,6 @@ bool ntptime_succeed = false;
 void USER_FUNC rtc_thread_func(void *arg)
 {
     int i, j;
-    char task_flag[PLUG_NUM] = {-1, -1, -1, -1, -1}; //记录要哪个插座要返回数据
 
     while (1)
     {
@@ -37,23 +36,22 @@ void USER_FUNC rtc_thread_func(void *arg)
         {
             for (j = 0; j < PLUG_TIME_TASK_NUM; j++)
             {
-                if (user_config.plug[i].task[j].enable != 0)
+                if (user_plug_config.plug[i].task[j].enable != 0)
                 {
-                    uint8_t *repeat = user_config.plug[i].task[j].repeat;
-                    if (current_time->tm_sec == user_config.plug[i].task[j].minute &&
-                        current_time->tm_min == user_config.plug[i].task[j].minute &&
-                        current_time->tm_hour == user_config.plug[i].task[j].hour &&
+                    uint8_t *repeat = user_plug_config.plug[i].task[j].repeat;
+                    if (current_time->tm_sec == user_plug_config.plug[i].task[j].minute &&
+                        current_time->tm_min == user_plug_config.plug[i].task[j].minute &&
+                        current_time->tm_hour == user_plug_config.plug[i].task[j].hour &&
                         repeat[current_time->tm_wday + 1] != 0)
                     {
-                        if (plug_status[i] != user_config.plug[i].task[j].action)
+                        if (plug_status.plug[i] != user_plug_config.plug[i].task[j].action)
                         {
-                            user_relay_set(i, user_config.plug[i].task[j].action);
+                            user_relay_set(i, user_plug_config.plug[i].task[j].action);
                             update_plug_status_flag = true;
                         }
                         if (repeat[0] == 0)
                         {
-                            task_flag[i] = j;
-                            user_config.plug[i].task[j].enable = 0;
+                            user_plug_config.plug[i].task[j].enable = 0;
                             update_plug_config_flag = true;
                         }
                     }
@@ -61,47 +59,6 @@ void USER_FUNC rtc_thread_func(void *arg)
             }
         }
 
-        if (update_plug_config_flag == 1)
-        {
-            update_plug_status_flag = 0;
-
-            cJSON *json_send = cJSON_CreateObject();
-            cJSON_AddStringToObject(json_send, "mac", strMac);
-
-            // for (i = 0; i < PLUG_NUM; i++)
-            // {
-            //     char strTemp1[] = "plug_X";
-            //     strTemp1[5] = i + '0';
-            //     cJSON *json_send_plug = cJSON_CreateObject();
-            //     cJSON_AddNumberToObject(json_send_plug, "on", plug_status[i]);
-
-            //     if (task_flag[i] >= 0)
-            //     {
-            //         cJSON *json_send_plug_setting = cJSON_CreateObject();
-
-            //         j = task_flag[i];
-            //         char strTemp2[] = "task_X";
-            //         strTemp2[5] = j + '0';
-            //         // u_printf("[strTemp2] task_X=>%s\n",strTemp2);
-            //         cJSON *json_send_plug_task = cJSON_CreateObject();
-            //         cJSON_AddNumberToObject(json_send_plug_task, "hour", user_config.plug[i].task[j].hour);
-            //         cJSON_AddNumberToObject(json_send_plug_task, "minute", user_config.plug[i].task[j].minute);
-
-            //         cJSON_AddNumberToObject(json_send_plug_task, "action", user_config.plug[i].task[j].action);
-            //         cJSON_AddNumberToObject(json_send_plug_task, "on", user_config.plug[i].task[j].enable);
-            //         cJSON_AddItemToObject(json_send_plug_setting, strTemp2, json_send_plug_task);
-            //         cJSON_AddItemToObject(json_send_plug, "setting", json_send_plug_setting);
-
-            //         task_flag[i] = -1;
-            //     }
-            //     cJSON_AddItemToObject(json_send, strTemp1, json_send_plug);
-            // }
-
-            char *json_str = cJSON_Print(json_send);
-            user_send(false, json_str); //发送数据
-            hfmem_free(json_str);
-            cJSON_Delete(json_send);
-        }
     }
     u_printf("rtc_thread_func exit..");
 }
@@ -113,13 +70,8 @@ void USER_FUNC rtctime_timeout_handler(void *arg)
 
 void USER_FUNC rtctime_init(void)
 {
-    hftimer_handle_t user_rtc_timer = NULL;
     hfthread_create(rtc_thread_func, "rtccontrol", 1024, (void *)1, 1, NULL, NULL);
-    if ((user_rtc_timer = hftimer_create("TIMER2", 1000, 1, TIMER2_ID, rtctime_timeout_handler, 0)) == NULL) //每一秒加一,模拟时钟在跑
-    {
-        // u_printf("create timer 2 fail\n");
-    }
-    // u_printf("rtc_init done.\n");
+    hftimer_handle_t user_rtc_timer = hftimer_create("TIMER2", 1000, 1, TIMER2_ID, rtctime_timeout_handler, 0); //每一秒加一,模拟时钟在跑
     hftimer_start(user_rtc_timer);
 }
 
@@ -175,7 +127,7 @@ void get_user_config_info(cJSON *json_send)
         char strTemp1[] = "plug_X";
         strTemp1[5] = i + '0';
         cJSON *json_send_plug = cJSON_CreateObject();
-        cJSON_AddNumberToObject(json_send_plug, "on", plug_status[i]);
+        cJSON_AddNumberToObject(json_send_plug, "on", plug_status.plug[i]);
 
         if (task_flag[i] >= 0)
         {
@@ -186,11 +138,11 @@ void get_user_config_info(cJSON *json_send)
             strTemp2[5] = j + '0';
             // u_printf("[strTemp2] task_X=>%s\n",strTemp2);
             cJSON *json_send_plug_task = cJSON_CreateObject();
-            cJSON_AddNumberToObject(json_send_plug_task, "hour", user_config.plug[i].task[j].hour);
-            cJSON_AddNumberToObject(json_send_plug_task, "minute", user_config.plug[i].task[j].minute);
-            // cJSON_AddNumberToObject(json_send_plug_task, "repeat", user_config.plug[i].task[j].repeat);
-            cJSON_AddNumberToObject(json_send_plug_task, "action", user_config.plug[i].task[j].action);
-            cJSON_AddNumberToObject(json_send_plug_task, "on", user_config.plug[i].task[j].enable);
+            cJSON_AddNumberToObject(json_send_plug_task, "hour", user_plug_config.plug[i].task[j].hour);
+            cJSON_AddNumberToObject(json_send_plug_task, "minute", user_plug_config.plug[i].task[j].minute);
+            // cJSON_AddNumberToObject(json_send_plug_task, "repeat", user_plug_config.plug[i].task[j].repeat);
+            cJSON_AddNumberToObject(json_send_plug_task, "action", user_plug_config.plug[i].task[j].action);
+            cJSON_AddNumberToObject(json_send_plug_task, "on", user_plug_config.plug[i].task[j].enable);
             cJSON_AddItemToObject(json_send_plug_setting, strTemp2, json_send_plug_task);
             cJSON_AddItemToObject(json_send_plug, "setting", json_send_plug_setting);
 

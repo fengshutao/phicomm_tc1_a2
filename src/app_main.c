@@ -407,7 +407,7 @@ int USER_FUNC app_main (void)
     hfgpio_fset_out_high(LED);
     key_init();
     rtctime_init();
-    user_udp_init( );
+    // user_udp_init( );
     httpd_init();
     
     hfnet_get_mac_address(strMac);

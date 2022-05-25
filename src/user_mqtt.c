@@ -6,17 +6,13 @@
 #define MQTT_DEBUG_LEVEL 5
 
 static Client MQTTCli;
-static int mqtt_is_connected = 0;
+// static int mqtt_is_connected = 0;
 
 #define MQTTCliBufLen 1024
 #define MQTTCliReadbufLen 1024
 #define MQTTCli_Command_Timeout_MS 1000
 #define MQTTCli_KeepAliveInterval_S 120
 
-MQTT_CONFIG get_mqtt_pra(void)
-{
-	return user_mqtt_config;
-}
 
 static void mqtt_status_callback(int connect)
 {
@@ -48,10 +44,6 @@ static void topic_message_publish(char *topic, char *messagem, int message_len, 
 
 static void topic_message_callback(MessageData *md)
 {
-	HF_Debug(MQTT_DEBUG_LEVEL, "************ Receive Message ***********\n");
-	HF_Debug(MQTT_DEBUG_LEVEL, "%.*s\n", md->topicName->lenstring.len, md->topicName->lenstring.data);
-	HF_Debug(MQTT_DEBUG_LEVEL, "%.*s\n", (int)md->message->payloadlen, (char *)md->message->payload);
-
 	char *data = (char *)hfmem_malloc(md->message->payloadlen + md->topicName->lenstring.len + 32);
 	if (data == NULL)
 		return;
@@ -59,7 +51,10 @@ static void topic_message_callback(MessageData *md)
 	sprintf(data, "+MQD:%d,\"%.*s\"\r\n%.*s", (int)md->message->payloadlen,
 			md->topicName->lenstring.len, md->topicName->lenstring.data, (int)md->message->payloadlen, (char *)md->message->payload);
 	topic_message_publish(user_mqtt_config.pub_topic, data, strlen(data), 0);
+	topic_message_publish(user_mqtt_config.pub_topic, "publish", strlen("publish"), 0);
+	
 	hfuart_send(HFUART0, data, strlen(data), 0);
+	hfuart_send(HFUART0, "uart", strlen("uart"), 0);
 	hfmem_free(data);
 }
 
@@ -190,13 +185,10 @@ static void mqtt_start(void)
 
 static void default_mqtt_config(MQTT_CONFIG *mqtt)
 {
-	char mac[21] = {0};
-	hfnet_get_mac_address(mac);
-
 	memset((char *)mqtt, 0, sizeof(MQTT_CONFIG));
 	strcpy(mqtt->seraddr, "192.168.64.203");
 	mqtt->port = 1883;
-	strcpy(mqtt->clientid, mac);
+	strcpy(mqtt->clientid, strMac);
 	strcpy(mqtt->username, "admin");
 	strcpy(mqtt->password, "admin");
 	strcpy(mqtt->pub_topic, "tc1_pub");
@@ -357,10 +349,10 @@ int hf_atcmd_mqsubscribe(pat_session_t s, int argc, char *argv[], char *rsp, int
 
 		strcpy(user_mqtt_config.topic, argv[0]);
 		unsigned char qos = atoi(argv[1]);
-		if (MQTTSubscribe(&MQTTCli, user_mqtt_config.topic, qos, topic_message_callback) == SUCCESS)
-			sprintf(rsp, "=SUBSCRIBE SUCCESS");
-		else
-			sprintf(rsp, "=SUBSCRIBE FAIL");
+		// if (MQTTSubscribe(&MQTTCli, user_mqtt_config.topic, qos, topic_message_callback) == SUCCESS)
+		// 	sprintf(rsp, "=SUBSCRIBE SUCCESS");
+		// else
+		// 	sprintf(rsp, "=SUBSCRIBE FAIL");
 	}
 	else
 		return -3;
@@ -497,15 +489,45 @@ void mqtt_para_init(void)
 	{
 		default_mqtt_config(&user_mqtt_config);
 		save_mqtt_config(&user_mqtt_config);
+		mqtt_config_loaded = 2;
+	} else {
+		mqtt_config_loaded = 1;
 	}
 	mqtt_start();
 }
 
 void uart_message_publish(char *data, int len)
 {
-	if (memcmp(user_mqtt_config.pub_topic, "\0", 1) == 0)
-	{
-		u_printf("mqtt pub_topic is null,please set by \"AT+MQPUBTOPIC\".\r\n");
+	if (mqtt_is_connected) {
+		topic_message_publish(user_mqtt_config.pub_topic, data, len, 0);
 	}
-	topic_message_publish(user_mqtt_config.pub_topic, data, len, 0);
 }
+
+void user_mqtt_topic_publish(char* topic, char *data)
+{
+	if (mqtt_is_connected) {
+		topic_message_publish(topic, data, strlen(data), 0);
+	}
+}
+
+void user_mqtt_publish(char *data)
+{
+
+		topic_message_publish(user_mqtt_config.pub_topic, data, strlen(data), 0);
+
+}
+
+void mqtt_report_status(void)
+{
+	char report_str[1024];
+	get_user_config_simple_str(report_str);
+	mqtt_publish(report_str);
+}
+void mqtt_report_plug_status(uint8_t index)
+{
+	char report_str[1024];
+	get_user_config_simple_str(report_str);
+	mqtt_publish(report_str);
+}
+
+

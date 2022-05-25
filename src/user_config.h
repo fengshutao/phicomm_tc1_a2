@@ -31,6 +31,9 @@
 #define MQTT_MESSAGE_MAX_LEN 128
 #define MQTT_MAGIC_HEAD 0x5A5AA5A5
 
+#define PLUG_STATUS_MAGIC_HEAD 0x6B6BB6B6
+#define PLUG_CONFIG_MAGIC_HEAD 0x7C7CC7C7
+
 typedef struct _TASK_CONFIG
 {
     unsigned short hour;   //小时
@@ -41,10 +44,17 @@ typedef struct _TASK_CONFIG
     uint8_t repeat[8]; 
 } TASK_CONFIG;
 
-typedef struct _PLUG_CONFIG
+typedef struct _PLUG_CONFIG_ONE
 {
     char name[PLUG_NAME_LENGTH];
     TASK_CONFIG task[PLUG_TIME_TASK_NUM];
+} PLUG_CONFIG_ONE;
+
+typedef struct _PLUG_CONFIG
+{
+    unsigned int magic_head;
+    PLUG_CONFIG_ONE plug[PLUG_NUM];
+    unsigned char crc;
 } PLUG_CONFIG;
 
 typedef struct _MQTT_CONFIG
@@ -66,19 +76,19 @@ typedef struct _MQTT_CONFIG
     unsigned char crc;
 } MQTT_CONFIG;
 
-typedef struct _USER_CONFIG
+
+typedef struct _PLUG_STATUS
 {
-    MQTT_CONFIG *mqtt_config;
-    PLUG_CONFIG *plug;
-} USER_CONFIG;
+    unsigned int magic_head;
+    unsigned short plug[PLUG_NUM];
+    unsigned char crc;
+} PLUG_STATUS;
 
 extern HF_CONFIG_FILE g_hf_config_file;
-unsigned short plug_status[PLUG_NUM];
 
-
-USER_CONFIG user_config;
+PLUG_STATUS plug_status;
 MQTT_CONFIG user_mqtt_config;
-PLUG_CONFIG user_plug_config[PLUG_NUM];
+PLUG_CONFIG user_plug_config;
 
 ///extern char rtc_init;
 char strMac[13];
@@ -91,9 +101,15 @@ void user_config_init(void);
 unsigned char crc_calc(unsigned char *, int);
 void get_user_config_str(char *);
 void get_user_config_simple_str(char *);
+void save_user_config(void);
 
 bool update_mqtt_config_flag;
 bool update_plug_config_flag;
 bool update_plug_status_flag;
+
+uint8_t plug_status_loaded;
+uint8_t plug_config_loaded;
+uint8_t mqtt_config_loaded;
+uint8_t mqtt_is_connected;
 
 #endif
