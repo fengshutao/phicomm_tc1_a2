@@ -31,7 +31,10 @@
 #define MQTT_MESSAGE_MAX_LEN 128
 #define MQTT_MAGIC_HEAD 0x5A5AA5A5
 
+#define PLUG_STATUS_USERBIN_ADDR 2048
 #define PLUG_STATUS_MAGIC_HEAD 0x6B6BB6B6
+
+#define PLUG_CONFIG_USERBIN_ADDR 3072
 #define PLUG_CONFIG_MAGIC_HEAD 0x7C7CC7C7
 
 typedef struct _TASK_CONFIG
@@ -103,13 +106,23 @@ void get_user_config_str(char *);
 void get_user_config_simple_str(char *);
 void save_user_config(void);
 
+void init_plug_status(void);
+void init_plug_config(void);
+
+
 bool update_mqtt_config_flag;
 bool update_plug_config_flag;
-bool update_plug_status_flag;
+bool update_plug_status_flag[PLUG_NUM];
+
+bool user_plug_config_enable;
 
 uint8_t plug_status_loaded;
 uint8_t plug_config_loaded;
 uint8_t mqtt_config_loaded;
 uint8_t mqtt_is_connected;
 
+uint8_t press_flag;
+uint8_t release_flag;
+time_t last_press_time;
+time_t last_release_time;
 #endif

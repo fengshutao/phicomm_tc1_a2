@@ -183,6 +183,7 @@ static void mqtt_start(void)
 	mqtt_init = 1;
 }
 
+
 static void default_mqtt_config(MQTT_CONFIG *mqtt)
 {
 	memset((char *)mqtt, 0, sizeof(MQTT_CONFIG));
@@ -479,23 +480,6 @@ int hf_atcmd_mqwill(pat_session_t s, int argc, char *argv[], char *rsp, int len)
 	return 0;
 }
 
-void mqtt_para_init(void)
-{
-	unsigned char crc;
-	memset((char *)&user_mqtt_config, 0, sizeof(MQTT_CONFIG));
-	hffile_userbin_read(MQTT_CONFIG_USERBIN_ADDR, (char *)&user_mqtt_config, sizeof(MQTT_CONFIG));
-	crc = crc_calc((unsigned char *)&user_mqtt_config, sizeof(MQTT_CONFIG) - 1);
-	if (!(MQTT_MAGIC_HEAD == user_mqtt_config.magic_head && crc == user_mqtt_config.crc))
-	{
-		default_mqtt_config(&user_mqtt_config);
-		save_mqtt_config(&user_mqtt_config);
-		mqtt_config_loaded = 2;
-	} else {
-		mqtt_config_loaded = 1;
-	}
-	mqtt_start();
-}
-
 void uart_message_publish(char *data, int len)
 {
 	if (mqtt_is_connected) {
@@ -531,3 +515,19 @@ void mqtt_report_plug_status(uint8_t index)
 }
 
 
+void mqtt_para_init(void)
+{
+	unsigned char crc;
+	memset((char *)&user_mqtt_config, 0, sizeof(MQTT_CONFIG));
+	hffile_userbin_read(MQTT_CONFIG_USERBIN_ADDR, (char *)&user_mqtt_config, sizeof(MQTT_CONFIG));
+	crc = crc_calc((unsigned char *)&user_mqtt_config, sizeof(MQTT_CONFIG) - 1);
+	if (!(MQTT_MAGIC_HEAD == user_mqtt_config.magic_head && crc == user_mqtt_config.crc))
+	{
+		default_mqtt_config(&user_mqtt_config);
+		save_mqtt_config(&user_mqtt_config);
+		mqtt_config_loaded = 2;
+	} else {
+		mqtt_config_loaded = 1;
+	}
+	mqtt_start();
+}
