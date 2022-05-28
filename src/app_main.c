@@ -190,20 +190,20 @@ static int hf_atcmd_set_type(pat_session_t s,int argc,char *argv[],char *rsp,int
 
 const hfat_cmd_t user_define_at_cmds_table[]=
 {
-    {"MQCLIENTID",hf_atcmd_mqclientid,"   AT+MQCLIENTID: MQTT ClientID.\r\n",NULL},
-	{"MQIPPORT",hf_atcmd_mqipport,"   AT+MQIPPORT: MQTT server address and port.\r\n",NULL},
-	{"MQUSERPWD",hf_atcmd_mquserpwd,"   AT+MQUSERPWD: MQTT username and password.\r\n",NULL},
-	{"MQSTATUS",hf_atcmd_mqstatus,"   AT+MQSTATUS: MQTT status.\r\n",NULL},
-	{"MQSTART",hf_atcmd_mqstart,"   AT+MQSTART: start MQTT.\r\n",NULL},
-	{"MQPUBLISH",hf_atcmd_mqpublish,"   AT+MQPUBLISH: MQTT publish data.\r\n",NULL},
-	{"MQSUBSCRIBE",hf_atcmd_mqsubscribe,"   AT+MQSUBSCRIBE: MQTT subscribe topic.\r\n",NULL},
-	{"MQUNSUBSCRIBE",hf_atcmd_mqunsubscribe,"   AT+MQUNSUBSCRIBE: MQTT unsubscribe topic.\r\n",NULL},
-	{"MQAUTOSUB",hf_atcmd_mqautosub,"   AT+MQAUTOSUB: MQTT auto subscribe topic.\r\n",NULL},
-	{"MQRES",hf_atcmd_mqres,"   AT+MQRES: MQTT reload parameter.\r\n",NULL},
-	{"MQVER",hf_atcmd_mqver,"   AT+MQVER: MQTT version.\r\n",NULL},
-	{"MQWILL",hf_atcmd_mqwill,"   AT+MQWILL: MQTT will topic and message.\r\n",NULL},
-    {"TYPE",hf_atcmd_set_type,"   AT+TYPE: airkiss device type.\r\n",NULL},    //Modify TYPE
-    {"APPVER",hf_cmd_get_version,"   AT+APPVER: get version\r\n", NULL},
+    // {"MQCLIENTID",hf_atcmd_mqclientid,"   AT+MQCLIENTID: MQTT ClientID.\r\n",NULL},
+	// {"MQIPPORT",hf_atcmd_mqipport,"   AT+MQIPPORT: MQTT server address and port.\r\n",NULL},
+	// {"MQUSERPWD",hf_atcmd_mquserpwd,"   AT+MQUSERPWD: MQTT username and password.\r\n",NULL},
+	// {"MQSTATUS",hf_atcmd_mqstatus,"   AT+MQSTATUS: MQTT status.\r\n",NULL},
+	// {"MQSTART",hf_atcmd_mqstart,"   AT+MQSTART: start MQTT.\r\n",NULL},
+	// {"MQPUBLISH",hf_atcmd_mqpublish,"   AT+MQPUBLISH: MQTT publish data.\r\n",NULL},
+	// {"MQSUBSCRIBE",hf_atcmd_mqsubscribe,"   AT+MQSUBSCRIBE: MQTT subscribe topic.\r\n",NULL},
+	// {"MQUNSUBSCRIBE",hf_atcmd_mqunsubscribe,"   AT+MQUNSUBSCRIBE: MQTT unsubscribe topic.\r\n",NULL},
+	// {"MQAUTOSUB",hf_atcmd_mqautosub,"   AT+MQAUTOSUB: MQTT auto subscribe topic.\r\n",NULL},
+	// {"MQRES",hf_atcmd_mqres,"   AT+MQRES: MQTT reload parameter.\r\n",NULL},
+	// {"MQVER",hf_atcmd_mqver,"   AT+MQVER: MQTT version.\r\n",NULL},
+	// {"MQWILL",hf_atcmd_mqwill,"   AT+MQWILL: MQTT will topic and message.\r\n",NULL},
+    // {"TYPE",hf_atcmd_set_type,"   AT+TYPE: airkiss device type.\r\n",NULL},    //Modify TYPE
+    // {"APPVER",hf_cmd_get_version,"   AT+APPVER: get version\r\n", NULL},
     {NULL,NULL,NULL,NULL}
 };
 
@@ -381,33 +381,24 @@ int USER_FUNC app_main (void)
         user_led_set(-1);
     }
 
-	if(hfnet_start_uart(HFTHREAD_PRIORITIES_LOW,(hfnet_callback_t)uart_recv_callback)!=HF_SUCCESS)
-	{
-		HF_Debug(DEBUG_WARN,"start uart fail!\n");
-	}
+	// if(hfnet_start_uart(HFTHREAD_PRIORITIES_LOW,(hfnet_callback_t)uart_recv_callback)!=HF_SUCCESS)
+	// {
+	// 	HF_Debug(DEBUG_WARN,"start uart fail!\n");
+	// }
 
     user_config_init();
-    mqtt_para_init();
-
-    //Web Server
+        //Web Server
     if(hfnet_start_httpd(HFTHREAD_PRIORITIES_MID)!=HF_SUCCESS)
     {
         HF_Debug(DEBUG_WARN,"start httpd fail\n");
     }
-    
-	//Register Web Server Event Callbacks
-	// hfnet_httpd_set_get_nvram_callback(hfhttpd_yz_nvset, hfhttpd_yz_nvget);
-	
-	// wifi_scan_thread_func();
 
-    //memset(rsp, 0, sizeof(rsp));
-    //hfat_send_cmd("AT+WSMAC\r\n", sizeof("AT+WSMC\r\n"), rsp, 64);
-    //u_printf("AT+WSMAC's response:%s\n",rsp);
-    
+
     hfgpio_fset_out_high(LED);
     key_init();
     rtctime_init();
     // user_udp_init( );
+
     httpd_init();
     
     hfnet_get_mac_address(strMac);
@@ -416,7 +407,9 @@ int USER_FUNC app_main (void)
     {
         msleep(50);
     }
-    
+
+        
+    mqtt_para_init();
     user_mdns_init( );
 
     return 1;

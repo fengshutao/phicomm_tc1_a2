@@ -101,16 +101,14 @@ void USER_FUNC do_update_mqtt_config()
 
 void USER_FUNC rtc_thread_func(void *arg)
 {
-    int i, j;
-
     while (1)
     {
-        msleep(100);
+        // msleep(100);
         systime_now = hfsys_get_time();
 
         do_update_rtc_time();
 
-        do_schedule_tasks();
+        // do_schedule_tasks();
 
         do_update_plug_status();
 
@@ -130,7 +128,7 @@ void USER_FUNC rtctime_init(void)
 {
     systime_last_ntp = hfsys_get_time();
     systime_now = systime_last_ntp;
-    hfthread_create(rtc_thread_func, "rtccontrol", 1024, (void *)1, 1, NULL, NULL);
+    hfthread_create(rtc_thread_func, "rtccontrol", 1024, NULL, HFTHREAD_PRIORITIES_LOW, NULL, NULL);
     // hftimer_handle_t user_rtc_timer = hftimer_create("TIMER2", 1000, 1, TIMER2_ID, rtctime_timeout_handler, 0); //每一秒加一,模拟时钟在跑
     // hftimer_start(user_rtc_timer);
 }

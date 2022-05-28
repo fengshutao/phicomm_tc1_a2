@@ -196,7 +196,7 @@ void init_plug_status(void)
 void user_config_init()
 {
 	uint8_t i = 0;
-	user_plug_config_enable = true;
+	user_plug_config_enable = false;
 	strcpy(ntpserver, "ntp1.aliyun.com");
 	update_mqtt_config_flag = false;
 	update_plug_config_flag = false;
@@ -210,10 +210,10 @@ void user_config_init()
 	mqtt_config_loaded = 0;
 	mqtt_is_connected = 0;
 
-	press_flag = 0;
-	release_flag = 0;
-	last_press_time = 0;
-	last_release_time = 0;
+	// press_flag = 0;
+	// release_flag = 0;
+	// last_press_time = 0;
+	// last_release_time = 0;
 
 	// init_plug_config();
 	// init_plug_status();

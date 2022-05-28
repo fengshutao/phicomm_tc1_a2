@@ -121,8 +121,8 @@ uint8_t plug_config_loaded;
 uint8_t mqtt_config_loaded;
 uint8_t mqtt_is_connected;
 
-uint8_t press_flag;
-uint8_t release_flag;
-time_t last_press_time;
-time_t last_release_time;
+// uint8_t press_flag;
+// uint8_t release_flag;
+// time_t last_press_time;
+// time_t last_release_time;
 #endif
