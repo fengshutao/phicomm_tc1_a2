@@ -54,7 +54,7 @@ static void topic_message_callback(MessageData *md)
 	topic_message_publish(user_mqtt_config.pub_topic, data, strlen(data), 0);
 	// topic_message_publish(user_mqtt_config.pub_topic, "publish", strlen("publish"), 0);
 
-	user_function_cmd_received((char *)md->message->payload);
+	user_function_cmd_received((char *)md->message->payload, (int)md->message->payloadlen);
 
 	hfuart_send(HFUART0, data, strlen(data), 0);
 	hfuart_send(HFUART0, "uart", strlen("uart"), 0);

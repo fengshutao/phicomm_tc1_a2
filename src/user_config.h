@@ -5,7 +5,7 @@
 #include <hsf.h>
 
 #define VERSION "v0.1"
-#define VER 1
+#define VER 2
 #define TYPE 1
 #define TYPE_NAME "TC1A2"
 
@@ -37,6 +37,8 @@
 
 #define PLUG_CONFIG_USERBIN_ADDR 3072
 #define PLUG_CONFIG_MAGIC_HEAD 0x7C7CC7C7
+
+#define USER_BUFF_SIZE 1024
 
 typedef struct _TASK_CONFIG
 {
@@ -124,6 +126,10 @@ uint8_t plug_status_loaded;
 uint8_t plug_config_loaded;
 uint8_t mqtt_config_loaded;
 uint8_t mqtt_is_connected;
+
+
+hfthread_mutex_t user_buff_lock;
+char* user_buff;
 
 // uint8_t press_flag;
 // uint8_t release_flag;

@@ -21,14 +21,29 @@ void user_send(int udp_flag, char *s)
     // user_mqtt_send( s );
 }
 
-void USER_FUNC user_function_cmd_received(char *pusrdata)
+void USER_FUNC user_function_cmd_received(char *pusrdata, int datalen)
 {
-    char rsp[1024] = {0};
-    sprintf(rsp, "receive: %s", pusrdata);
+    // char rsp[1024] = {0};
+    // if (datalen < USER_BUFF_SIZE)
+    // {
+    //     pusrdata[datalen] = '\0';
+    // }
+    // else 
+    // {
+    //     user_mqtt_publish("mqtt msg too long");
+    //     return;
+    // }
+    // hfthread_mutext_lock(user_buff_lock);
+    memset(user_buff, 0, USER_BUFF_SIZE);
+    char* rsp = user_buff;
+
+	sprintf(rsp, "%.*s", datalen, pusrdata);
+    // sprintf(rsp, "receive: %s", pusrdata);
     user_mqtt_publish(rsp);
-    cJSON *pJsonRoot = cJSON_Parse(pusrdata);
+    cJSON *pJsonRoot = cJSON_Parse(rsp);
     if (!pJsonRoot)
     {
+        // hfthread_mutext_free(user_buff_lock);
         return;
     }
 
@@ -83,6 +98,7 @@ void USER_FUNC user_function_cmd_received(char *pusrdata)
         //     save_plug_status(&plug_status);
         // }
     }
+    // hfthread_mutext_free(user_buff_lock);
     return;
 
     //开始正式处理所有命令

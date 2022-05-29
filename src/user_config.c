@@ -226,6 +226,10 @@ void user_config_init()
 
 	version = VER;
 
+	user_buff = (char *)hfmem_malloc(USER_BUFF_SIZE);
+	memset((char *)user_buff, 0, USER_BUFF_SIZE);
+	hfthread_mutext_new(&user_buff_lock);
+
 	// press_flag = 0;
 	// release_flag = 0;
 	// last_press_time = 0;
