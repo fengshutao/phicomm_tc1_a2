@@ -2,3 +2,4 @@
 sdk/4.13.bak
 projects/*
 !projects/*.uvprojx
+src/test

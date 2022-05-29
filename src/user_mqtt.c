@@ -1,7 +1,9 @@
 
 #include <hsf.h>
 #include "user_mqtt.h"
+#include "user_function.h"
 #include "MQTTClient.h"
+#include "cJSON.h"
 
 #define MQTT_DEBUG_LEVEL 5
 
@@ -12,7 +14,6 @@ static Client MQTTCli;
 #define MQTTCliReadbufLen 1024
 #define MQTTCli_Command_Timeout_MS 1000
 #define MQTTCli_KeepAliveInterval_S 120
-
 
 static void mqtt_status_callback(int connect)
 {
@@ -48,11 +49,13 @@ static void topic_message_callback(MessageData *md)
 	if (data == NULL)
 		return;
 
-	sprintf(data, "+MQD:%d,\"%.*s\"\r\n%.*s", (int)md->message->payloadlen,
+	sprintf(data, "+MQD:%d, %.*s: %.*s", (int)md->message->payloadlen,
 			md->topicName->lenstring.len, md->topicName->lenstring.data, (int)md->message->payloadlen, (char *)md->message->payload);
 	topic_message_publish(user_mqtt_config.pub_topic, data, strlen(data), 0);
-	topic_message_publish(user_mqtt_config.pub_topic, "publish", strlen("publish"), 0);
-	
+	// topic_message_publish(user_mqtt_config.pub_topic, "publish", strlen("publish"), 0);
+
+	user_function_cmd_received((char *)md->message->payload);
+
 	hfuart_send(HFUART0, data, strlen(data), 0);
 	hfuart_send(HFUART0, "uart", strlen("uart"), 0);
 	hfmem_free(data);
@@ -183,7 +186,6 @@ static void mqtt_start(void)
 	mqtt_init = 1;
 }
 
-
 static void default_mqtt_config(MQTT_CONFIG *mqtt)
 {
 	memset((char *)mqtt, 0, sizeof(MQTT_CONFIG));
@@ -194,7 +196,7 @@ static void default_mqtt_config(MQTT_CONFIG *mqtt)
 	strcpy(mqtt->password, "admin");
 	strcpy(mqtt->pub_topic, "tc1_pub");
 	strcpy(mqtt->sub_topic, "tc1_sub");
-	mqtt->sub_qos = 0;
+	mqtt->sub_qos = 1;
 	mqtt->enable_sub = 1;
 	mqtt->mqtt_ver = 4;
 }
@@ -482,14 +484,16 @@ int hf_atcmd_mqwill(pat_session_t s, int argc, char *argv[], char *rsp, int len)
 
 void uart_message_publish(char *data, int len)
 {
-	if (mqtt_is_connected) {
+	if (mqtt_is_connected)
+	{
 		topic_message_publish(user_mqtt_config.pub_topic, data, len, 0);
 	}
 }
 
-void user_mqtt_topic_publish(char* topic, char *data)
+void user_mqtt_topic_publish(char *topic, char *data)
 {
-	if (mqtt_is_connected) {
+	if (mqtt_is_connected)
+	{
 		topic_message_publish(topic, data, strlen(data), 0);
 	}
 }
@@ -497,8 +501,7 @@ void user_mqtt_topic_publish(char* topic, char *data)
 void user_mqtt_publish(char *data)
 {
 
-		topic_message_publish(user_mqtt_config.pub_topic, data, strlen(data), 0);
-
+	topic_message_publish(user_mqtt_config.pub_topic, data, strlen(data), 0);
 }
 
 void mqtt_report_status(void)
@@ -514,7 +517,6 @@ void mqtt_report_plug_status(uint8_t index)
 	mqtt_publish(report_str);
 }
 
-
 void mqtt_para_init(void)
 {
 	unsigned char crc;
@@ -526,7 +528,9 @@ void mqtt_para_init(void)
 		default_mqtt_config(&user_mqtt_config);
 		save_mqtt_config(&user_mqtt_config);
 		mqtt_config_loaded = 2;
-	} else {
+	}
+	else
+	{
 		mqtt_config_loaded = 1;
 	}
 	mqtt_start();

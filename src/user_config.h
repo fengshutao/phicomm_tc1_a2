@@ -5,6 +5,7 @@
 #include <hsf.h>
 
 #define VERSION "v0.1"
+#define VER 1
 #define TYPE 1
 #define TYPE_NAME "TC1A2"
 
@@ -44,12 +45,11 @@ typedef struct _TASK_CONFIG
     unsigned short second; //秒钟
     unsigned short action; //动作
     unsigned short enable; //开关
-    uint8_t repeat[8]; 
+    uint8_t repeat;
 } TASK_CONFIG;
 
 typedef struct _PLUG_CONFIG_ONE
 {
-    char name[PLUG_NAME_LENGTH];
     TASK_CONFIG task[PLUG_TIME_TASK_NUM];
 } PLUG_CONFIG_ONE;
 
@@ -79,7 +79,6 @@ typedef struct _MQTT_CONFIG
     unsigned char crc;
 } MQTT_CONFIG;
 
-
 typedef struct _PLUG_STATUS
 {
     unsigned int magic_head;
@@ -93,22 +92,27 @@ PLUG_STATUS plug_status;
 MQTT_CONFIG user_mqtt_config;
 PLUG_CONFIG user_plug_config;
 
-///extern char rtc_init;
+/// extern char rtc_init;
 char strMac[13];
 char strIp[32];
 uint32_t power;
 char deviceid[32];
 char ntpserver[50];
+uint8_t version;
 
 void user_config_init(void);
 unsigned char crc_calc(unsigned char *, int);
-void get_user_config_str(char *);
+void get_user_config_str(char *, uint8_t);
 void get_user_config_simple_str(char *);
 void save_user_config(void);
 
 void init_plug_status(void);
-void init_plug_config(void);
+void default_plug_status(PLUG_STATUS *);
+void save_plug_status(PLUG_STATUS *);
 
+void init_plug_config(void);
+void default_plug_config(PLUG_CONFIG *);
+void save_plug_config(PLUG_CONFIG *);
 
 bool update_mqtt_config_flag;
 bool update_plug_config_flag;

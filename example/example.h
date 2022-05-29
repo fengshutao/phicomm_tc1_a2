@@ -64,8 +64,8 @@
 
 #define USER_HTTPD_DEMO    26
 
-//═и╣¤╧┬├ц┐╔╥╘╤б╘ё▓╗═м╡─└¤╫╙╜°╨╨▒р╥ы
-#define EXAMPLE_USE_DEMO	USER_MQTT_DEMO
+//═ия┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤бя┐╜я┐╜═мя┐╜я┐╜я┐╜я┐╜я┐╜╙╜я┐╜я┐╜╨▒я┐╜я┐╜я┐╜
+#define EXAMPLE_USE_DEMO	USER_ALI_IOT_DEMO
 
 #endif
 

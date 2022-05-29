@@ -20,19 +20,22 @@ time_t systime_now;
 time_t timestamp_start = 0;
 bool ntptime_succeed = false;
 
+// time_t ntp_res;
+
 void USER_FUNC do_update_rtc_time()
 {
     if ((!ntptime_succeed && systime_now - systime_last_ntp > 10000) ||
         (systime_now - systime_last_ntp > 36000000))
     {
         int time_mm = hfntp_get_time(ntpserver, 123, 200);
+        // ntp_res = time_mm;
         if (time_mm < 0)
         {
             ntptime_succeed = false;
         }
         else
         {
-            timestamp_start = time_mm - systime_now;
+            timestamp_start = time_mm - systime_now / 1000;
             ntptime_succeed = true;
         }
         systime_last_ntp = systime_now;
@@ -54,18 +57,17 @@ void USER_FUNC do_schedule_tasks()
         {
             if (user_plug_config.plug[i].task[j].enable != 0)
             {
-                uint8_t *repeat = user_plug_config.plug[i].task[j].repeat;
                 if (current_time->tm_sec == user_plug_config.plug[i].task[j].second &&
                     current_time->tm_min == user_plug_config.plug[i].task[j].minute &&
                     current_time->tm_hour == user_plug_config.plug[i].task[j].hour &&
-                    repeat[current_time->tm_wday + 1] != 0)
+                    ((1 << (current_time->tm_wday + 1)) & user_plug_config.plug[i].task[j].repeat) > 0)
                 {
                     if (plug_status.plug[i] != user_plug_config.plug[i].task[j].action)
                     {
                         user_relay_set(i, user_plug_config.plug[i].task[j].action);
                         update_plug_status_flag[i] = true;
                     }
-                    if (repeat[0] == 0)
+                    if ((user_plug_config.plug[i].task[j].repeat & 1) == 0)
                     {
                         user_plug_config.plug[i].task[j].enable = 0;
                         update_plug_config_flag = true;
@@ -90,6 +92,11 @@ void USER_FUNC do_update_plug_config()
 
 void USER_FUNC do_update_plug_status()
 {
+    if (update_plug_status_flag == 0)
+    {
+        return;
+    }
+
     return;
 }
 
@@ -98,24 +105,22 @@ void USER_FUNC do_update_mqtt_config()
     return;
 }
 
-
 void USER_FUNC rtc_thread_func(void *arg)
 {
     while (1)
     {
-        // msleep(100);
+        msleep(100);
         systime_now = hfsys_get_time();
 
         do_update_rtc_time();
 
-        // do_schedule_tasks();
+        do_schedule_tasks();
 
         do_update_plug_status();
 
         do_update_plug_config();
 
         do_update_mqtt_config();
-
     }
 }
 
@@ -135,7 +140,7 @@ void USER_FUNC rtctime_init(void)
 
 void USER_FUNC update_time()
 {
-    utc8ts = timestamp_start + systime_now + UTC8;
+    utc8ts = timestamp_start + systime_now/1000 + UTC8;
     current_time = gmtime(&utc8ts);
 }
 

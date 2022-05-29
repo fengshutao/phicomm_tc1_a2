@@ -14,57 +14,63 @@ unsigned char crc_calc(unsigned char *data, int len)
 	return crc;
 }
 
-
-void get_user_config_str(char *res)
+void get_user_config_str(char *res, uint8_t x)
 {
 	cJSON *json_send = cJSON_CreateObject();
 	cJSON_AddStringToObject(json_send, "mac", strMac);
 	cJSON_AddStringToObject(json_send, "IP", strIp);
-	cJSON_AddStringToObject(json_send, "ssid", (char *)g_hf_config_file.sta_ssid);
-	cJSON_AddStringToObject(json_send, "password", (char *)g_hf_config_file.sta_key);
 	char time_s[20] = {0};
 	get_time_string(time_s, 20);
 	cJSON_AddStringToObject(json_send, "time", time_s);
 
-	int i, j;
-	char strTemp1[] = "plug_X";
+	uint8_t i, j;
 
-	for (i = 0; i < PLUG_NUM; i++)
+	if (x >= PLUG_NUM)
+	{
+		i = 0;
+	}
+	else {
+		i = x;
+	}
+
+	// for (i = 0; i < PLUG_NUM; i++)
 	{
 		cJSON *json_plug_send = cJSON_CreateObject();
-		cJSON_AddStringToObject(json_plug_send, "name", user_plug_config.plug[i].name);
-		cJSON_AddNumberToObject(json_plug_send, "status", plug_status.plug[i]);
+		// cJSON_AddNumberToObject(json_plug_send, "status", plug_status.plug[i]);
 
 		cJSON *json_tasks_send = cJSON_CreateArray();
 		for (j = 0; j < PLUG_TIME_TASK_NUM; j++)
+		// j = 0;
 		{
+			uint8_t repeat = user_plug_config.plug[i].task[j].repeat;
 			char plug_task_config_str[100];
 			sprintf(plug_task_config_str,
-					"id: %d, time: %d:%d:%d, repeat:%d, days:%d,%d,%d,%d,%d,%d,%d, action:%d, enable:%d",
-					j,
-					user_plug_config.plug[i].task[j].hour, user_plug_config.plug[i].task[j].minute, user_plug_config.plug[i].task[j].second,
-					user_plug_config.plug[i].task[j].repeat[0],
-					1 * user_plug_config.plug[i].task[j].repeat[1],
-					2 * user_plug_config.plug[i].task[j].repeat[2],
-					3 * user_plug_config.plug[i].task[j].repeat[3],
-					4 * user_plug_config.plug[i].task[j].repeat[4],
-					5 * user_plug_config.plug[i].task[j].repeat[5],
-					6 * user_plug_config.plug[i].task[j].repeat[6],
-					7 * user_plug_config.plug[i].task[j].repeat[7],
-					user_plug_config.plug[i].task[j].action,
-					user_plug_config.plug[i].task[j].enable);
+				"id: %d, time: %d:%d:%d, repeat:%d, days:%d,%d,%d,%d,%d,%d,%d, action:%d, enable:%d",
+				j,
+				user_plug_config.plug[i].task[j].hour, user_plug_config.plug[i].task[j].minute, user_plug_config.plug[i].task[j].second,
+				repeat & 1,
+				1 * (repeat & (1 << 1)) >> 1,
+				2 * (repeat & (1 << 2)) >> 2,
+				3 * (repeat & (1 << 3)) >> 3,
+				4 * (repeat & (1 << 4)) >> 4,
+				5 * (repeat & (1 << 5)) >> 5,
+				6 * (repeat & (1 << 6)) >> 6,
+				7 * (repeat & (1 << 7)) >> 7,
+				user_plug_config.plug[i].task[j].action,
+				user_plug_config.plug[i].task[j].enable);
+			// sprintf(plug_task_config_str, "%s", "tttttt");
 			cJSON_AddItemToArray(json_tasks_send, cJSON_CreateString(plug_task_config_str));
 		}
-		cJSON_AddItemToObject(json_plug_send, "tasks", json_tasks_send);
+		// cJSON_AddItemToObject(json_plug_send, "tasks", json_tasks_send);
 
+		cJSON_AddItemToArray(json_tasks_send, cJSON_CreateString("test"));
+
+		char strTemp1[] = "plug_X";
 		strTemp1[5] = i + '0';
+		cJSON_AddStringToObject(json_plug_send, "name", strTemp1);
+		cJSON_AddItemToObject(json_plug_send, "tasks", json_tasks_send);
 		cJSON_AddItemToObject(json_send, strTemp1, json_plug_send);
 	}
-
-	cJSON *json_mqtt_send = cJSON_CreateObject();
-	cJSON_AddStringToObject(json_mqtt_send, "ip", user_mqtt_config.seraddr);
-	cJSON_AddStringToObject(json_mqtt_send, "sub_topic", user_mqtt_config.sub_topic);
-	cJSON_AddItemToObject(json_send, "mqtt", json_mqtt_send);
 
 	char *json_str = cJSON_Print(json_send);
 	strcpy(res, json_str);
@@ -72,7 +78,6 @@ void get_user_config_str(char *res)
 	hfmem_free(json_str);
 	cJSON_Delete(json_send);
 }
-
 
 void get_user_config_simple_str(char *res)
 {
@@ -91,7 +96,6 @@ void get_user_config_simple_str(char *res)
 	for (i = 0; i < PLUG_NUM; i++)
 	{
 		cJSON *json_plug_send = cJSON_CreateObject();
-		cJSON_AddStringToObject(json_plug_send, "name", user_plug_config.plug[i].name);
 		cJSON_AddNumberToObject(json_plug_send, "status", plug_status.plug[i]);
 
 		strTemp1[5] = i + '0';
@@ -108,6 +112,18 @@ void get_user_config_simple_str(char *res)
 	cJSON_AddNumberToObject(json_send, "plug_status_loaded", plug_status_loaded);
 	cJSON_AddNumberToObject(json_send, "mqtt_config_loaded", mqtt_config_loaded);
 
+	cJSON_AddNumberToObject(json_send, "version", version);
+
+	// extern time_t timestamp_start;
+	// extern time_t utc8ts;
+	// extern time_t ntp_res;
+	// extern time_t systime_now;
+	// cJSON_AddNumberToObject(json_send, "ntp_res", ntp_res);
+	// cJSON_AddNumberToObject(json_send, "sysnow", systime_now);
+	// cJSON_AddNumberToObject(json_send, "start_time", timestamp_start);
+	// cJSON_AddNumberToObject(json_send, "now_ts", utc8ts);
+
+
 	char *json_str = cJSON_Print(json_send);
 	strcpy(res, json_str);
 
@@ -115,32 +131,29 @@ void get_user_config_simple_str(char *res)
 	cJSON_Delete(json_send);
 }
 
-
-static void default_plug_config(PLUG_CONFIG *config)
+void default_plug_config(PLUG_CONFIG *config)
 {
 	memset((char *)config, 0, sizeof(MQTT_CONFIG));
 	for (uint8_t i = 0; i < PLUG_NUM; i++)
 	{
-		sprintf(config->plug[i].name, "default_name_%d", i);
-		for (uint8_t j = 0; j < PLUG_TIME_TASK_NUM; j++) {
+		for (uint8_t j = 0; j < PLUG_TIME_TASK_NUM; j++)
+		{
 			config->plug[i].task[j].enable = 0;
 			config->plug[i].task[j].enable = 0;
 			config->plug[i].task[j].hour = 24;
 			config->plug[i].task[j].minute = 60;
 			config->plug[i].task[j].second = 60;
-			// config->plug[i].task[j].repeat = {0, 0, 0, 0, 0, 0, 0, 0};
+			config->plug[i].task[j].repeat = 0;
 		}
-
 	}
 }
 
-static void save_plug_config(PLUG_CONFIG *config)
+void save_plug_config(PLUG_CONFIG *config)
 {
 	config->magic_head = PLUG_CONFIG_MAGIC_HEAD;
 	config->crc = crc_calc((unsigned char *)config, sizeof(PLUG_CONFIG) - 1);
 	hffile_userbin_write(PLUG_CONFIG_USERBIN_ADDR, (char *)config, sizeof(PLUG_CONFIG));
 }
-
 
 void init_plug_config(void)
 {
@@ -153,13 +166,14 @@ void init_plug_config(void)
 		default_plug_config(&user_plug_config);
 		save_plug_config(&user_plug_config);
 		plug_config_loaded = 2;
-	} else {
+	}
+	else
+	{
 		plug_config_loaded = 1;
 	}
 }
 
-
-static void default_plug_status(PLUG_STATUS *config)
+void default_plug_status(PLUG_STATUS *config)
 {
 	memset((char *)config, 0, sizeof(PLUG_STATUS));
 	for (uint8_t i = 0; i < PLUG_NUM; i++)
@@ -168,13 +182,12 @@ static void default_plug_status(PLUG_STATUS *config)
 	}
 }
 
-static void save_plug_status(PLUG_STATUS *config)
+void save_plug_status(PLUG_STATUS *config)
 {
 	config->magic_head = PLUG_STATUS_MAGIC_HEAD;
 	config->crc = crc_calc((unsigned char *)config, sizeof(PLUG_STATUS) - 1);
 	hffile_userbin_write(PLUG_STATUS_USERBIN_ADDR, (char *)config, sizeof(PLUG_STATUS));
 }
-
 
 void init_plug_status(void)
 {
@@ -187,11 +200,12 @@ void init_plug_status(void)
 		default_plug_status(&plug_status);
 		save_plug_status(&plug_status);
 		plug_status_loaded = 2;
-	} else {
+	}
+	else
+	{
 		plug_status_loaded = 1;
 	}
 }
-
 
 void user_config_init()
 {
@@ -210,6 +224,8 @@ void user_config_init()
 	mqtt_config_loaded = 0;
 	mqtt_is_connected = 0;
 
+	version = VER;
+
 	// press_flag = 0;
 	// release_flag = 0;
 	// last_press_time = 0;
@@ -217,4 +233,5 @@ void user_config_init()
 
 	// init_plug_config();
 	// init_plug_status();
+	// default_plug_config(&user_plug_config);
 }

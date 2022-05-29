@@ -126,34 +126,34 @@ void USER_FUNC key_timeout_handler(void *arg)
         {
             key_long_press();
         }
-        else if (key_time == 35)
-        {
-            user_led_set(0);
-        }
-        else if (key_time == 40)
-        {
-            user_led_set(1);
-        }
-        else if (key_time == 45)
-        {
-            user_led_set(0);
-        }
-        else if (key_time == 50)
-        {
-            user_led_set(1);
-        }
-        else if (key_time == 55)
-        {
-            user_led_set(0);
-        }
-        else if (key_time == 60)
-        {
-            user_led_set(1);
-        }
-        else if (key_time == 65)
-        {
-            user_led_set(0);
-        }
+        // else if (key_time == 35)
+        // {
+        //     user_led_set(0);
+        // }
+        // else if (key_time == 40)
+        // {
+        //     user_led_set(1);
+        // }
+        // else if (key_time == 45)
+        // {
+        //     user_led_set(0);
+        // }
+        // else if (key_time == 50)
+        // {
+        //     user_led_set(1);
+        // }
+        // else if (key_time == 55)
+        // {
+        //     user_led_set(0);
+        // }
+        // else if (key_time == 60)
+        // {
+        //     user_led_set(1);
+        // }
+        // else if (key_time == 65)
+        // {
+        //     user_led_set(0);
+        // }
         else if (key_time == 70)
         {
             // user_function_cmd_received(1, "{\"cmd\":\"device report\"}");

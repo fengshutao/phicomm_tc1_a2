@@ -251,7 +251,13 @@ void styles_cbk(char *url, char *rsp)
 
 void status_cbk_all(char *url, char *rsp)
 {
-	get_user_config_str(rsp);
+	uint8_t plug = 0;
+	char *param = strstr(url, "?plug=");
+	if (param != NULL)
+	{
+		plug = param[6] - '0';
+	}
+	get_user_config_str(rsp, plug);
 }
 
 void status_cbk(char *url, char *rsp)
@@ -273,7 +279,7 @@ void USER_FUNC httpd_init(void)
 		u_printf("error registering url callback\r\n");
 
 	httpd_add_page("/styles.css", styles_cbk);
-	httpd_add_page("/status_simple", status_cbk);
-	httpd_add_page("/status_all", status_cbk_all);
+	httpd_add_page("/status", status_cbk);
+	httpd_add_page("/task", status_cbk_all);
 	httpd_add_page("/test", test_cbk);
 }
