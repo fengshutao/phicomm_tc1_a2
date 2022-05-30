@@ -30,7 +30,8 @@ void get_user_config_str(char *res, uint8_t x)
 	{
 		i = 0;
 	}
-	else {
+	else
+	{
 		i = x;
 	}
 
@@ -46,19 +47,19 @@ void get_user_config_str(char *res, uint8_t x)
 			uint8_t repeat = user_plug_config.plug[i].task[j].repeat;
 			char plug_task_config_str[100];
 			sprintf(plug_task_config_str,
-				"id: %d, time: %d:%d:%d, repeat:%d, days:%d,%d,%d,%d,%d,%d,%d, action:%d, enable:%d",
-				j,
-				user_plug_config.plug[i].task[j].hour, user_plug_config.plug[i].task[j].minute, user_plug_config.plug[i].task[j].second,
-				repeat & 1,
-				1 * (repeat & (1 << 1)) >> 1,
-				2 * (repeat & (1 << 2)) >> 2,
-				3 * (repeat & (1 << 3)) >> 3,
-				4 * (repeat & (1 << 4)) >> 4,
-				5 * (repeat & (1 << 5)) >> 5,
-				6 * (repeat & (1 << 6)) >> 6,
-				7 * (repeat & (1 << 7)) >> 7,
-				user_plug_config.plug[i].task[j].action,
-				user_plug_config.plug[i].task[j].enable);
+					"id: %d, time: %d:%d:%d, repeat:%d, days:%d,%d,%d,%d,%d,%d,%d, action:%d, enable:%d",
+					j,
+					user_plug_config.plug[i].task[j].hour, user_plug_config.plug[i].task[j].minute, user_plug_config.plug[i].task[j].second,
+					repeat & 1,
+					1 * (repeat & (1 << 1)) >> 1,
+					2 * (repeat & (1 << 2)) >> 2,
+					3 * (repeat & (1 << 3)) >> 3,
+					4 * (repeat & (1 << 4)) >> 4,
+					5 * (repeat & (1 << 5)) >> 5,
+					6 * (repeat & (1 << 6)) >> 6,
+					7 * (repeat & (1 << 7)) >> 7,
+					user_plug_config.plug[i].task[j].action,
+					user_plug_config.plug[i].task[j].enable);
 			// sprintf(plug_task_config_str, "%s", "tttttt");
 			cJSON_AddItemToArray(json_tasks_send, cJSON_CreateString(plug_task_config_str));
 		}
@@ -124,7 +125,6 @@ void get_user_config_simple_str(char *res)
 	// cJSON_AddNumberToObject(json_send, "start_time", timestamp_start);
 	// cJSON_AddNumberToObject(json_send, "now_ts", utc8ts);
 
-
 	char *json_str = cJSON_Print(json_send);
 	strcpy(res, json_str);
 
@@ -187,17 +187,8 @@ void save_plug_status(PLUG_STATUS *config)
 {
 	config->magic_head = PLUG_STATUS_MAGIC_HEAD;
 	config->crc = crc_calc((unsigned char *)config, sizeof(PLUG_STATUS) - 1);
-
-
-	char tmp[10] = {0};
-	sprintf(tmp,"-2 %d", ((unsigned char *)config)[sizeof(PLUG_STATUS) - 2]);
-	user_mqtt_publish(tmp);
-	sprintf(tmp,"-1 %d", ((unsigned char *)config)[sizeof(PLUG_STATUS) - 1]);
-	user_mqtt_publish(tmp);
-
-    hfuflash_erase_page(PLUG_STATUS_UFLASH_ADDR,1);
-    hfuflash_write(PLUG_STATUS_UFLASH_ADDR,(char *)config,sizeof(PLUG_STATUS));
-	// hffile_userbin_write(PLUG_STATUS_UFLASH_ADDR, (char *)config, sizeof(PLUG_STATUS));
+	hfuflash_erase_page(PLUG_STATUS_UFLASH_ADDR, 1);
+	hfuflash_write(PLUG_STATUS_UFLASH_ADDR, (char *)config, sizeof(PLUG_STATUS));
 }
 
 void init_plug_status(void)
@@ -248,6 +239,6 @@ void user_config_init()
 	// last_release_time = 0;
 
 	init_plug_config();
-	// init_plug_status();
+	init_plug_status();
 	// default_plug_config(&user_plug_config);
 }
