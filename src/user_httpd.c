@@ -248,7 +248,6 @@ void styles_cbk(char *url, char *rsp)
 // 	strcpy(rsp, send_buf);
 // }
 
-
 void status_cbk_all(char *url, char *rsp)
 {
 	uint8_t plug = 0;
@@ -267,10 +266,20 @@ void status_cbk(char *url, char *rsp)
 
 void test_cbk(char *url, char *rsp)
 {
-	strcpy(rsp, "<html><body>Welcome!</body></html>");
+	char *param = strstr(url, "?json=");
+	if (param != NULL)
+	{
+		strrpc(param, "\%22", "\"");
+		strrpc(param, "\%20", " ");
+		sprintf(rsp, "%s", param + 6);
+		user_function_cmd_received(param + 6, strlen(param + 6));
+	}
+	else
+	{
+		strcpy(rsp, "null");
+	}
+	// strcpy(rsp, "<html><body>Welcome!</body></html>");
 }
-
-
 
 void USER_FUNC httpd_init(void)
 {

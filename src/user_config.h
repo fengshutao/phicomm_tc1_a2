@@ -32,21 +32,21 @@
 #define MQTT_MESSAGE_MAX_LEN 128
 #define MQTT_MAGIC_HEAD 0x5A5AA5A5
 
-#define PLUG_STATUS_USERBIN_ADDR 2048
+#define PLUG_STATUS_UFLASH_ADDR 0
 #define PLUG_STATUS_MAGIC_HEAD 0x6B6BB6B6
 
-#define PLUG_CONFIG_USERBIN_ADDR 3072
+#define PLUG_CONFIG_USERBIN_ADDR 2048
 #define PLUG_CONFIG_MAGIC_HEAD 0x7C7CC7C7
 
 #define USER_BUFF_SIZE 1024
 
 typedef struct _TASK_CONFIG
 {
-    unsigned short hour;   //小时
-    unsigned short minute; //分钟
-    unsigned short second; //秒钟
-    unsigned short action; //动作
-    unsigned short enable; //开关
+    uint8_t hour;   //小时
+    uint8_t minute; //分钟
+    uint8_t second; //秒钟
+    uint8_t action; //动作
+    uint8_t enable; //开关
     uint8_t repeat;
 } TASK_CONFIG;
 
@@ -59,6 +59,7 @@ typedef struct _PLUG_CONFIG
 {
     unsigned int magic_head;
     PLUG_CONFIG_ONE plug[PLUG_NUM];
+    uint8_t tag[3];
     unsigned char crc;
 } PLUG_CONFIG;
 
@@ -84,7 +85,8 @@ typedef struct _MQTT_CONFIG
 typedef struct _PLUG_STATUS
 {
     unsigned int magic_head;
-    unsigned short plug[PLUG_NUM];
+    uint8_t plug[PLUG_NUM];
+    uint8_t tag;
     unsigned char crc;
 } PLUG_STATUS;
 

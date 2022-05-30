@@ -3,6 +3,7 @@
 
 #include "user_config.h"
 #include "cJSON/cJSON.h"
+#include "user_mqtt.h"
 
 unsigned char crc_calc(unsigned char *data, int len)
 {
@@ -133,7 +134,7 @@ void get_user_config_simple_str(char *res)
 
 void default_plug_config(PLUG_CONFIG *config)
 {
-	memset((char *)config, 0, sizeof(MQTT_CONFIG));
+	memset((char *)config, 0, sizeof(PLUG_CONFIG));
 	for (uint8_t i = 0; i < PLUG_NUM; i++)
 	{
 		for (uint8_t j = 0; j < PLUG_TIME_TASK_NUM; j++)
@@ -143,7 +144,7 @@ void default_plug_config(PLUG_CONFIG *config)
 			config->plug[i].task[j].hour = 24;
 			config->plug[i].task[j].minute = 60;
 			config->plug[i].task[j].second = 60;
-			config->plug[i].task[j].repeat = 0;
+			config->plug[i].task[j].repeat = 0b11111111;
 		}
 	}
 }
@@ -186,14 +187,24 @@ void save_plug_status(PLUG_STATUS *config)
 {
 	config->magic_head = PLUG_STATUS_MAGIC_HEAD;
 	config->crc = crc_calc((unsigned char *)config, sizeof(PLUG_STATUS) - 1);
-	hffile_userbin_write(PLUG_STATUS_USERBIN_ADDR, (char *)config, sizeof(PLUG_STATUS));
+
+
+	char tmp[10] = {0};
+	sprintf(tmp,"-2 %d", ((unsigned char *)config)[sizeof(PLUG_STATUS) - 2]);
+	user_mqtt_publish(tmp);
+	sprintf(tmp,"-1 %d", ((unsigned char *)config)[sizeof(PLUG_STATUS) - 1]);
+	user_mqtt_publish(tmp);
+
+    hfuflash_erase_page(PLUG_STATUS_UFLASH_ADDR,1);
+    hfuflash_write(PLUG_STATUS_UFLASH_ADDR,(char *)config,sizeof(PLUG_STATUS));
+	// hffile_userbin_write(PLUG_STATUS_UFLASH_ADDR, (char *)config, sizeof(PLUG_STATUS));
 }
 
 void init_plug_status(void)
 {
 	unsigned char crc;
 	memset((char *)&plug_status, 0, sizeof(PLUG_STATUS));
-	hffile_userbin_read(PLUG_STATUS_USERBIN_ADDR, (char *)&plug_status, sizeof(PLUG_STATUS));
+	hfuflash_read(PLUG_STATUS_UFLASH_ADDR, (char *)&plug_status, sizeof(PLUG_STATUS));
 	crc = crc_calc((unsigned char *)&plug_status, sizeof(PLUG_STATUS) - 1);
 	if (!(PLUG_STATUS_MAGIC_HEAD == plug_status.magic_head && crc == plug_status.crc))
 	{
@@ -228,14 +239,15 @@ void user_config_init()
 
 	user_buff = (char *)hfmem_malloc(USER_BUFF_SIZE);
 	memset((char *)user_buff, 0, USER_BUFF_SIZE);
-	hfthread_mutext_new(&user_buff_lock);
+	user_buff_lock = NULL_MUTEX;
+	// hfthread_mutext_new(&user_buff_lock);
 
 	// press_flag = 0;
 	// release_flag = 0;
 	// last_press_time = 0;
 	// last_release_time = 0;
 
-	// init_plug_config();
+	init_plug_config();
 	// init_plug_status();
 	// default_plug_config(&user_plug_config);
 }

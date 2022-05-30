@@ -23,82 +23,66 @@ void user_send(int udp_flag, char *s)
 
 void USER_FUNC user_function_cmd_received(char *pusrdata, int datalen)
 {
-    // char rsp[1024] = {0};
-    // if (datalen < USER_BUFF_SIZE)
-    // {
-    //     pusrdata[datalen] = '\0';
-    // }
-    // else 
-    // {
-    //     user_mqtt_publish("mqtt msg too long");
-    //     return;
-    // }
-    // hfthread_mutext_lock(user_buff_lock);
-    memset(user_buff, 0, USER_BUFF_SIZE);
-    char* rsp = user_buff;
+    if (datalen >= USER_BUFF_SIZE) {
+        user_mqtt_publish("string too long");
+        return;
+    }
 
-	sprintf(rsp, "%.*s", datalen, pusrdata);
+    hfthread_mutext_lock(user_buff_lock);
+    memset(user_buff, 0, USER_BUFF_SIZE);
+    char *rsp = user_buff;
+
+    sprintf(rsp, "%.*s", datalen, pusrdata);
     // sprintf(rsp, "receive: %s", pusrdata);
     user_mqtt_publish(rsp);
     cJSON *pJsonRoot = cJSON_Parse(rsp);
     if (!pJsonRoot)
     {
-        // hfthread_mutext_free(user_buff_lock);
+        hfthread_mutext_free(user_buff_lock);
         return;
     }
 
     cJSON *p_cmd = cJSON_GetObjectItem(pJsonRoot, "cmd");
-    // if (p_cmd == NULL){
-    //     user_mqtt_publish("cmd null");
-    // } else {
-    //     user_mqtt_publish("cmd not null");
-    // }
 
-    if (!p_cmd){
+    if (!p_cmd)
+    {
         user_mqtt_publish("cmd null");
-    } else {
+    }
+    else
+    {
         user_mqtt_publish("cmd not null");
     }
-
 
     if (p_cmd && cJSON_IsString(p_cmd))
     {
         user_mqtt_publish(p_cmd->valuestring);
         if (strcmp(p_cmd->valuestring, "device report") == 0)
         {
-            user_mqtt_publish("equal");
             get_user_config_simple_str(rsp);
             user_mqtt_publish(rsp);
         }
-        else {
-            user_mqtt_publish("notequal");
+        else if (strcmp(p_cmd->valuestring, "init_plug_config") == 0)
+        {
+            user_mqtt_publish("init_plug_status");
+            init_plug_status();
         }
-        // else if (strcmp(p_cmd->valuestring, "init_plug_config") == 0)
-        // {
-        //     init_plug_config();
-        // }
-        // else if (strcmp(p_cmd->valuestring, "init_plug_status") == 0)
-        // {
-        //     init_plug_status();
-        // }
-        // else if (strcmp(p_cmd->valuestring, "default_plug_config") == 0)
-        // {
-        //     default_plug_config(&user_plug_config);
-        // }
-        // else if (strcmp(p_cmd->valuestring, "default_plug_status") == 0)
-        // {
-        //     default_plug_status(&plug_status);
-        // }
-        // else if (strcmp(p_cmd->valuestring, "save_plug_config") == 0)
-        // {
-        //     save_plug_config(&user_plug_config);
-        // }
-        // else if (strcmp(p_cmd->valuestring, "save_plug_status") == 0)
-        // {
-        //     save_plug_status(&plug_status);
-        // }
+        else if (strcmp(p_cmd->valuestring, "reset_plug_config") == 0)
+        {
+            user_mqtt_publish("reset_plug_config");
+            plug_status_loaded = 0;
+        }
+        else if (strcmp(p_cmd->valuestring, "default_plug_config") == 0)
+        {
+            user_mqtt_publish("default_plug_config");
+            default_plug_status(&plug_status);
+        }
+        else if (strcmp(p_cmd->valuestring, "save_plug_config") == 0)
+        {
+            user_mqtt_publish("save_plug_config");
+            save_plug_status(&plug_status);
+        }
     }
-    // hfthread_mutext_free(user_buff_lock);
+    hfthread_mutext_free(user_buff_lock);
     return;
 
     //开始正式处理所有命令
@@ -267,4 +251,33 @@ unsigned char strtohex(char a, char b)
     }
 
     return a * 16 + b;
+}
+
+char *strrpc(char *str, char *oldstr, char *newstr)
+{
+
+    char bstr[strlen(str)]; //转换缓冲区
+
+    memset(bstr, 0, sizeof(bstr));
+
+    for (int i = 0; i < strlen(str); i++)
+    {
+
+        if (!strncmp(str + i, oldstr, strlen(oldstr)))
+        { //查找目标字符串
+
+            strcat(bstr, newstr);
+
+            i += strlen(oldstr) - 1;
+        }
+        else
+        {
+
+            strncat(bstr, str + i, 1); //保存一字节进缓冲区
+        }
+    }
+
+    strcpy(str, bstr);
+
+    return str;
 }

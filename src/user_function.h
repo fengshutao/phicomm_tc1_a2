@@ -12,6 +12,7 @@ bool json_plug_task_analysis(unsigned char x, unsigned char y, cJSON *pJsonRoot)
 void user_send( int udp_flag, char *s );
 void USER_FUNC user_function_cmd_received(char *pusrdata, int datalen);
 unsigned char strtohex(char a, char b);
+char *strrpc(char *str, char *oldstr, char *newstr);
 
 
 
