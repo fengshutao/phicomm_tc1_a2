@@ -21,69 +21,74 @@ void user_send(int udp_flag, char *s)
     // user_mqtt_send( s );
 }
 
-void USER_FUNC user_function_cmd_received(char *pusrdata, int datalen)
+void USER_FUNC user_function_cmd_received(char *pusrdata, int datalen, char *rsp)
 {
-    if (datalen >= USER_BUFF_SIZE) {
-        user_mqtt_publish("string too long");
+    if (datalen >= USER_BUFF_SIZE)
+    {
+        sprintf(rsp, "max datalen: 1024");
         return;
     }
 
     hfthread_mutext_lock(user_buff_lock);
     memset(user_buff, 0, USER_BUFF_SIZE);
-    char *rsp = user_buff;
-
-    sprintf(rsp, "%.*s", datalen, pusrdata);
-    // sprintf(rsp, "receive: %s", pusrdata);
-    user_mqtt_publish(rsp);
-    cJSON *pJsonRoot = cJSON_Parse(rsp);
+    sprintf(user_buff, "%.*s", datalen, pusrdata);
+    user_mqtt_publish(user_buff);
+    cJSON *pJsonRoot = cJSON_Parse(user_buff);
     if (!pJsonRoot)
     {
+        sprintf(rsp, "json invalid");
         hfthread_mutext_free(user_buff_lock);
         return;
     }
 
     cJSON *p_cmd = cJSON_GetObjectItem(pJsonRoot, "cmd");
-
-    if (!p_cmd)
-    {
-        user_mqtt_publish("cmd null");
-    }
-    else
-    {
-        user_mqtt_publish("cmd not null");
-    }
-
     if (p_cmd && cJSON_IsString(p_cmd))
     {
         user_mqtt_publish(p_cmd->valuestring);
-        if (strcmp(p_cmd->valuestring, "device report") == 0)
+        if (strcmp(p_cmd->valuestring, "restart") == 0)
         {
-            get_user_config_simple_str(rsp);
-            user_mqtt_publish(rsp);
+            user_mqtt_publish("restart");
+            hfsys_reset();
         }
+        else if (strcmp(p_cmd->valuestring, "device_report") == 0)
+        {
+            user_mqtt_publish("devide_report");
+            get_user_config_simple_str(user_buff);
+            user_mqtt_publish(user_buff);
+        }
+        // plug config cmd
         else if (strcmp(p_cmd->valuestring, "init_plug_config") == 0)
         {
-            user_mqtt_publish("init_plug_status");
-            init_plug_status();
-        }
-        else if (strcmp(p_cmd->valuestring, "reset_plug_config") == 0)
-        {
-            user_mqtt_publish("reset_plug_config");
-            plug_status_loaded = 0;
+            user_mqtt_publish("init_plug_config");
+            init_plug_config();
         }
         else if (strcmp(p_cmd->valuestring, "default_plug_config") == 0)
         {
             user_mqtt_publish("default_plug_config");
-            default_plug_status(&plug_status);
+            default_plug_config(&user_plug_config);
         }
         else if (strcmp(p_cmd->valuestring, "save_plug_config") == 0)
         {
             user_mqtt_publish("save_plug_config");
+            save_plug_config(&user_plug_config);
+        }
+        // plug status cmd
+        else if (strcmp(p_cmd->valuestring, "init_plug_status") == 0)
+        {
+            user_mqtt_publish("init_plug_status");
+            init_plug_status();
+        }
+        else if (strcmp(p_cmd->valuestring, "default_plug_status") == 0)
+        {
+            user_mqtt_publish("default_plug_status");
+            default_plug_status(&plug_status);
+        }
+        else if (strcmp(p_cmd->valuestring, "save_plug_status") == 0)
+        {
+            user_mqtt_publish("save_plug_status");
             save_plug_status(&plug_status);
         }
     }
-    hfthread_mutext_free(user_buff_lock);
-    return;
 
     //开始正式处理所有命令
     {
@@ -94,8 +99,8 @@ void USER_FUNC user_function_cmd_received(char *pusrdata, int datalen)
             cJSON *p_setting_name = cJSON_GetObjectItem(p_setting, "name");
             if (p_setting_name && cJSON_IsString(p_setting_name))
             {
-                sprintf(deviceid, p_setting_name->valuestring);
-                // u_printf("p_setting_name->valuestring:%s\n",deviceid);
+                update_mqtt_config_flag = true;
+                sprintf(user_mqtt_config.clientid, "%s", p_setting_name->valuestring);
             }
 
             //设置mqtt ip
@@ -136,10 +141,14 @@ void USER_FUNC user_function_cmd_received(char *pusrdata, int datalen)
         {
             if (json_plug_analysis(i, pJsonRoot))
                 update_plug_config_flag = true;
+                user_plug_config_enable = true;
         }
     }
 
     cJSON_Delete(pJsonRoot);
+    hfthread_mutext_free(user_buff_lock);
+    sprintf(rsp, "config changed");
+    return;
 }
 
 /*
@@ -161,7 +170,7 @@ bool json_plug_analysis(unsigned char x, cJSON *pJsonRoot)
         return false;
 
     {
-        cJSON *p_plug_on = cJSON_GetObjectItem(p_plug, "on");
+        cJSON *p_plug_on = cJSON_GetObjectItem(p_plug, "status");
         if (p_plug_on)
         {
             if (cJSON_IsNumber(p_plug_on))
@@ -213,11 +222,12 @@ bool json_plug_task_analysis(unsigned char x, unsigned char y, cJSON *pJsonRoot)
         p_plug_task_action && p_plug_task_enable)
     {
 
-        if (cJSON_IsNumber(p_plug_task_hour) && cJSON_IsNumber(p_plug_task_minute) && cJSON_IsNumber(p_plug_task_repeat) && cJSON_IsNumber(p_plug_task_action) && cJSON_IsNumber(p_plug_task_enable))
+        if (cJSON_IsNumber(p_plug_task_hour) && cJSON_IsNumber(p_plug_task_minute) && cJSON_IsNumber(p_plug_task_second) && cJSON_IsNumber(p_plug_task_repeat) && cJSON_IsNumber(p_plug_task_action) && cJSON_IsNumber(p_plug_task_enable))
         {
             return_flag = true;
             user_plug_config.plug[x].task[y].hour = p_plug_task_hour->valueint;
             user_plug_config.plug[x].task[y].minute = p_plug_task_minute->valueint;
+            user_plug_config.plug[x].task[y].second = p_plug_task_second->valueint;
             user_plug_config.plug[x].task[y].repeat = p_plug_task_repeat->valueint;
             user_plug_config.plug[x].task[y].action = p_plug_task_action->valueint;
             user_plug_config.plug[x].task[y].enable = p_plug_task_enable->valueint;

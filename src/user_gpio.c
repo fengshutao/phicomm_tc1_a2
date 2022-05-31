@@ -215,3 +215,11 @@ void USER_FUNC key_init()
     hfgpio_configure_fpin_interrupt(KEY, HFPIO_IT_EDGE, key_rising_irq_handler, 1);
     hftimer_start(user_key_timer);
 }
+
+void USER_FUNC load_key_status()
+{
+    for (uint8_t i = 0; i < PLUG_NUM; i++)
+    {
+        user_relay_set(i, plug_status.plug[i]);
+    }
+}

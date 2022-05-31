@@ -403,6 +403,7 @@ int USER_FUNC app_main (void)
     
     hfnet_get_mac_address(strMac);
     hfgpio_fset_out_low(LED);
+    load_key_status();
     while(!hfnet_wifi_is_active())
     {
         msleep(50);
@@ -410,7 +411,7 @@ int USER_FUNC app_main (void)
 
         
     mqtt_para_init();
-    user_mdns_init( );
+    // user_mdns_init( );
 
     return 1;
 }

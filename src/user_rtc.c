@@ -87,22 +87,36 @@ void USER_FUNC do_schedule_tasks()
 
 void USER_FUNC do_update_plug_config()
 {
-    return;
+    if (update_plug_config_flag){
+        update_plug_config_flag = false;
+        save_plug_config(&user_plug_config);
+    }
 }
 
 void USER_FUNC do_update_plug_status()
 {
-    if (update_plug_status_flag == 0)
+    bool need_update = false;
+    for (uint8_t i = 0; i < PLUG_NUM; i++)
     {
-        return;
+        if (update_plug_status_flag[i])
+        {
+            need_update = true;
+            update_plug_status_flag[i] = false;
+        }
     }
-
+    if (need_update)
+    {
+        save_plug_status(&plug_status);
+    }
     return;
 }
 
 void USER_FUNC do_update_mqtt_config()
 {
-    return;
+    if (update_mqtt_config_flag) {
+        update_plug_config_flag = false;
+        save_mqtt_config(&user_mqtt_config);
+    }
 }
 
 void USER_FUNC rtc_thread_func(void *arg)
@@ -140,7 +154,7 @@ void USER_FUNC rtctime_init(void)
 
 void USER_FUNC update_time()
 {
-    utc8ts = timestamp_start + systime_now/1000 + UTC8;
+    utc8ts = timestamp_start + systime_now / 1000 + UTC8;
     current_time = gmtime(&utc8ts);
 }
 

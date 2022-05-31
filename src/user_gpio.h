@@ -32,6 +32,7 @@ void USER_FUNC key_Rising_irq_handler ( uint32_t arg1,uint32_t arg2 );
 void appRestoreDefault(  void  );
 
 uint8_t USER_FUNC key_status(void);
+void USER_FUNC load_key_status(void);
  
  void printTask();
 #endif

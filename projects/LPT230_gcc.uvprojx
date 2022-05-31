@@ -331,16 +331,6 @@
               <FilePath>..\src\app_main.h</FilePath>
             </File>
             <File>
-              <FileName>user_flash.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\user_flash.c</FilePath>
-            </File>
-            <File>
-              <FileName>user_flash.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\src\user_flash.h</FilePath>
-            </File>
-            <File>
               <FileName>user_function.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\user_function.c</FilePath>

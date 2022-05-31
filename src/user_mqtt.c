@@ -54,7 +54,9 @@ static void topic_message_callback(MessageData *md)
 	topic_message_publish(user_mqtt_config.pub_topic, data, strlen(data), 0);
 	// topic_message_publish(user_mqtt_config.pub_topic, "publish", strlen("publish"), 0);
 
-	user_function_cmd_received((char *)md->message->payload, (int)md->message->payloadlen);
+	char cmd_rsp[50] = {0};
+	user_function_cmd_received((char *)md->message->payload, (int)md->message->payloadlen, cmd_rsp);
+	user_mqtt_publish(cmd_rsp);
 
 	hfuart_send(HFUART0, data, strlen(data), 0);
 	hfuart_send(HFUART0, "uart", strlen("uart"), 0);
@@ -201,7 +203,7 @@ static void default_mqtt_config(MQTT_CONFIG *mqtt)
 	mqtt->mqtt_ver = 4;
 }
 
-static void save_mqtt_config(MQTT_CONFIG *mqtt)
+void save_mqtt_config(MQTT_CONFIG *mqtt)
 {
 	mqtt->magic_head = MQTT_MAGIC_HEAD;
 	mqtt->crc = crc_calc((unsigned char *)mqtt, sizeof(MQTT_CONFIG) - 1);
@@ -500,8 +502,10 @@ void user_mqtt_topic_publish(char *topic, char *data)
 
 void user_mqtt_publish(char *data)
 {
-
-	topic_message_publish(user_mqtt_config.pub_topic, data, strlen(data), 0);
+	if (mqtt_is_connected)
+	{
+		topic_message_publish(user_mqtt_config.pub_topic, data, strlen(data), 0);
+	}
 }
 
 void mqtt_report_status(void)

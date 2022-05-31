@@ -271,8 +271,7 @@ void test_cbk(char *url, char *rsp)
 	{
 		strrpc(param, "\%22", "\"");
 		strrpc(param, "\%20", " ");
-		sprintf(rsp, "%s", param + 6);
-		user_function_cmd_received(param + 6, strlen(param + 6));
+		user_function_cmd_received(param + 6, strlen(param + 6), rsp);
 	}
 	else
 	{

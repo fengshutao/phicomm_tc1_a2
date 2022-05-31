@@ -15,6 +15,7 @@ extern "C" {
 #pragma pack(pop)
 
 
+void save_mqtt_config(MQTT_CONFIG *mqtt);
 void mqtt_para_init(void);
 
 void user_mqtt_topic_publish(char* topic, char *data);
