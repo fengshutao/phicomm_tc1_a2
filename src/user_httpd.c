@@ -266,7 +266,8 @@ void status_cbk(char *url, char *rsp)
 
 void restart_cbk(char *url, char *rsp)
 {
-	hfsys_reset();
+	strcpy(rsp, "restart ready!");
+	system_restart_flag = true;
 }
 
 void config_cbk(char *url, char *rsp)

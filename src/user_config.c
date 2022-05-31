@@ -63,9 +63,6 @@ void get_user_config_str(char *res, uint8_t x)
 			// sprintf(plug_task_config_str, "%s", "tttttt");
 			cJSON_AddItemToArray(json_tasks_send, cJSON_CreateString(plug_task_config_str));
 		}
-		// cJSON_AddItemToObject(json_plug_send, "tasks", json_tasks_send);
-
-		cJSON_AddItemToArray(json_tasks_send, cJSON_CreateString("test"));
 
 		char strTemp1[] = "plug_X";
 		strTemp1[5] = i + '0';
@@ -215,6 +212,7 @@ void init_plug_status(void)
 void user_config_init()
 {
 	uint8_t i = 0;
+	system_restart_flag = false;
 	user_plug_config_enable = false;
 	strcpy(ntpserver, "ntp1.aliyun.com");
 	update_mqtt_config_flag = false;

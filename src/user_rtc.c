@@ -87,7 +87,8 @@ void USER_FUNC do_schedule_tasks()
 
 void USER_FUNC do_update_plug_config()
 {
-    if (update_plug_config_flag){
+    if (update_plug_config_flag)
+    {
         update_plug_config_flag = false;
         save_plug_config(&user_plug_config);
     }
@@ -114,7 +115,8 @@ void USER_FUNC do_update_plug_status()
 
 void USER_FUNC do_update_mqtt_config()
 {
-    if (update_mqtt_config_flag) {
+    if (update_mqtt_config_flag)
+    {
         update_plug_config_flag = false;
         update_mqtt_config(&user_mqtt_config);
         save_mqtt_config(&user_mqtt_config);
@@ -127,6 +129,8 @@ void USER_FUNC rtc_thread_func(void *arg)
     {
         msleep(100);
         systime_now = hfsys_get_time();
+        if (system_restart_flag)
+            hfsys_reset();
 
         do_update_rtc_time();
 

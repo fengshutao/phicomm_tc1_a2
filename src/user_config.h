@@ -119,6 +119,7 @@ void init_plug_config(void);
 void default_plug_config(PLUG_CONFIG *);
 void save_plug_config(PLUG_CONFIG *);
 
+bool system_restart_flag;
 bool update_mqtt_config_flag;
 bool update_plug_config_flag;
 bool update_plug_status_flag[PLUG_NUM];
@@ -129,6 +130,7 @@ uint8_t plug_status_loaded;
 uint8_t plug_config_loaded;
 uint8_t mqtt_config_loaded;
 uint8_t mqtt_is_connected;
+
 
 
 hfthread_mutex_t user_buff_lock;
