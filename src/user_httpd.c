@@ -264,7 +264,12 @@ void status_cbk(char *url, char *rsp)
 	get_user_config_simple_str(rsp);
 }
 
-void test_cbk(char *url, char *rsp)
+void restart_cbk(char *url, char *rsp)
+{
+	hfsys_reset();
+}
+
+void config_cbk(char *url, char *rsp)
 {
 	char *param = strstr(url, "?json=");
 	if (param != NULL)
@@ -289,5 +294,6 @@ void USER_FUNC httpd_init(void)
 	httpd_add_page("/styles.css", styles_cbk);
 	httpd_add_page("/status", status_cbk);
 	httpd_add_page("/task", status_cbk_all);
-	httpd_add_page("/test", test_cbk);
+	httpd_add_page("/config", config_cbk);
+	httpd_add_page("/restart", restart_cbk);
 }

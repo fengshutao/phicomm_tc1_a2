@@ -110,7 +110,6 @@ void get_user_config_simple_str(char *res)
 	cJSON_AddStringToObject(json_mqtt_send, "sub_topic", user_mqtt_config.sub_topic);
 	cJSON_AddStringToObject(json_mqtt_send, "user_name", user_mqtt_config.username);
 	cJSON_AddStringToObject(json_mqtt_send, "password", user_mqtt_config.password);
-	cJSON_AddStringToObject(json_mqtt_send, "sub_topic", user_mqtt_config.sub_topic);
 	cJSON_AddNumberToObject(json_mqtt_send, "connected", mqtt_is_connected);
 
 	cJSON_AddItemToObject(json_send, "mqtt", json_mqtt_send);

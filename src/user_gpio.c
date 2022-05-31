@@ -99,7 +99,8 @@ void USER_FUNC user_relay_set_all(uint8_t y)
 void USER_FUNC key_long_press(void)
 {
     // user_mqtt_publish("long_press");
-    // mqtt_report_status();
+    // mqtt_report_config();
+    mqtt_report_status();
 }
 
 void USER_FUNC key_short_press(void)

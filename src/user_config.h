@@ -66,6 +66,7 @@ typedef struct _PLUG_CONFIG
 typedef struct _MQTT_CONFIG
 {
     unsigned int magic_head;
+    char hass_topic[MQTT_CLIENTID_MAX_LEN];
     char seraddr[MQTT_SERADDR_MAX_LEN + 1];
     unsigned short port;
     char clientid[MQTT_CLIENTID_MAX_LEN + 1];

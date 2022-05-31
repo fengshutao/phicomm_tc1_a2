@@ -102,6 +102,7 @@ void USER_FUNC do_update_plug_status()
         {
             need_update = true;
             update_plug_status_flag[i] = false;
+            mqtt_report_plug_status(i);
         }
     }
     if (need_update)
@@ -115,6 +116,7 @@ void USER_FUNC do_update_mqtt_config()
 {
     if (update_mqtt_config_flag) {
         update_plug_config_flag = false;
+        update_mqtt_config(&user_mqtt_config);
         save_mqtt_config(&user_mqtt_config);
     }
 }

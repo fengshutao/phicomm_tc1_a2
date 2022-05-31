@@ -103,6 +103,13 @@ void USER_FUNC user_function_cmd_received(char *pusrdata, int datalen, char *rsp
                 sprintf(user_mqtt_config.clientid, "%s", p_setting_name->valuestring);
             }
 
+            cJSON *p_mqtt_hass = cJSON_GetObjectItem(p_setting, "hass_topic");
+            if (p_mqtt_hass && cJSON_IsString(p_mqtt_hass))
+            {
+                update_mqtt_config_flag = true;
+                sprintf(user_mqtt_config.hass_topic, "%s", p_mqtt_hass->valuestring);
+            }
+
             //设置mqtt ip
             cJSON *p_mqtt_ip = cJSON_GetObjectItem(p_setting, "mqtt_uri");
             if (p_mqtt_ip && cJSON_IsString(p_mqtt_ip))
@@ -236,33 +243,6 @@ bool json_plug_task_analysis(unsigned char x, unsigned char y, cJSON *pJsonRoot)
     return return_flag;
 }
 
-unsigned char strtohex(char a, char b)
-{
-    if (a >= 0x30 && a <= 0x39)
-        a -= 0x30;
-    else if (a >= 0x41 && a <= 0x46)
-    {
-        a = a + 10 - 0x41;
-    }
-    else if (a >= 0x61 && a <= 0x66)
-    {
-        a = a + 10 - 0x61;
-    }
-
-    if (b >= 0x30 && b <= 0x39)
-        b -= 0x30;
-    else if (b >= 0x41 && b <= 0x46)
-    {
-        b = b + 10 - 0x41;
-    }
-    else if (b >= 0x61 && b <= 0x66)
-    {
-        b = b + 10 - 0x61;
-    }
-
-    return a * 16 + b;
-}
-
 char *strrpc(char *str, char *oldstr, char *newstr)
 {
 
@@ -291,3 +271,4 @@ char *strrpc(char *str, char *oldstr, char *newstr)
 
     return str;
 }
+
