@@ -23,6 +23,7 @@ void get_user_config_str(char *res, uint8_t x)
 	char time_s[20] = {0};
 	get_time_string(time_s, 20);
 	cJSON_AddStringToObject(json_send, "time", time_s);
+	cJSON_AddStringToObject(json_send, "author", "yakin.chang@gmail.com");
 
 	uint8_t i, j;
 
@@ -113,8 +114,9 @@ void get_user_config_simple_str(char *res)
 	cJSON_AddNumberToObject(json_send, "plug_config_loaded", plug_config_loaded);
 	cJSON_AddNumberToObject(json_send, "plug_status_loaded", plug_status_loaded);
 	cJSON_AddNumberToObject(json_send, "mqtt_config_loaded", mqtt_config_loaded);
+	cJSON_AddStringToObject(json_send, "author", "yakin.chang@gmail.com");
 
-	cJSON_AddNumberToObject(json_send, "version", version);
+	cJSON_AddStringToObject(json_send, "version", version);
 
 	// extern time_t timestamp_start;
 	// extern time_t utc8ts;
@@ -227,7 +229,7 @@ void user_config_init()
 	mqtt_config_loaded = 0;
 	mqtt_is_connected = 0;
 
-	version = VER;
+	sprintf(version, VERSION);
 
 	user_buff = (char *)hfmem_malloc(USER_BUFF_SIZE);
 	memset((char *)user_buff, 0, USER_BUFF_SIZE);

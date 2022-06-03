@@ -4,8 +4,7 @@
 
 #include <hsf.h>
 
-#define VERSION "v0.1"
-#define VER 2
+#define VERSION "v1.0"
 #define TYPE 1
 #define TYPE_NAME "TC1A2"
 
@@ -103,7 +102,7 @@ char strIp[32];
 uint32_t power;
 char deviceid[32];
 char ntpserver[50];
-uint8_t version;
+char version[10];
 
 void user_config_init(void);
 unsigned char crc_calc(unsigned char *, int);
