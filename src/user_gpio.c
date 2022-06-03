@@ -3,7 +3,6 @@
 #include "user_gpio.h"
 #include "user_rtc.h"
 #include "user_mqtt.h"
-#include "user_udp.h"
 #include "user_config.h"
 #include <string.h>
 

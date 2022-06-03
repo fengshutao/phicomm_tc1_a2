@@ -31,15 +31,10 @@
 #include "user_gpio.h"
 #include "app_main.h"
 #include "user_rtc.h"
-#include "user_udp.h"
 #include "user_mqtt.h"
-//#include "user_power.h"
-//#include "user_mqtt_client.h"
 #include "user_function.h"
-//#include "user_flash.h"
-
 #include "user_httpd.h"
-#include "user_mdns.h"
+
 
 EXTERNC const int hf_gpio_fid_to_pid_map_table[HFM_MAX_FUNC_CODE];
 

@@ -2,9 +2,7 @@
 #include "user_function.h"
 #include "app_main.h"
 #include "user_gpio.h"
-//#include "user_ota.h"
 #include "user_mqtt.h"
-#include "user_udp.h"
 #include <string.h>
 uint32_t last_time = 0;
 
