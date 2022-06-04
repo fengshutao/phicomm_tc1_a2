@@ -68,14 +68,10 @@ static void topic_message_publish_retained(char *topic, char *messagem, int mess
 
 static void topic_message_callback(MessageData *md)
 {
-	char *data = (char *)hfmem_malloc(md->message->payloadlen + md->topicName->lenstring.len + 32);
+	char *data = (char *)hfmem_malloc(md->message->payloadlen + 1);
 	if (data == NULL)
 		return;
 
-	sprintf(data, "+MQD:%d, %.*s: %.*s", (int)md->message->payloadlen,
-			md->topicName->lenstring.len, md->topicName->lenstring.data, (int)md->message->payloadlen, (char *)md->message->payload);
-	// topic_message_publish(user_mqtt_config.pub_topic, data, strlen(data), 0);
-	// topic_message_publish(user_mqtt_config.pub_topic, "publish", strlen("publish"), 0);
 	sprintf(mqtt_topic_buff, "%.*s", md->topicName->lenstring.len, md->topicName->lenstring.data);
 	sprintf(data, "%.*s", (int)md->message->payloadlen, (char *)md->message->payload);
 	for (uint8_t i = 0; i < PLUG_NUM; i++)
