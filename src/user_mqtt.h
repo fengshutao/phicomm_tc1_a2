@@ -23,6 +23,7 @@ void user_mqtt_topic_publish(char* topic, char *data);
 void user_mqtt_publish(char *data);
 
 void mqtt_report_config(void);
+void mqtt_clear_config(void);
 void mqtt_report_status(void);
 void mqtt_report_plug_status(uint8_t);
 

@@ -264,6 +264,18 @@ void status_cbk(char *url, char *rsp)
 	get_user_config_simple_str(rsp);
 }
 
+void clear_hass_cbk(char *url, char *rsp)
+{
+	strcpy(rsp, "clear ready!");
+	mqtt_clear_config();
+}
+
+void report_hass_cbk(char *url, char *rsp)
+{
+	strcpy(rsp, "report ready!");
+	mqtt_report_config();
+}
+
 void restart_cbk(char *url, char *rsp)
 {
 	strcpy(rsp, "restart ready!");
@@ -292,9 +304,10 @@ void USER_FUNC httpd_init(void)
 	if (hfhttpd_url_callback_register(httpd_callback, 0) != HF_SUCCESS)
 		u_printf("error registering url callback\r\n");
 
-	httpd_add_page("/styles.css", styles_cbk);
 	httpd_add_page("/status", status_cbk);
 	httpd_add_page("/task", status_cbk_all);
 	httpd_add_page("/config", config_cbk);
+	httpd_add_page("/report_hass", report_hass_cbk);
+	httpd_add_page("/clear_hass", clear_hass_cbk);
 	httpd_add_page("/restart", restart_cbk);
 }

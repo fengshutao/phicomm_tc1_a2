@@ -68,7 +68,7 @@ static void topic_message_publish_retained(char *topic, char *messagem, int mess
 
 static void topic_message_callback(MessageData *md)
 {
-	char *data = (char *)hfmem_malloc(md->message->payloadlen + 1);
+	char *data = mqtt_content_buff;
 	if (data == NULL)
 		return;
 
@@ -98,7 +98,7 @@ static void topic_message_callback(MessageData *md)
 
 	// hfuart_send(HFUART0, data, strlen(data), 0);
 	// hfuart_send(HFUART0, "uart", strlen("uart"), 0);
-	hfmem_free(data);
+	// hfmem_free(data);
 }
 
 static void MQTTClient_thread(void *arg)
@@ -292,6 +292,16 @@ void mqtt_report_config(void)
 	for (uint8_t i = 0; i < PLUG_NUM; i++)
 	{
 		sprintf(mqtt_content_buff, hass_plug_config, user_mqtt_config.clientid, i, user_mqtt_config.clientid, i, user_mqtt_config.pub_topic, i);
+		topic_message_publish_retained(plug_config_topic_list[i], mqtt_content_buff, strlen(mqtt_content_buff), 0);
+		// user_mqtt_topic_publish(plug_config_topic_list[i], mqtt_topic_buff);
+	}
+}
+
+void mqtt_clear_config(void)
+{
+	for (uint8_t i = 0; i < PLUG_NUM; i++)
+	{
+		sprintf(mqtt_content_buff, "{}");
 		topic_message_publish_retained(plug_config_topic_list[i], mqtt_content_buff, strlen(mqtt_content_buff), 0);
 		// user_mqtt_topic_publish(plug_config_topic_list[i], mqtt_topic_buff);
 	}
