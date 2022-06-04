@@ -41,7 +41,7 @@ phicomm_tc1_a2
 
 按住板上的按键，另一只手把复位引线碰一下GND(测试点)，接着在1秒内按电脑上的空格键（鼠标光标要在接收窗口上）。
 
-看到有打印出Bootloader的信息，接着按照输入‘S’，再输入‘Y’,  点击菜单栏的"传输"(Transfer)，选择“发送Xmodem”，然后就选择[XXX_gcc.bin](https://github.com/IoTDevice/phicomm_tc1_a2/releases)文件，打开。
+看到有打印出Bootloader的信息，接着按照输入‘S’，再输入‘Y’,  点击菜单栏的"传输"(Transfer)，选择“发送Xmodem”，然后就选择[lpt230_gcc.bin](https://github.com/yakinchang/phicomm_tc1_a2/releases/)文件，打开。
 
 等待传输完成即可。
 
@@ -103,6 +103,6 @@ phicomm_tc1_a2
 ### 5.固件升级
 
 
-* web网页升级：只需要访问模块的ip地址+iweb.html(例如：http://192.168.123.184/iweb.html)，就可以打开升级页面，选择第一项Upgrade application，浏览文件选择“[lpt230_gcc_upgrade.bin](https://github.com/yakinchang/phicomm_tc1_a2/releases/tag/v1.0)”文件，点击Upload即可，传输成功会返回：Update successful !
+* web网页升级：只需要访问模块的ip地址+iweb.html(例如：http://192.168.123.184/iweb.html)，就可以打开升级页面，选择第一项Upgrade application，浏览文件选择“[lpt230_gcc_upgrade.bin](https://github.com/yakinchang/phicomm_tc1_a2/releases)”文件，点击Upload即可，传输成功会返回：Update successful !
 
 <img src="./doc/webup.jpg" width="540">
