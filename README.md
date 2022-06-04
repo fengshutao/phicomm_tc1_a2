@@ -77,7 +77,11 @@ phicomm_tc1_a2
         * mqtt_port: mqtt 端口号，默认 1883，不修改可省略
         * mqtt_user: mqtt 用户名，默认 admin，不修改可省略
         * mqtt_password: mqtt 密码，默认 admin，不修改可省略
-    * 修改后重启插排（访问 http://192.168.64.172/restart）
+    * 修改后重启插排（访问 http://192.168.64.172/restart 可重启）
+    * 如果配置正确，此时应该能在 homeassistant mqtt 集成中看到自动上报的开关实体，实体的各个属性都能在 homeassistant 中修改
+    <img src="./doc/entities.png" width="540">
+    <img src="./doc/entity.png" width="540">
+
 * 定时任务设置：
     * http 接口：http://192.168.64.172/config?json= 后续接序列化的json字符串，需要保证 json 字符串格式正确
     * 例如：http://192.168.64.172/config?json={"plug_0":{"status":1,"setting":{"task_0":{"hour":22,"minute":37,"second":0,"repeat":255,"action":0,"enable":1}}}}
