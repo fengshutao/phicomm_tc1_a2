@@ -64,6 +64,8 @@ phicomm_tc1_a2
 * 访问插排的 http 接口，获取插排状态，用户名密码都是 admin
 * 支持的接口列表：
     * 修改和查询wifi：http://192.168.64.172
+    <img src="./doc/web.png" width="540">
+    
     * 查看 mqtt 和开关状态：http://192.168.64.172/status
     * 查看开关定时任务信息（最后一位 0~5）：http://192.168.64.172/task?plug=0
     * 重启插排：http://192.168.64.172/restart
