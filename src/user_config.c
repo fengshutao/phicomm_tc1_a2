@@ -90,6 +90,10 @@ void get_user_config_simple_str(char *res)
 	get_time_string(time_s, 20);
 	cJSON_AddStringToObject(json_send, "time", time_s);
 
+	cJSON_AddNumberToObject(json_send, "enable_ap_mode", user_plug_config.enable_ap_mode);
+	cJSON_AddNumberToObject(json_send, "enable_smtlink", user_plug_config.enable_smtlink);
+	cJSON_AddNumberToObject(json_send, "enable_auto_restart", user_plug_config.enable_auto_restart);
+
 	int i, j;
 	char strTemp1[] = "plug_X";
 
@@ -137,6 +141,9 @@ void get_user_config_simple_str(char *res)
 void default_plug_config(PLUG_CONFIG *config)
 {
 	memset((char *)config, 0, sizeof(PLUG_CONFIG));
+	config->enable_ap_mode = true;
+	config->enable_smtlink = true;
+	config->enable_auto_restart = true;
 	for (uint8_t i = 0; i < PLUG_NUM; i++)
 	{
 		for (uint8_t j = 0; j < PLUG_TIME_TASK_NUM; j++)
@@ -215,6 +222,8 @@ void user_config_init()
 {
 	uint8_t i = 0;
 	system_restart_flag = false;
+	system_soft_restart_flag = false;
+	system_start_ap_flag = false;
 	user_plug_config_enable = false;
 	strcpy(ntpserver, "ntp1.aliyun.com");
 	update_mqtt_config_flag = false;

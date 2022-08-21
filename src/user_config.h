@@ -4,7 +4,7 @@
 
 #include <hsf.h>
 
-#define VERSION "v1.0"
+#define VERSION "v2.0"
 #define TYPE 1
 #define TYPE_NAME "TC1A2"
 
@@ -58,7 +58,9 @@ typedef struct _PLUG_CONFIG
 {
     unsigned int magic_head;
     PLUG_CONFIG_ONE plug[PLUG_NUM];
-    uint8_t tag[3];
+    unsigned char enable_auto_restart;
+    unsigned char enable_ap_mode;
+    unsigned char enable_smtlink;
     unsigned char crc;
 } PLUG_CONFIG;
 
@@ -119,6 +121,8 @@ void default_plug_config(PLUG_CONFIG *);
 void save_plug_config(PLUG_CONFIG *);
 
 bool system_restart_flag;
+bool system_soft_restart_flag;
+bool system_start_ap_flag;
 bool update_mqtt_config_flag;
 bool update_plug_config_flag;
 bool update_plug_status_flag[PLUG_NUM];

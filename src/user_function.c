@@ -101,6 +101,27 @@ void USER_FUNC user_function_cmd_received(char *pusrdata, int datalen, char *rsp
                 sprintf(user_mqtt_config.clientid, "%s", p_setting_name->valuestring);
             }
 
+            cJSON *p_enable_auto_restart = cJSON_GetObjectItem(p_setting, "enable_auto_restart");
+            if (p_enable_auto_restart && cJSON_IsNumber(p_enable_auto_restart))
+            {
+                update_plug_config_flag = true;
+                user_plug_config.enable_auto_restart = p_enable_auto_restart->valueint;
+            }
+
+            cJSON *p_enable_ap_mode = cJSON_GetObjectItem(p_setting, "enable_ap_mode");
+            if (p_enable_ap_mode && cJSON_IsNumber(p_enable_ap_mode))
+            {
+                update_plug_config_flag = true;
+                user_plug_config.enable_ap_mode = p_enable_ap_mode->valueint;
+            }
+
+            cJSON *p_enable_smtlink = cJSON_GetObjectItem(p_setting, "enable_smtlink");
+            if (p_enable_smtlink && cJSON_IsNumber(p_enable_smtlink))
+            {
+                update_plug_config_flag = true;
+                user_plug_config.enable_smtlink = p_enable_smtlink->valueint;
+            }
+
             cJSON *p_mqtt_hass = cJSON_GetObjectItem(p_setting, "hass_topic");
             if (p_mqtt_hass && cJSON_IsString(p_mqtt_hass))
             {

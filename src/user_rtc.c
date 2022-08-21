@@ -17,8 +17,10 @@ struct tm *current_time; // 当前时间结构体
 time_t utc8ts;           // UTC8 时间戳
 time_t systime_last_ntp;
 time_t systime_now;
+time_t systime_wifi_link = 0;
 time_t timestamp_start = 0;
 bool ntptime_succeed = false;
+char tmp_rsp[32] = {0};
 
 // time_t ntp_res;
 
@@ -39,6 +41,30 @@ void USER_FUNC do_update_rtc_time()
             ntptime_succeed = true;
         }
         systime_last_ntp = systime_now;
+    }
+}
+
+void USER_FUNC do_update_wifi_time()
+{
+    if (user_plug_config.enable_auto_restart == 0)
+    {
+        return;
+    }
+    if (systime_now - systime_wifi_link < 29000)
+    {
+        return;
+    }
+    if (ping(user_mqtt_config.seraddr) == HF_SUCCESS)
+    {
+        systime_wifi_link = systime_now;
+    }
+    else if (user_plug_config.enable_auto_restart == 1 && systime_now - systime_wifi_link > 60000)
+    {
+        system_soft_restart_flag = true;
+    }
+    else if (user_plug_config.enable_auto_restart > 1 && systime_now - systime_wifi_link > 60000)
+    {
+        system_restart_flag = true;
     }
 }
 
@@ -130,9 +156,27 @@ void USER_FUNC rtc_thread_func(void *arg)
         msleep(100);
         systime_now = hfsys_get_time();
         if (system_restart_flag)
+        {
+            system_restart_flag = false;
             hfsys_reset();
+        }
+
+        if (system_soft_restart_flag)
+        {
+            system_soft_restart_flag = false;
+            hfsys_softreset();
+        }
+
+        if (system_start_ap_flag)
+        {
+            system_start_ap_flag = false;
+            hfat_send_cmd("AT+WMODE=AP\r\n",sizeof("AT+WMODE=AP\r\n"),tmp_rsp,32);
+            system_soft_restart_flag = true;
+        }
 
         do_update_rtc_time();
+
+        do_update_wifi_time();
 
         do_schedule_tasks();
 

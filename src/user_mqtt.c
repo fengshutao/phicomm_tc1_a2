@@ -104,6 +104,7 @@ static void topic_message_callback(MessageData *md)
 static void MQTTClient_thread(void *arg)
 {
 	int ping_time = 0;
+	int report_time = 0;
 	HF_Debug(MQTT_DEBUG_LEVEL, "MQTTClient_thread start.\r\n");
 
 	int ret;
@@ -172,6 +173,7 @@ static void MQTTClient_thread(void *arg)
 		mqtt_report_config();
 
 		ping_time = hfsys_get_time();
+		report_time = hfsys_get_time();
 		while (1)
 		{
 			ret = MQTTYield(&MQTTCli, 300);
@@ -184,6 +186,13 @@ static void MQTTClient_thread(void *arg)
 			{
 				HF_Debug(MQTT_DEBUG_LEVEL, "MQTTClient_thread WiFi disconnected!\r\n");
 				goto MQTT_END;
+			}
+
+			//定期上报一下开关状态
+			if (hfsys_get_time() - report_time > 300 * 1000)
+			{
+				report_time = hfsys_get_time();
+				mqtt_report_status();
 			}
 
 			//应用层实现ping功能 防止 mqtt异常断开
@@ -231,7 +240,7 @@ static void mqtt_start(void)
 static void default_mqtt_config(MQTT_CONFIG *mqtt)
 {
 	memset((char *)mqtt, 0, sizeof(MQTT_CONFIG));
-	strcpy(mqtt->seraddr, "192.168.64.203");
+	strcpy(mqtt->seraddr, "114.114.114.114");
 	mqtt->port = 1883;
 	strcpy(mqtt->clientid, strMac);
 	strcpy(mqtt->hass_topic, "homeassistant");

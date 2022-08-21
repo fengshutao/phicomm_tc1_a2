@@ -282,6 +282,18 @@ void restart_cbk(char *url, char *rsp)
 	system_restart_flag = true;
 }
 
+void soft_restart_cbk(char *url, char *rsp)
+{
+	strcpy(rsp, "soft restart ready!");
+	system_soft_restart_flag = true;
+}
+
+void start_ap_cbk(char *url, char *rsp)
+{
+	strcpy(rsp, "start ap ready!");
+	system_start_ap_flag = true;
+}
+
 void config_cbk(char *url, char *rsp)
 {
 	char *param = strstr(url, "?json=");
@@ -310,4 +322,6 @@ void USER_FUNC httpd_init(void)
 	httpd_add_page("/report_hass", report_hass_cbk);
 	httpd_add_page("/clear_hass", clear_hass_cbk);
 	httpd_add_page("/restart", restart_cbk);
+	httpd_add_page("/soft_restart", soft_restart_cbk);
+	httpd_add_page("/start_ap", start_ap_cbk);
 }

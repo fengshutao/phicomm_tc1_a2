@@ -373,13 +373,12 @@ int USER_FUNC app_main (void)
     while(hfsmtlk_is_start())
     {
         msleep(500);
-        user_led_set(-1);
     }
 
-	// if(hfnet_start_uart(HFTHREAD_PRIORITIES_LOW,(hfnet_callback_t)uart_recv_callback)!=HF_SUCCESS)
-	// {
-	// 	HF_Debug(DEBUG_WARN,"start uart fail!\n");
-	// }
+	if(hfnet_start_uart(HFTHREAD_PRIORITIES_LOW,(hfnet_callback_t)uart_recv_callback)!=HF_SUCCESS)
+	{
+		HF_Debug(DEBUG_WARN,"start uart fail!\n");
+	}
 
     user_config_init();
         //Web Server

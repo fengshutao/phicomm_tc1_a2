@@ -102,6 +102,18 @@ void USER_FUNC key_long_press(void)
     mqtt_report_status();
 }
 
+void USER_FUNC key_longlong_press(void)
+{
+    if (user_plug_config.enable_ap_mode)
+    {
+        system_start_ap_flag = true;
+    }
+    else if (user_plug_config.enable_smtlink)
+    {
+        hfsmtlk_start();
+    }
+}
+
 void USER_FUNC key_short_press(void)
 {
     if (relay_out())
@@ -122,10 +134,10 @@ void USER_FUNC key_timeout_handler(void *arg)
         // 100ms 每次
         key_time++;
 
-        if (key_time == 30)
-        {
-            key_long_press();
-        }
+        // if (key_time == 30)
+        // {
+        //     key_long_press();
+        // }
         // else if (key_time == 35)
         // {
         //     user_led_set(0);
@@ -138,42 +150,43 @@ void USER_FUNC key_timeout_handler(void *arg)
         // {
         //     user_led_set(0);
         // }
-        // else if (key_time == 50)
-        // {
-        //     user_led_set(1);
-        // }
-        // else if (key_time == 55)
-        // {
-        //     user_led_set(0);
-        // }
-        // else if (key_time == 60)
-        // {
-        //     user_led_set(1);
-        // }
-        // else if (key_time == 65)
-        // {
-        //     user_led_set(0);
-        // }
-        else if (key_time == 70)
-        {
-            // user_function_cmd_received(1, "{\"cmd\":\"device report\"}");
-            user_led_set(0);
-        }
-        else if (key_time == 75)
+        if (key_time == 50)
         {
             user_led_set(1);
         }
-        else if (key_time == 80)
+        else if (key_time == 55)
         {
             user_led_set(0);
-            // user_mqtt_publish("smartlink start");
-            // user_function_cmd_received(1, "{\"cmd\":\"device report\"}");
-            hfsmtlk_start();
         }
-
-        if (key_time > 80)
+        else if (key_time == 60)
         {
-            key_time = 74;
+            user_led_set(1);
+        }
+        else if (key_time == 65)
+        {
+            user_led_set(0);
+            // key_longlong_press();
+        }
+        // else if (key_time == 70)
+        // {
+        //     // user_function_cmd_received(1, "{\"cmd\":\"device report\"}");
+        //     user_led_set(0);
+        // }
+        // else if (key_time == 75)
+        // {
+        //     user_led_set(1);
+        // }
+        // else if (key_time == 80)
+        // {
+        //     user_led_set(0);
+        //     // user_mqtt_publish("smartlink start");
+        //     // user_function_cmd_received(1, "{\"cmd\":\"device report\"}");
+        //     hfsmtlk_start();
+        // }
+
+        if (key_time > 65)
+        {
+            key_time = 55;
         }
     }
     else
@@ -199,6 +212,14 @@ void USER_FUNC key_rising_irq_handler(uint32_t arg1, uint32_t arg2)
             // last_release_time = hfsys_get_time();
             // // user_mqtt_publish("key_release");
         }
+    }
+    else if (key_time < 50)
+    {
+        key_long_press();
+    }
+    else if (key_time >= 50)
+    {
+        key_longlong_press();
     }
 
     key_time = 0;
