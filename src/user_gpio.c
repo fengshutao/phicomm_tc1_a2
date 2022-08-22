@@ -12,6 +12,7 @@
 
 hfthread_mutex_t keythread_lock = NULL_MUTEX;
 uint8_t key_time = 0;
+uint8_t led_status = 0;
 // time_t key_press_time = 0;
 #define BUTTON_LONG_PRESS_TIME 10 //       //时间
 
@@ -24,14 +25,24 @@ void USER_FUNC user_led_set(char x)
         if (hfgpio_fpin_is_high(LED))
         {
             hfgpio_fset_out_low(LED);
+            led_status = 0;
         }
         else
+        {
             hfgpio_fset_out_high(LED);
+            led_status = 1;
+        }
     }
     else if (x)
+    {
         hfgpio_fset_out_high(LED);
+        led_status = 1;
+    }
     else
+    {
         hfgpio_fset_out_low(LED);
+        led_status = 0;
+    }
 }
 
 bool USER_FUNC relay_out(void)
@@ -99,7 +110,8 @@ void USER_FUNC key_long_press(void)
 {
     // user_mqtt_publish("long_press");
     // mqtt_report_config();
-    mqtt_report_status();
+    // mqtt_report_status();
+    hfsys_softreset();
 }
 
 void USER_FUNC key_longlong_press(void)
@@ -134,63 +146,32 @@ void USER_FUNC key_timeout_handler(void *arg)
         // 100ms 每次
         key_time++;
 
-        // if (key_time == 30)
-        // {
-        //     key_long_press();
-        // }
-        // else if (key_time == 35)
-        // {
-        //     user_led_set(0);
-        // }
-        // else if (key_time == 40)
-        // {
-        //     user_led_set(1);
-        // }
-        // else if (key_time == 45)
-        // {
-        //     user_led_set(0);
-        // }
-        if (key_time == 50)
+        if (key_time > 200)
         {
-            user_led_set(1);
+            key_time = 151;
         }
-        else if (key_time == 55)
+        else if (key_time >= 100)
         {
-            user_led_set(0);
+            hfsmtaplk_start();
         }
-        else if (key_time == 60)
+        else if (key_time >= 100)
         {
-            user_led_set(1);
+            if (key_time % 2 == 0)
+            {
+                user_led_set(1-led_status);
+            }
         }
-        else if (key_time == 65)
+        else if (key_time >= 50)
         {
-            user_led_set(0);
-            // key_longlong_press();
-        }
-        // else if (key_time == 70)
-        // {
-        //     // user_function_cmd_received(1, "{\"cmd\":\"device report\"}");
-        //     user_led_set(0);
-        // }
-        // else if (key_time == 75)
-        // {
-        //     user_led_set(1);
-        // }
-        // else if (key_time == 80)
-        // {
-        //     user_led_set(0);
-        //     // user_mqtt_publish("smartlink start");
-        //     // user_function_cmd_received(1, "{\"cmd\":\"device report\"}");
-        //     hfsmtlk_start();
-        // }
-
-        if (key_time > 65)
-        {
-            key_time = 55;
+            if (key_time % 5 == 0)
+            {
+                user_led_set(1-led_status);
+            }
         }
     }
     else
     {
+        key_time = 0;
         if (!relay_out())
         {
             user_led_set(0);
@@ -200,26 +181,28 @@ void USER_FUNC key_timeout_handler(void *arg)
 
 void USER_FUNC key_rising_irq_handler(uint32_t arg1, uint32_t arg2)
 {
-    if (key_time < 2)
+    if (key_time == 0)
     {
     }
     else if (key_time < 10)
     {
-        if (key_status() == KEY_UP)
-        {
-            key_short_press();
-            // release_flag = 1;
-            // last_release_time = hfsys_get_time();
-            // // user_mqtt_publish("key_release");
-        }
+        key_short_press();
     }
     else if (key_time < 50)
     {
-        key_long_press();
+        system_soft_restart_flag = true;
     }
-    else if (key_time >= 50)
+    else if (key_time < 100)
     {
-        key_longlong_press();
+        system_start_ap_flag = true;
+    }
+    else if (key_time < 150)
+    {
+        hfsmtlk_start();
+    }
+    else if (key_time >= 150)
+    {
+        hfsmtlk_start();
     }
 
     key_time = 0;

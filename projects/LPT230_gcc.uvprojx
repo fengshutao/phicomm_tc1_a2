@@ -351,26 +351,6 @@
               <FilePath>..\src\user_gpio.h</FilePath>
             </File>
             <File>
-              <FileName>user_mdns.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\user_mdns.c</FilePath>
-            </File>
-            <File>
-              <FileName>user_mdns.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\src\user_mdns.h</FilePath>
-            </File>
-            <File>
-              <FileName>user_power.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\user_power.c</FilePath>
-            </File>
-            <File>
-              <FileName>user_power.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\src\user_power.h</FilePath>
-            </File>
-            <File>
               <FileName>user_rtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\src\user_rtc.c</FilePath>
@@ -379,16 +359,6 @@
               <FileName>user_rtc.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\src\user_rtc.h</FilePath>
-            </File>
-            <File>
-              <FileName>user_udp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\src\user_udp.c</FilePath>
-            </File>
-            <File>
-              <FileName>user_udp.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\src\user_udp.h</FilePath>
             </File>
             <File>
               <FileName>user_mqtt.c</FileName>

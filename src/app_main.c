@@ -301,7 +301,7 @@ static void show_reset_reason(void)
     reset_reason = hfsys_get_reset_reason();
     
 #if 1
-    u_printf("reset_reasion:%08x\n",reset_reason);
+    u_printf("reset_reason:%08x\n",reset_reason);
 #else    
     if(reset_reason&HFSYS_RESET_REASON_ERESET)
     {

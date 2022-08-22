@@ -173,7 +173,6 @@ static void MQTTClient_thread(void *arg)
 		mqtt_report_config();
 
 		ping_time = hfsys_get_time();
-		report_time = hfsys_get_time();
 		while (1)
 		{
 			ret = MQTTYield(&MQTTCli, 300);
@@ -189,7 +188,7 @@ static void MQTTClient_thread(void *arg)
 			}
 
 			//定期上报一下开关状态
-			if (hfsys_get_time() - report_time > 300 * 1000)
+			if (hfsys_get_time() - report_time > 300000)
 			{
 				report_time = hfsys_get_time();
 				mqtt_report_status();
@@ -321,6 +320,7 @@ void mqtt_report_status(void)
 	for (uint8_t i = 0; i < PLUG_NUM; i++)
 	{
 		mqtt_report_plug_status(i);
+		msleep(50);
 	}
 }
 

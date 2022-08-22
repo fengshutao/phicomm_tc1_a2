@@ -50,19 +50,23 @@ void USER_FUNC do_update_wifi_time()
     {
         return;
     }
-    if (systime_now - systime_wifi_link < 29000)
-    {
-        return;
-    }
-    if (ping(user_mqtt_config.seraddr) == HF_SUCCESS)
+    // if (systime_now - systime_wifi_link < 29000)
+    // {
+    //     return;
+    // }
+    // if (ping(user_mqtt_config.seraddr) == HF_SUCCESS)
+    // {
+    //     systime_wifi_link = systime_now;
+    // }
+    if (hfwifi_sta_is_connected())
     {
         systime_wifi_link = systime_now;
     }
-    else if (user_plug_config.enable_auto_restart == 1 && systime_now - systime_wifi_link > 60000)
+    else if (user_plug_config.enable_auto_restart == 1 && systime_now - systime_wifi_link > 600000)
     {
         system_soft_restart_flag = true;
     }
-    else if (user_plug_config.enable_auto_restart > 1 && systime_now - systime_wifi_link > 60000)
+    else if (user_plug_config.enable_auto_restart > 1 && systime_now - systime_wifi_link > 600000)
     {
         system_restart_flag = true;
     }
@@ -188,6 +192,41 @@ void USER_FUNC rtc_thread_func(void *arg)
     }
 }
 
+void USER_FUNC rtc_timer_func(void *arg)
+{
+    systime_now = hfsys_get_time();
+    if (system_restart_flag)
+    {
+        system_restart_flag = false;
+        hfsys_reset();
+    }
+
+    if (system_soft_restart_flag)
+    {
+        system_soft_restart_flag = false;
+        hfsys_softreset();
+    }
+
+    if (system_start_ap_flag)
+    {
+        system_start_ap_flag = false;
+        hfat_send_cmd("AT+WMODE=AP\r\n",sizeof("AT+WMODE=AP\r\n"),tmp_rsp,32);
+        system_soft_restart_flag = true;
+    }
+
+    do_update_rtc_time();
+
+    do_update_wifi_time();
+
+    do_schedule_tasks();
+
+    do_update_plug_status();
+
+    do_update_plug_config();
+
+    do_update_mqtt_config();
+}
+
 // void USER_FUNC rtctime_timeout_handler(void *arg)
 // {
 //     rtctimes = rtctimes + 1;
@@ -197,9 +236,10 @@ void USER_FUNC rtctime_init(void)
 {
     systime_last_ntp = hfsys_get_time();
     systime_now = systime_last_ntp;
-    hfthread_create(rtc_thread_func, "rtccontrol", 1024, NULL, HFTHREAD_PRIORITIES_LOW, NULL, NULL);
+    hftimer_handle_t user_rtc_timer = hftimer_create("TIMER2", 500, 1, TIMER2_ID, rtc_timer_func, 0); //每一秒加一,模拟时钟在跑
+    // hfthread_create(rtc_thread_func, "rtccontrol", 1024, NULL, HFTHREAD_PRIORITIES_LOW, NULL, NULL);
     // hftimer_handle_t user_rtc_timer = hftimer_create("TIMER2", 1000, 1, TIMER2_ID, rtctime_timeout_handler, 0); //每一秒加一,模拟时钟在跑
-    // hftimer_start(user_rtc_timer);
+    hftimer_start(user_rtc_timer);
 }
 
 void USER_FUNC update_time()
