@@ -2,7 +2,7 @@
 include Makefile.mk
 
 BUILD_PATH = $(shell pwd)
-SDK_PATH = $(BUILD_PATH)/sdk/4.14
+SDK_PATH = $(BUILD_PATH)/sdk/4.13
 LINKERSCRIPT = $(SDK_PATH)/libs/LPBX3.ld
 
 PROJECT_NAME=lpt230
@@ -26,9 +26,8 @@ DBGFLAGS   = 	-g
 OPTFLAGS   = 	-Os -fomit-frame-pointer
 INCLUDE    =  -I$(SDK_PATH)/include/ -I$(SDK_PATH)/include/hsf/ -I$(SDK_PATH)/include/hal/api -I$(SDK_PATH)/include/hal/api
 INCLUDE    += -I$(SDK_PATH)/include/hal/targets/cmsis -I$(SDK_PATH)/include/rtos/rtx/TARGET_CORTEX_M -I$(SDK_PATH)/include/lwip-wifi/arch -I$(SDK_PATH)/include/lwip-sys
-INCLUDE    += -I$(SDK_PATH)/include/hal/targets/cmsis/TARGET_RDA/TARGET_UNO_91H
 TOOLS_CFLAGS = -I$(SDK_PATH)/include
-CFLAGS += -DNO_SYS_SELECT_H
+
 #-std=gnu++98 -fno-rtti
 
 CPPFLAGS  += $(INCLUDE) $(OPTFLAGS) $(DBGFLAGS)
