@@ -244,7 +244,7 @@ static void default_mqtt_config(MQTT_CONFIG *mqtt)
 	strcpy(mqtt->clientid, strMac);
 	strcpy(mqtt->hass_topic, "homeassistant");
 	strcpy(mqtt->username, "admin");
-	strcpy(mqtt->password, "admin");
+	strcpy(mqtt->password, "adminadmin");
 	mqtt->sub_qos = 1;
 	mqtt->enable_sub = 1;
 	mqtt->mqtt_ver = 4;
