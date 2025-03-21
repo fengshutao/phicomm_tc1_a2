@@ -1,16 +1,33 @@
 name: phicomm_tc1_a2
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
   watch:
     types: [started]
-os: linux
-language: c
-sudo: false
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - gcc-arm-none-eabi
-    - libnewlib-arm-none-eabi
-    - libstdc++-arm-none-eabi-newlib
-script:
-- make
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up toolchain
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gcc-arm-none-eabi
+
+    - name: Compile project
+      run: make
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: compiled-binaries
+        path: |
+          *.bin
+          *.elf
