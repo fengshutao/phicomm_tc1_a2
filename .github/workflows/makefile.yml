@@ -1,0 +1,33 @@
+name: phicomm_tc1_a2
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup toolchain
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gcc-arm-none-eabi
+
+    - name: Compile code
+      run: |
+        make clean
+        make
+
+    - name: Upload firmware
+      uses: actions/upload-artifact@v2
+      with:
+        name: firmware
+        path: |
+          *.bin
+          *.elf
