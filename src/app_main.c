@@ -24,28 +24,16 @@
  * Include header files for all drivers that have been imported from
  * Atmel Software Framework (ASF).
  */
-/#include <hsf.h>
+#include <hsf.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>/
+#include <time.h>
 #include "user_gpio.h"
 #include "app_main.h"
 #include "user_rtc.h"
 #include "user_mqtt.h"
 #include "user_function.h"
 #include "user_httpd.h"
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <stddef.h>
-#include <sys/time.h>
-#include <sys/select.h>
-#include <lwip/sockets.h>
-#include <hsf/hsf.h>
-#include <hsf/hfnet.h>
-#include <hsf/hftime.h>
-#include <time.h>
 
 EXTERNC const int hf_gpio_fid_to_pid_map_table[HFM_MAX_FUNC_CODE];
 
