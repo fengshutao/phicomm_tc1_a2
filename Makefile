@@ -26,7 +26,7 @@ DBGFLAGS   = 	-g
 OPTFLAGS   = 	-Os -fomit-frame-pointer
 INCLUDE    =  -I$(SDK_PATH)/include/ -I$(SDK_PATH)/include/hsf/ -I$(SDK_PATH)/include/hal/api -I$(SDK_PATH)/include/hal/api
 INCLUDE    += -I$(SDK_PATH)/include/hal/targets/cmsis -I$(SDK_PATH)/include/rtos/rtx/TARGET_CORTEX_M -I$(SDK_PATH)/include/lwip-wifi/arch -I$(SDK_PATH)/include/lwip-sys
-
+INCLUDE    += -I$(SDK_PATH)/include/hal/targets/cmsis/TARGET_RDA/TARGET_UNO_91H
 TOOLS_CFLAGS = -I$(SDK_PATH)/include
 
 #-std=gnu++98 -fno-rtti
