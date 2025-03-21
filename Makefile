@@ -2,7 +2,7 @@
 include Makefile.mk
 
 BUILD_PATH = $(shell pwd)
-SDK_PATH = $(BUILD_PATH)/sdk/4.13
+SDK_PATH = $(BUILD_PATH)/sdk/4.14
 LINKERSCRIPT = $(SDK_PATH)/libs/LPBX3.ld
 
 PROJECT_NAME=lpt230
