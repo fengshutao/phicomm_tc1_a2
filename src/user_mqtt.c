@@ -239,12 +239,12 @@ static void mqtt_start(void)
 static void default_mqtt_config(MQTT_CONFIG *mqtt)
 {
 	memset((char *)mqtt, 0, sizeof(MQTT_CONFIG));
-	strcpy(mqtt->seraddr, "114.114.114.114");
+	strcpy(mqtt->seraddr, "192.168.2.49");
 	mqtt->port = 1883;
 	strcpy(mqtt->clientid, strMac);
 	strcpy(mqtt->hass_topic, "homeassistant");
-	strcpy(mqtt->username, "admin");
-	strcpy(mqtt->password, "adminadmin");
+	strcpy(mqtt->username, "loveyolanda");
+	strcpy(mqtt->password, "yolanda61322012");
 	mqtt->sub_qos = 1;
 	mqtt->enable_sub = 1;
 	mqtt->mqtt_ver = 4;
